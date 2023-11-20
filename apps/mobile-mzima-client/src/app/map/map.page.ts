@@ -92,15 +92,15 @@ export class MapPage extends MainViewComponent implements OnDestroy {
 
   async clearStorage() {
     const result = await this.alertService.presentAlert({
-      header: `Offline map`,
-      message: `Phone storage currently contains ${this.map.savedOfflineTiles} saved map tiles. Do you want to clear storage?`,
+      header: `Mapa Offline`,
+      message: `El almacenamiento del móvil contiene ${this.map.savedOfflineTiles} mapas salvados. ¿Quieres limpiar el almacenamiento?`,
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Clear',
+          text: 'Limpiar',
           role: 'confirm',
           cssClass: 'primary',
         },

@@ -84,11 +84,11 @@ export class ChooseCollectionComponent {
   public totalCollections: number;
   public viewingModeOptions = [
     {
-      label: 'Map',
+      label: 'Mapa',
       value: 'map',
     },
     {
-      label: 'Data',
+      label: 'Datos',
       value: 'data',
     },
   ];
@@ -150,9 +150,9 @@ export class ChooseCollectionComponent {
         this.roleOptions = formHelper.roleTransform({
           roles: response.results,
           userRole: this.userRole,
-          onlyMe: 'Only me',
-          everyone: 'Everyone',
-          specificRoles: 'Specific roles...',
+          onlyMe: 'Solo yo',
+          everyone: 'Todo el mundo',
+          specificRoles: 'Roles específicos...',
         });
       },
     });
@@ -308,8 +308,8 @@ export class ChooseCollectionComponent {
       await this.updateCollection();
     } else {
       this.toastService.presentToast({
-        header: 'Success',
-        message: `Post will be added/removed to collections when connection restores.`,
+        header: 'Exito',
+        message: `El post se añadirá/borrará de la colección cuando se restablezca la conexión.`,
         buttons: [],
       });
       this.modalController.dismiss();
@@ -408,15 +408,15 @@ export class ChooseCollectionComponent {
 
   async deleteCollection() {
     const result = await this.alertService.presentAlert({
-      header: `Are you sure you want to delete this collection?`,
-      message: 'This action cannot be undone. Please proceed with caution.',
+      header: `¿Seguro que quieres borrar esta colección?`,
+      message: 'Esta acción no se puede deshacer. Procede con cuidado.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Borrar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -426,7 +426,7 @@ export class ChooseCollectionComponent {
     if (result.role === 'confirm') {
       this.collectionsService.delete(this.collectionToEdit).subscribe(() => {
         this.toastService.presentToast({
-          message: `Collection has been successfully deleted`,
+          message: `La colección se ha borrado satisfactoriamente.`,
         });
         this.modalController.dismiss();
         this.getCollections();

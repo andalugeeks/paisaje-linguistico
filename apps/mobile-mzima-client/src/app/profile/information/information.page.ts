@@ -433,7 +433,7 @@ export class InformationPage {
         next: (response) => {
           const { result } = response;
           this.toastService.presentToast({
-            message: 'Profile information has been updated successfully',
+            message: 'La información de tu perfil se ha actualizado satisfactoriamente',
             buttons: [],
           });
           resolve(response);

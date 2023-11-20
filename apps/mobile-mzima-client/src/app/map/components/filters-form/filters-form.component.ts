@@ -42,7 +42,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'saved-filters',
       icon: 'saved-filters',
-      label: 'Saved filters',
+      label: 'Filtros guardados',
       selected: 'none',
       selectedLabel: 'Selected:',
       value: this.getFilterDefaultValue('saved-filters'),
@@ -51,16 +51,16 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'form',
       icon: 'surveys',
-      label: 'Surveys',
+      label: 'Encuestas',
       selected: 'none',
       selectedCount: '',
       value: [],
-      noOptionsText: "You don't have surveys yet",
+      noOptionsText: 'No tienes ninguna encuesta todavía',
     },
     {
       name: 'source',
       icon: 'sources',
-      label: 'Sources',
+      label: 'Fuentes',
       selectedCount: searchFormHelper.sources.length,
       selected: String(searchFormHelper.sources.length),
       value: this.getFilterDefaultValue('source'),
@@ -68,7 +68,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'status',
       icon: 'status',
-      label: 'Status',
+      label: 'Estado',
       selectedCount: searchFormHelper.statuses.length,
       selected: '2',
       value: this.getFilterDefaultValue('status'),
@@ -84,17 +84,17 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'date',
       icon: 'calendar',
-      label: 'Date range',
-      selectedLabel: 'Select the date range',
-      selectedCount: 'All Time',
+      label: 'Rango de fechas',
+      selectedLabel: 'Elije el rango de fechas',
+      selectedCount: 'Siempre',
       value: this.getFilterDefaultValue('date'),
     },
     {
       name: 'center_point',
       icon: 'marker',
-      label: 'Location',
-      selectedLabel: 'Select locations',
-      selectedCount: 'All locations',
+      label: 'Localización',
+      selectedLabel: 'Elije localizaciones',
+      selectedCount: 'Todas las localizaciones',
       value: this.getFilterDefaultValue('location'),
     },
   ];
@@ -419,16 +419,16 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async handleClearFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Clear all filters?',
+      header: 'Limpiar todos los filtros?',
       message:
-        'All filters except <strong>Surveys</strong>, <strong>Sources</strong> and <strong>Status</strong> will be cleared',
+        'Todos los filtros salvo <strong>Encuestas</strong>, <strong>Fuentes</strong> and <strong>Estados</strong> se limpiarán',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Clear',
+          text: 'Limpiar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -645,20 +645,20 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async saveSavedFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `${this.selectedSavedFilter ? 'Update' : 'Save'} filter name?`,
+      header: `${this.selectedSavedFilter ? 'Actualizar' : 'Guardar'} filtro?`,
       inputs: [
         {
-          placeholder: 'Filter name',
+          placeholder: 'Nombre del filtro',
           value: this.selectedSavedFilter?.label,
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Save',
+          text: 'Guardar',
           role: 'confirm',
           cssClass: 'primary',
         },

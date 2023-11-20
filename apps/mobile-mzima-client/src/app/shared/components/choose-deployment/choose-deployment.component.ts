@@ -124,15 +124,15 @@ export class ChooseDeploymentComponent {
 
   public async callModal(event: any) {
     const result = await this.alertService.presentAlert({
-      header: 'Are you sure you want to delete this deployment?',
-      message: 'Deleting means that from now you will not see it in your deployment list.',
+      header: '¿Seguro que quieres borrar este despliegue?',
+      message: 'Borrarlo significa que a partir de ahora no lo verá en su lista de despliegues.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Borrar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -214,9 +214,9 @@ export class ChooseDeploymentComponent {
         name: 'warning',
         color: 'danger',
       },
-      header: 'Outdated Deployment!',
+      header: '¡Despliegue desactualizado!',
       message:
-        "<p>We're sorry, but the deployment option you're trying to select is not supported by the application as the administrator hasn't updated it yet. Until the update is performed, the deployment won't function properly.</p><p>If you are the administrator of this deployment, please feel free to contact us for more information.</p>",
+        '<p>Lo sentimos, pero la opción de despliegue que está intentando seleccionar no es compatible con la aplicación, ya que el administrador aún no la ha actualizado. Hasta que no se realice la actualización, el despliegue no funcionará correctamente.</p><p>Si usted es el administrador de este despliegue, no dude en ponerse en contacto con nosotros para obtener más información.</p>',
       buttons: [
         // {
         //   text: 'Contact us',

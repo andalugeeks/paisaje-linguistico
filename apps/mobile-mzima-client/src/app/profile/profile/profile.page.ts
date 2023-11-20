@@ -73,16 +73,16 @@ export class ProfilePage {
 
   private async logout(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Logout',
+      header: 'Cerrar Sesión',
       message:
-        'Are you sure you want to log out of the application? This action will end your current session and you will be required to log in again to access your account.',
+        '¿Está seguro de que desea cerrar la sesión de la aplicación? Esta acción finalizará su sesión actual y deberá volver a iniciar sesión para acceder a su cuenta.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Logout',
+          text: 'Cerrar Sesión',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -100,16 +100,16 @@ export class ProfilePage {
 
   private async clearPosts(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Delete Pending Posts?',
+      header: 'Borrar Posts Pendientes?',
       message:
-        'Are you sure you want to delete the pending posts? This action cannot be undone and will permanently remove all pending posts from the system.',
+        '¿Estás seguro de que quieres borrar los mensajes pendientes? Esta acción no se puede deshacer y eliminará permanentemente todos los mensajes pendientes del sistema.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Borrar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -124,16 +124,16 @@ export class ProfilePage {
 
   private async resetAppData(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Clear App Data?',
+      header: '¿Limpiar datos de la App?',
       message:
-        'Are you sure you want to clear the app data? This action will delete all cached information. Please note that it will also log you out, and any locally stored data, including settings and preferences, will be cleared from your device. This action cannot be undone.',
+        '¿Estás seguro de que quieres borrar los datos de la App? Esta acción eliminará toda la información almacenada en caché. Ten en cuenta que también se cerrará tu sesión y se borrará de tu dispositivo cualquier dato almacenado localmente, incluidos los ajustes y las preferencias. Esta acción no se puede deshacer.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Clear',
+          text: 'Limpiar',
           role: 'confirm',
           cssClass: 'danger',
         },

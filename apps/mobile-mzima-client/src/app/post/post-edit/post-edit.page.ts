@@ -200,7 +200,7 @@ export class PostEditPage {
     this.isConnection = status;
     this.connectionInfo = status
       ? ''
-      : 'The connection was lost, the information will be saved to the database';
+      : 'Se perdió la conexión, la informacón se guardará en la base de datos';
   }
 
   async getSurveys(): Promise<any[]> {
@@ -715,8 +715,9 @@ export class PostEditPage {
     if (this.isConnection) {
       await this.uploadPost();
     } else {
-      await this.postComplete(this.translateService.instant('app.info.post_submitted_offline'));
-      this.isSubmitting = 'complete';
+      await this.postComplete(
+        'Gracias por contribuir. Se enviará el post cuando la conexión se haya restablecido.',
+      );
       this.backNavigation();
     }
     this.isSubmitting = 'complete';
@@ -831,7 +832,9 @@ export class PostEditPage {
         }
       },
       complete: async () => {
-        await this.postComplete(this.translateService.instant('app.info.post_submitted_online'));
+        await this.postComplete(
+          'Gracias por contribuir. El post será revisado por el equipo de admins y podrás verlo públicamente en la plataforma una vez revisado.',
+        );
         this.backNavigation();
       },
     });
@@ -839,7 +842,7 @@ export class PostEditPage {
 
   async postComplete(message: string) {
     await this.alertService.presentAlert({
-      header: 'Success!',
+      header: '¡Perfecto!',
       message,
       buttons: [
         {
@@ -856,9 +859,9 @@ export class PostEditPage {
     }
     if (!objectHelpers.objectsCompare(this.initialFormData, this.form.value)) {
       const result = await this.alertService.presentAlert({
-        header: 'Success!',
+        header: '¡Perfecto!',
         message:
-          'Thank you for submitting your report. The post is being reviewed by our team and soon will appear on the platform.',
+          'Gracias por contribuir. El post será revisado por el equipo de admins y podrás verlo públicamente en la plataforma una vez revisado.',
       });
       if (result.role !== 'confirm') return;
     }

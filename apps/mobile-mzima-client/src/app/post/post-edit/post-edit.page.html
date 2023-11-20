@@ -1,28 +1,8 @@
-<app-header (back)="backNavigation()" title="{{!postId ? 'Create' : 'Edit'}} post"></app-header>
+<app-header (back)="backNavigation()" title="{{!postId ? 'Crear' : 'Editar'}} post"></app-header>
 
 <ion-content class="ion-padding-horizontal ion-padding-top page">
-  <ng-container *ngIf="!surveyList.length">
-    <p>{{'app.loading' | translate}}</p>
-  </ng-container>
-
-  <ng-container *ngIf="surveyList.length && !form">
-    <ion-title class="list-title">Select a survey</ion-title>
-    <ion-list class="list">
-      <ion-item
-        class="list-item"
-        button
-        lines="none"
-        *ngFor="let survey of surveyList"
-        (click)="loadForm(survey.id)"
-      >
-        <span class="list-item__title">{{ survey.name}}</span>
-        <app-icon slot="end" class="list-item__detail-icon" name="arrow-right"></app-icon>
-      </ion-item>
-    </ion-list>
-  </ng-container>
-
   <app-select
-    [label]="surveyList.length ? 'Survey name' : 'Fetching surveys...'"
+    [label]="surveyList.length ? 'Nombre de encuesta' : 'Obteniendo info...'"
     [options]="surveyListOptions"
     [disabled]="!!postId"
     [(ngModel)]="selectedSurveyId"
@@ -43,11 +23,14 @@
           <h2 class="task-label">{{ task.label }}</h2>
 
           <div *ngIf="task.show_when_published">
-            <p>{{"app.invisible_task" | translate}}</p>
+            <p>Esta tarea será visible cuando el post se haya publicado.</p>
           </div>
 
           <div *ngIf="task.task_is_internal_only">
-            <p>{{"app.internal_task_instruction" | translate}}</p>
+            <p>
+              Esta tarea está marcada para uso interno tan solo. Los usuarios no la verán al crear
+              un post.
+            </p>
           </div>
 
           <!-- task complete -->
@@ -58,7 +41,7 @@
               [checked]="task.completed"
               (ionChange)="taskComplete(task, $event)"
             >
-              {{"app.task_completed" | translate}}
+              Tarea completada
               <span class="color-accent" *ngIf="task.required">*</span>
             </ion-toggle>
           </div>
@@ -137,7 +120,7 @@
                       [checked]="form.get(field.key)?.value.length === field.options.length"
                       (checkboxChange)="toggleAllSelection($event, field, field.key)"
                     >
-                      {{"app.select_all" | translate}}
+                      Seleccionar todo
                     </app-checkbox>
                   </li>
                   <li
@@ -489,7 +472,10 @@
                 {{ field?.label }}
                 <span class="color-accent" *ngIf="field?.required">*</span>
               </ion-label>
-              <p class="form-control--tip">{{"app.related_post_hint" | translate}}</p>
+              <p class="form-control--tip">
+                Tenga en cuenta que las entradas a las que se refiere deben estar publicadas, los
+                posts que estén "bajo revisión" no aparecerán en los resultados de búsqueda.
+              </p>
               <div class="related-post-selected" *ngIf="selectedRelatedPost">
                 <div class="related-post-content">
                   <span>{{ selectedRelatedPost.id }}: {{ selectedRelatedPost.title }}</span>
@@ -559,16 +545,16 @@
             *ngIf="form.get(field.key)?.invalid && form.get(field.key)?.touched"
           >
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('required')">
-              {{ field.label }} field is a required field *
+              {{ field.label }} es un campo requerido *
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('minlength')">
-              {{ field.label }} field is too short, use at least 2 characters
+              {{ field.label }} es demasiado corto, usa al menos 2 caracteres.
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('pattern')">
-              {{ field.label }} field is invalid
+              {{ field.label }} no es válido
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('specialCharacters')">
-              {{ field.label }} field contains special characters
+              {{ field.label }} contiene caracteres especiales
             </ion-text>
           </div>
         </div>
@@ -578,7 +564,7 @@
 
   <ng-template #noOptions>
     <div>
-      <span class="no-options">{{'app.no_options' | translate}}</span>
+      <span class="no-options">Sin opciones</span>
     </div>
   </ng-template>
 </ion-content>
@@ -593,23 +579,11 @@
         *ngIf="form && isSubmitting !== 'complete'"
         [disabled]="isSubmitting==='yes' || form.disabled || form.invalid || emptyLocation || (!requireApproval || post?.status === 'published' ? taskForm.invalid : false)"
         (buttonClick)="submitPost()"
-        [ngSwitch]="isSubmitting"
-        class="submit-button"
       >
-        <ng-container *ngSwitchCase="'yes'">
-          <app-spinner></app-spinner>
-          Submitting
-        </ng-container>
-        <ng-container *ngSwitchCase="'no'"> {{"app.submit" | translate}} </ng-container>
+        Aceptar
       </app-button>
-      <app-button
-        *ngIf="isSubmitting==='no'"
-        color="medium"
-        fill="outline"
-        expand="inline"
-        (buttonClick)="cancelPost()"
-      >
-        {{"app.cancel" | translate}}
+      <app-button color="medium" fill="outline" expand="inline" (buttonClick)="backNavigation()">
+        Cancelar
       </app-button>
     </ion-buttons>
   </ion-toolbar>

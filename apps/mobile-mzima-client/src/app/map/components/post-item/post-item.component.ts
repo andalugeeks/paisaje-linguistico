@@ -176,15 +176,15 @@ export class PostItemComponent implements OnInit {
 
   private async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Are you sure you want to delete this post?',
-      message: 'This action cannot be undone. Please proceed with caution.',
+      header: 'Seguro que quieres eliminar el post?',
+      message: 'Esta acción no se puede deshacer. Procede con precaución.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -197,7 +197,7 @@ export class PostItemComponent implements OnInit {
         next: () => {
           this.postDeleted.emit({ post });
           this.toastService.presentToast({
-            message: 'Post has been successfully deleted',
+            message: 'El post se ha eliminado satisfactoriamente',
           });
         },
       });
@@ -207,7 +207,7 @@ export class PostItemComponent implements OnInit {
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       mode: 'ios',
-      header: 'Post Actions',
+      header: 'Acciones para el post',
       buttons: this.actionSheetButtons!,
     });
     actionSheet.onWillDismiss().then((event) => {

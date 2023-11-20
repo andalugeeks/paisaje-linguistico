@@ -67,7 +67,7 @@ export class SignupPage {
       error: ({ error }) => {
         this.form.enable();
 
-        if (error.errors[1].message === 'email is already in use') {
+        if (error.errors[1].message === 'la dirección de email ya está en uso') {
           this.signupError = error.errors[1].message;
           this.checkExistEmailError(true);
           setTimeout(() => {

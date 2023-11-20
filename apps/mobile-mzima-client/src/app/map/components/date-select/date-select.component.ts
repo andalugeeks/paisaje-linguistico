@@ -22,27 +22,27 @@ export class DateSelectComponent implements ControlValueAccessor {
   public selectOptions = [
     {
       value: 'week',
-      label: 'Last week',
+      label: 'Última semana',
     },
     {
       value: 'month',
-      label: 'Last month',
+      label: 'Último mes',
     },
     {
       value: '3_month',
-      label: 'Last 3 month',
+      label: 'Últimos 3 meses',
     },
     {
       value: '6_month',
-      label: 'Last 6 month',
+      label: 'Últimos 6 meses',
     },
     {
       value: 'year',
-      label: 'Last year',
+      label: 'Último año',
     },
     {
       value: null,
-      label: 'All time',
+      label: 'Siempre',
     },
   ];
 

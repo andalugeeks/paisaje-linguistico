@@ -120,15 +120,15 @@ export class ProfilePhotoComponent {
 
   public async deletePhotoHandle(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Are you sure you want to delete profile photo? ',
-      message: 'Deleting means that from now you will not have profile photo.',
+      header: '¿Seguro que quieres borrar la foto de perfil? ',
+      message: 'Borrarla significará que no tendrás foto de perfil.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Borrar',
           role: 'confirm',
           cssClass: 'danger',
         },

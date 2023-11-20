@@ -241,15 +241,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
   public async deleteOption(option: FilterControlOption): Promise<void> {
     if (this.filter.name === 'saved-filters' && option.value) {
       const result = await this.alertService.presentAlert({
-        header: 'Are you sure you want to delete this saved filters?',
-        message: 'Deleting means that from now you will not see it in your saved list. ',
+        header: '¿Seguro que quieres eliminar los filtros salvados?',
+        message: 'Esto significa que no volverás a ver tus filtros salvados en la lista. ',
         buttons: [
           {
-            text: 'Cancel',
+            text: 'Cancelar',
             role: 'cancel',
           },
           {
-            text: 'Delete',
+            text: 'Eliminar',
             role: 'confirm',
             cssClass: 'danger',
           },
@@ -317,15 +317,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearSelectedSubcategories(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `Clear ${this.selectedCategory?.label} filter?`,
-      message: 'This filter will be cleared',
+      header: `Limpiar el filtro ${this.selectedCategory?.label} ?`,
+      message: 'Este filtro será limpiado',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Clear',
+          text: 'Limpiar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -353,15 +353,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearFilter(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `Clear ${this.filter.label} filter?`,
-      message: 'This filter will be cleared',
+      header: `Limpiar el filtro ${this.filter.label} ?`,
+      message: 'Este filtro será limpiado',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Clear',
+          text: 'Limpiar',
           role: 'confirm',
           cssClass: 'danger',
         },

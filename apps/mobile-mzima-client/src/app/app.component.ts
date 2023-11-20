@@ -123,7 +123,7 @@ export class AppComponent extends BaseComponent {
     return this.collectionsService.getCollections(params).pipe(
       tap(async (response) => {
         await this.dataBaseService.set(STORAGE_KEYS.COLLECTIONS, response);
-        if (isToast) this.toastMessage$.next('Collections data updated');
+        if (isToast) this.toastMessage$.next('Colecciones actualizadas');
       }),
     );
   }
@@ -138,14 +138,14 @@ export class AppComponent extends BaseComponent {
       .pipe(
         tap(async (response) => {
           await this.dataBaseService.set(STORAGE_KEYS.SURVEYS, response.results);
-          if (isToast) this.toastMessage$.next('Surveys data updated');
+          if (isToast) this.toastMessage$.next('Datos de Encuesta actualiazdos');
         }),
       );
   }
 
   async checkPendingPosts(): Promise<boolean> {
     const posts: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_POST_KEY);
-    if (posts?.length) this.toastMessage$.next('Posts found for publication');
+    if (posts?.length) this.toastMessage$.next('Posts encontrados para tu publicación');
     return !!posts?.length;
   }
 
@@ -173,7 +173,7 @@ export class AppComponent extends BaseComponent {
 
   async checkPendingCollections(): Promise<boolean> {
     const coll: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_COLLECTIONS);
-    if (coll?.length) this.toastMessage$.next('Updating post collections...');
+    if (coll?.length) this.toastMessage$.next('Actualizando colección de posts...');
     return !!coll?.length;
   }
 
@@ -190,7 +190,7 @@ export class AppComponent extends BaseComponent {
     });
     forkJoin(observables).subscribe({
       next: async () => {
-        this.toastMessage$.next('All pending collections updated');
+        this.toastMessage$.next('Todas las colecciones pendientes fueron actualizadas');
         await this.dataBaseService.set(STORAGE_KEYS.PENDING_COLLECTIONS, []);
       },
       error: ({ error }) => {

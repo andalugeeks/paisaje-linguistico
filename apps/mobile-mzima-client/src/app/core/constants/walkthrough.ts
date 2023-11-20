@@ -1,22 +1,26 @@
 export const WalkthroughSlider = [
   {
     img: '/assets/images/walkthrough/slide_1.svg',
-    title: 'Add a deployment',
-    description: 'To start using the app, search for your deployment and add it to your account.',
+    title: 'La lengua andaluza está en la calle',
+    description:
+      'En establecimientos, rótulos publicitarios, pegatinas y grafitis ... ¡Mostrémoslo al mundo!',
   },
   {
     img: '/assets/images/walkthrough/slide_2.svg',
-    title: 'Start sharing information',
-    description: 'You can add posts by yourself or search for them in the Map View or Data View.',
+    title: 'Registra tu cuenta y comienza a contribuir',
+    description:
+      'También puedes participar de forma anónima, pero no podremos entonces contactarte si necesitamos aclaración.',
   },
   {
     img: '/assets/images/walkthrough/slide_3.svg',
-    title: 'Filter and sort your data',
-    description: 'Find specific posts and quickly organise the data by any criteria you choose.',
+    title: 'Contribuye de forma responsable',
+    description:
+      'Preferimos que subas rótulos publicitarios, cartas o pizarras de bares, nombre de calles antes que grafitis.',
   },
   {
     img: '/assets/images/walkthrough/slide_4.svg',
-    title: 'Collect your data offline',
-    description: 'Keep collecting and reporting crucial information, even without internet access!',
+    title: 'Descargo de responsabilidad',
+    description:
+      'El proyecto Paisaje Lingüístico pretende recoger la realidad de la calle y no fomentamos la proliferación de gratifis.',
   },
 ];

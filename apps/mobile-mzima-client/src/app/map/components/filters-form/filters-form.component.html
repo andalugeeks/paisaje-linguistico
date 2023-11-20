@@ -7,7 +7,7 @@
   <div class="search-form__form-control-container ion-padding-horizontal">
     <app-form-control
       #formControl
-      placeholder="Search"
+      placeholder="Buscar"
       formControlName="postsQuery"
       [rounded]="!isResultsVisible"
       [clearable]="isResultsVisible"
@@ -49,16 +49,16 @@
     <div class="search-form-results__empty" *ngIf="!posts.length; else postsList">
       <ng-container *ngIf="!isPostsLoading; else spinner">
         <ion-text color="medium" *ngIf="!form.controls['postsQuery'].value?.length">
-          {{ 'app.find_posts' | translate }}
+          Comienza a escribir para buscar posts
         </ion-text>
         <ion-text color="medium" *ngIf="form.controls['postsQuery'].value?.length">
-          {{ 'app.no_posts_found' | translate }}
+          Lo sentimos, no se encotraron posts <br />basados en tus criterios de búsqueda.
         </ion-text>
       </ng-container>
     </div>
 
     <ng-template #postsList>
-      <ion-text class="total" color="medium">Found {{ foundPosts }} items</ion-text>
+      <ion-text class="total" color="medium">Encontrados {{ foundPosts }} posts</ion-text>
       <app-post-item
         [routerLink]="[post.id.toString()]"
         *ngFor="let post of posts"
@@ -84,11 +84,11 @@
     offsetBottom: !selectedFilter
   }"
   [closable]="!selectedFilter"
-  title="{{ selectedSavedFilter?.label ?? selectedFilter?.label ?? 'Filters' }}"
+  title="{{ selectedSavedFilter?.label ?? selectedFilter?.label ?? 'Filtros' }}"
 >
   <div class="filters-modal__header" header-end>
     <ion-text color="medium" class="filters-modal__total-posts">
-      {{ 'app.found_posts' | translate }}
+      Posts encontrados:
       <strong class="filters-modal__total-posts__count" *ngIf="!isTotalLoading; else spinner">
         {{ totalPosts }}
       </strong>
@@ -109,7 +109,7 @@
   <div class="filters-modal__footer" footer>
     <ng-container *ngIf="!isAddSavedFiltersMode; else SavedFiltersModeButtons">
       <app-button (buttonClick)="modalCloseHandle()" class="filters-modal__button" expand="inline">
-        {{ 'app.apply' | translate }}
+        Aplicar
       </app-button>
       <app-button
         fill="outline"
@@ -118,7 +118,7 @@
         class="filters-modal__button"
         (buttonClick)="handleClearFilters()"
       >
-        {{ 'app.clear' | translate }}
+        Limpiar
       </app-button>
     </ng-container>
     <ng-template #SavedFiltersModeButtons>
@@ -132,7 +132,7 @@
         class="filters-modal__button"
         (buttonClick)="cancelAddSavedFiltersMode()"
       >
-        {{ 'app.cancel' | translate }}
+        Cancelar
       </app-button>
     </ng-template>
   </div>

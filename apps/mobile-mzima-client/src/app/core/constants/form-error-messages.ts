@@ -2,15 +2,15 @@ import { ErrorMessageMapping } from '@models';
 
 export const formErrorMessages: ErrorMessageMapping = {
   name: {
-    required: 'Name is Required',
+    required: 'Se requiere un Nombre',
   },
   email: {
-    required: 'Email is Required',
-    pattern: 'Invalid email format',
+    required: 'Se require un Email',
+    pattern: 'Formato de email no válido',
   },
   password: {
-    required: 'Password is Required',
-    minlength: 'Password is too short',
-    maxlength: 'Password is too long',
+    required: 'Se requiere una Contraseña',
+    minlength: 'La contraseña es muy corta',
+    maxlength: 'La contraseña es muy larga',
   },
 };

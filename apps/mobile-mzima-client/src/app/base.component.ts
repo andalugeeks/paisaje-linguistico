@@ -53,8 +53,8 @@ export class BaseComponent {
 
     const showConfirm = async () => {
       const { value } = await Dialog.confirm({
-        title: 'Update',
-        message: `For the application to work correctly, please update your iOS`,
+        title: 'Actualiza',
+        message: `Para que la aplicación funcione correctamente, por favor actualiza tu iOS`,
       });
 
       if (value) {
@@ -78,7 +78,7 @@ export class BaseComponent {
       .subscribe({
         next: async (value) => {
           await this.showConnectionInfo(
-            value ? 'The connection was restored' : 'The connection is lost',
+            value ? 'Se restableció la conexión' : 'Se perdió la conexión',
           );
         },
       });
@@ -118,7 +118,7 @@ export class BaseComponent {
 
   async doubleTapExistToast() {
     const result = await this.toastService.presentToast({
-      message: 'Tap back button again to exit the App',
+      message: 'Toca el botón de regresar otra vez para cerrar la App',
       buttons: [],
     });
     if (result) {

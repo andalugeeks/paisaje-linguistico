@@ -40,27 +40,27 @@ export class FeedViewComponent extends MainViewComponent {
   public collectionName: string;
   public sortingOptions = [
     {
-      label: 'Date created (Newest first)',
+      label: 'Por fecha de creación (Nuevos primero)',
       value: 'created?desc',
     },
     {
-      label: 'Date created (Oldest first)',
+      label: 'Por fecha de creación (Antiguos primero)',
       value: 'created?asc',
     },
     {
-      label: 'Post date (Newest first)',
+      label: 'Por fecha de post (Nuevos primero)',
       value: 'post_date?desc',
     },
     {
-      label: 'Post date (Oldest first)',
+      label: 'Por fecha de post (Antiguos primero)',
       value: 'post_date?asc',
     },
     {
-      label: 'Date updated (Newest first)',
+      label: 'Por fecha de actualización (Nuevos primero)',
       value: 'updated?desc',
     },
     {
-      label: 'Date updated (Oldest first)',
+      label: 'Por fecha de actualización (Antiguos primero)',
       value: 'updated?asc',
     },
   ];

@@ -1,8 +1,8 @@
 <app-main-layout
-  title="My posts"
+  title="Mis posts"
   (back)="back()"
   [isSearch]="true"
-  [placeholderText]="'Search for Posts'"
+  [placeholderText]="'Buscar Posts'"
   (search)="searchPosts($event)"
 >
   <app-button
@@ -12,8 +12,8 @@
     (buttonClick)="editPosts()"
     color="custom"
   >
-    <ng-container *ngIf="!isEditMode">{{"app.bulk_actions"| translate}}</ng-container>
-    <ng-container *ngIf="isEditMode">{{"app.done" | translate}}</ng-container>
+    <app-icon *ngIf="!isEditMode" name="edit" slot="icon-only"></app-icon>
+    <ng-container *ngIf="isEditMode">Hecho</ng-container>
   </app-button>
   <ng-container *ngIf="posts.length; else emptyBox">
     <app-post-item
@@ -49,7 +49,7 @@
 <ng-template #emptyBox>
   <div class="empty-box">
     <ion-text color="medium" class="empty ion-text-center" *ngIf="!posts.length && !isPostsLoading">
-      {{"app.no_posts" | translate}}
+      ¡No se encuentra ningún post!
     </ion-text>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>
   </div>

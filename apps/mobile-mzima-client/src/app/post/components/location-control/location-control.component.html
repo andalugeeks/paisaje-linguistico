@@ -1,5 +1,5 @@
 <div class="location-select">
-  <ion-label class="location-select__title">{{ 'app.required_location' | translate }}</ion-label>
+  <ion-label class="location-select__title">Se requiere localización</ion-label>
   <div class="location-select__map">
     <div
       leaflet
@@ -15,14 +15,14 @@
     <ion-row>
       <ion-col>
         <app-form-control
-          label="Latitude"
+          label="Latitud"
           [value]="location.lat.toString()"
           [readonly]="true"
         ></app-form-control>
       </ion-col>
       <ion-col>
         <app-form-control
-          label="Longitude"
+          label="Longitud"
           [value]="location.lon.toString()"
           [readonly]="true"
         ></app-form-control>

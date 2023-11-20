@@ -73,8 +73,8 @@ export class PostControlsComponent {
 
       if (uncompletedPosts.length > 0) {
         this.toastService.presentToast({
-          header: "Can't Publish Posts",
-          message: `The following posts can't be published: ${uncompletedPosts
+          header: 'No se pueden publicar Posts',
+          message: `Los siguientes posts no han podido ser publicados: ${uncompletedPosts
             .map((p) => p.title)
             .join(', ')}`,
           buttons: [],
@@ -87,7 +87,7 @@ export class PostControlsComponent {
       complete: () => {
         this.toastService.presentToast({
           header: postStatusChangedHeader[status],
-          message: `Post ${this.posts.length > 1 ? 'statuses' : 'status'} have been changed`,
+          message: `Cambiaron de ${this.posts.length > 1 ? 'estado' : 'estado'} `,
           buttons: [],
         });
         this.postChanged.emit();
@@ -114,11 +114,11 @@ export class PostControlsComponent {
       if (changed) {
         this.posts[0].sets = collections;
         this.toastService.presentToast({
-          header: 'Success',
-          message: `The post “${this.posts[0].title}” was ${
+          header: 'Exito',
+          message: `El Post fue ${
             collections?.length
-              ? `added in ${collections.length} collections`
-              : 'removed from all collections'
+              ? `añadido en ${collections.length} colecciones`
+              : 'borrado de todas las colecciones'
           }.`,
           buttons: [],
         });
@@ -147,17 +147,17 @@ export class PostControlsComponent {
 
   public async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `Are you sure you want to delete ${
-        this.posts.length > 1 ? 'these posts' : 'this post'
+      header: `¿Seguro que quieres eliminar ${
+        this.posts.length > 1 ? 'estos posts' : 'este post'
       }?`,
-      message: 'This action cannot be undone. Please proceed with caution.',
+      message: 'Esta acción no se puede deshacer. Procede con precaución.',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -171,8 +171,8 @@ export class PostControlsComponent {
         complete: () => {
           this.toastService.presentToast({
             message: `${
-              this.posts.length > 1 ? count + ' posts have' : 'Post has'
-            } been successfully deleted`,
+              this.posts.length > 1 ? count + ' posts' : 'Post'
+            } eliminado/s satosfactoriamente`,
           });
           this.postDeleted.emit(postIds);
         },

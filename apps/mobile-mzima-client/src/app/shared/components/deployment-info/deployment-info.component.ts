@@ -40,8 +40,9 @@ export class DeploymentInfoComponent {
           name: 'warning',
           color: 'danger',
         },
-        header: 'Outdated Deployment!',
-        message: 'The Deployment is outdated, therefore some bugs may occur, till Admin update it.',
+        header: '¡Despliegue desactualizado!',
+        message:
+          'El despliegue no está actualizado, por lo que pueden producirse errores hasta que el administrador lo actualice.',
       });
     }
   }
