@@ -3,17 +3,17 @@ import _ from 'lodash';
 export const statuses = [
   {
     value: 'published',
-    name: 'Published',
+    name: 'Publicado',
     icon: 'globe',
   },
   {
     value: 'draft',
-    name: 'Draft',
+    name: 'Revisando',
     icon: 'document',
   },
   {
     value: 'archived',
-    name: 'Archived',
+    name: 'Archivado',
     icon: 'box',
   },
 ];

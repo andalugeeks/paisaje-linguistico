@@ -44,9 +44,9 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
       icon: 'saved-filters',
       label: 'Filtros guardados',
       selected: 'none',
-      selectedLabel: 'Selected:',
+      selectedLabel: 'Seleccionados:',
       value: this.getFilterDefaultValue('saved-filters'),
-      noOptionsText: "You don't have any saved filters yet",
+      noOptionsText: 'No tienes ningún filtro guardado todavía',
     },
     {
       name: 'form',
@@ -57,14 +57,16 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
       value: [],
       noOptionsText: 'No tienes ninguna encuesta todavía',
     },
-    {
-      name: 'source',
-      icon: 'sources',
-      label: 'Fuentes',
-      selectedCount: searchFormHelper.sources.length,
-      selected: String(searchFormHelper.sources.length),
-      value: this.getFilterDefaultValue('source'),
-    },
+    // Paisaje-Linguistico personalisation.
+    // Hide Sources filters as only web is supported
+    // {
+    //   name: 'source',
+    //   icon: 'sources',
+    //   label: 'Fuentes',
+    //   selectedCount: searchFormHelper.sources.length,
+    //   selected: String(searchFormHelper.sources.length),
+    //   value: this.getFilterDefaultValue('source'),
+    // },
     {
       name: 'status',
       icon: 'status',
@@ -76,10 +78,10 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'tags',
       icon: 'categories',
-      label: 'Categories',
+      label: 'Categorias',
       selected: 'none',
       value: this.getFilterDefaultValue('tags'),
-      noOptionsText: "You don't have categories yet",
+      noOptionsText: 'Aún no tienes categorías',
     },
     {
       name: 'date',
@@ -89,14 +91,16 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
       selectedCount: 'Siempre',
       value: this.getFilterDefaultValue('date'),
     },
-    {
-      name: 'center_point',
-      icon: 'marker',
-      label: 'Localización',
-      selectedLabel: 'Elije localizaciones',
-      selectedCount: 'Todas las localizaciones',
-      value: this.getFilterDefaultValue('location'),
-    },
+    // Paisaje-Linguistico personalisation.
+    // Hide Localización menu because it does not work
+    // {
+    //   name: 'center_point',
+    //   icon: 'marker',
+    //   label: 'Localización',
+    //   selectedLabel: 'Elije localizaciones',
+    //   selectedCount: 'Todas las localizaciones',
+    //   value: this.getFilterDefaultValue('location'),
+    // },
   ];
   public activeFilters: any | null = null;
   public selectedFilter: FilterControl | null;
@@ -421,7 +425,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     const result = await this.alertService.presentAlert({
       header: 'Limpiar todos los filtros?',
       message:
-        'Todos los filtros salvo <strong>Encuestas</strong>, <strong>Fuentes</strong> and <strong>Estados</strong> se limpiarán',
+        'Todos los filtros salvo <strong>Encuestas</strong> y <strong>Estados</strong> se limpiarán',
       buttons: [
         {
           text: 'Cancelar',
@@ -572,7 +576,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     switch (filter.name) {
       case 'date':
         if (!filter.value?.start || !filter.value?.start) {
-          filter.selectedCount = 'All Time';
+          filter.selectedCount = 'Siempre';
         } else if (
           dateHelper.toUTC(filter.value.start, 'DD MMM') ===
           dateHelper.toUTC(filter.value.end, 'DD MMM')
@@ -593,7 +597,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
             ${filter.value?.location.label} (${filter.value?.distance}km)
           `;
         } else {
-          filter.selectedCount = 'All locations';
+          filter.selectedCount = 'Todas las localizaciones';
         }
         break;
 

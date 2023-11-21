@@ -1,4 +1,4 @@
-package com.ushahidi.mobile;
+package es.andaluh.paisaje;
 
 import com.getcapacitor.BridgeActivity;
 

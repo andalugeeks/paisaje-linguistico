@@ -100,7 +100,7 @@ export class ChooseDeploymentComponent {
     // Paisaje-Linguistico personalisation.
     // Enforce andaluh.api.ushahidi.io as default deployment.
     const index = this.deploymentList.findIndex(
-      (i: any) => i.deployment_name === 'paisaje-linguistico',
+      (i: any) => i.deployment_name === 'Paisaje Lingüístico Andaluz',
     );
     if (index === -1) {
       this.deploymentList = [
@@ -110,9 +110,8 @@ export class ChooseDeploymentComponent {
           subdomain: 'andaluh',
           fqdn: 'andaluh.api.ushahidi.io',
           status: 'deployed',
-          deployment_name: 'paisaje-linguistico',
-          description:
-            'Una ventana a cómo se representa la lengua andaluza en las calles de Andalucía',
+          deployment_name: 'Paisaje Lingüístico Andaluz',
+          description: 'La lengua andaluza en las calles de Andalucía',
           tier: 'level_1',
           selected: false,
         },

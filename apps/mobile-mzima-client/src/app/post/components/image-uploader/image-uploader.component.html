@@ -42,7 +42,7 @@
 
   <div class="form-row" *ngIf="hasCaption">
     <app-form-control
-      label="Add caption"
+      label="Añade una nota (opcional)"
       [formControl]="captionControl"
       (change)="captionChanged()"
       [disabled]="!!id"

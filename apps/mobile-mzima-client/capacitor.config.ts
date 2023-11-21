@@ -1,10 +1,10 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
-const appName: string = 'Ushahidi';
+const appName: string = 'Paisaje Andalûh';
 
 const config: CapacitorConfig = {
   // need change to app id before publish
-  appId: 'com.ushahidi.mobile',
+  appId: 'es.andaluh.paisaje',
   appName: appName,
   webDir: '../../dist/apps/mobile-mzima-client',
   bundledWebRuntime: false,

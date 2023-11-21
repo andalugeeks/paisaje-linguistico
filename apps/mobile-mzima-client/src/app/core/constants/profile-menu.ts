@@ -67,18 +67,14 @@ export const profileMenu: ProfileMenuItem[] = [
 ];
 
 export const profileInformationMenu: ProfileMenuItem[] = [
-  // Uncomment when we have more translations available
-  //{
-  //   label: 'Language',
-  //   icon: 'language',
-  //   route: '/profile/select-language',
+  // Paisaje-Linguistico personalisation.
+  // Hide Ushahidi Intercom as support is provided by AndaluGeeks
+  // {
+  //   label: 'Ayuda y soporte',
+  //   description: 'Documentación, reportar un bug.',
+  //   icon: 'question',
+  //   action: ProfileMenuActions.SUPPORT,
   // },
-  {
-    label: 'Ayuda y soporte',
-    description: 'Documentación, reportar un bug.',
-    icon: 'question',
-    action: ProfileMenuActions.SUPPORT,
-  },
   {
     label: 'Términos y Condiciones',
     icon: 'info-rounded',

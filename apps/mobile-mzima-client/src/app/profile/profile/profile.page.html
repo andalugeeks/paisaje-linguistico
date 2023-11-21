@@ -1,6 +1,10 @@
 <app-main-layout [header]="false" class="main">
+  <!-- Paisaje-Linguistico personalisation.
+  Enforce andaluh.api.ushahidi.io as default deployment.-->
+  <!--
   <ion-title class="title">Cambiar de despliegue</ion-title>
   <app-deployment-info (deploymentClick)="goTo(['/profile/deployment'])"></app-deployment-info>
+  -->
 
   <ion-title class="title">Perfil</ion-title>
   <ion-list class="profile-menu">
@@ -11,7 +15,7 @@
     ></app-profile-menu-item>
   </ion-list>
 
-  <ion-title class="title">Soporte e Información</ion-title>
+  <ion-title class="title">Información sobre Ushahidi</ion-title>
   <ion-list class="profile-menu">
     <app-profile-menu-item
       (action)="callAction($event)"

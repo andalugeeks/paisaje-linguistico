@@ -1,26 +1,25 @@
 export const WalkthroughSlider = [
   {
     img: '/assets/images/walkthrough/slide_1.svg',
-    title: 'La lengua andaluza está en la calle',
+    title: 'El andaluz está en las calles',
     description:
-      'En establecimientos, rótulos publicitarios, pegatinas y grafitis ... ¡Mostrémoslo al mundo!',
+      'En establecimientos, rótulos, letreros, paredes ... ¡Vamos a mostrárselo al mundo! ',
   },
   {
     img: '/assets/images/walkthrough/slide_2.svg',
-    title: 'Registra tu cuenta y comienza a contribuir',
-    description:
-      'También puedes participar de forma anónima, pero no podremos entonces contactarte si necesitamos aclaración.',
+    title: 'Registra tu cuenta y contribuye',
+    description: 'O participa anónimamente. Revisamos manualmente todas las aportaciones.',
   },
   {
     img: '/assets/images/walkthrough/slide_3.svg',
-    title: 'Contribuye de forma responsable',
+    title: 'Contribuye responsablemente',
     description:
-      'Preferimos que subas rótulos publicitarios, cartas o pizarras de bares, nombre de calles antes que grafitis.',
+      'Puedes subir grafitis, pero preferimos rótulos publicitarios, pizarras y cartas de establecimientos.',
   },
   {
     img: '/assets/images/walkthrough/slide_4.svg',
     title: 'Descargo de responsabilidad',
     description:
-      'El proyecto Paisaje Lingüístico pretende recoger la realidad de la calle y no fomentamos la proliferación de gratifis.',
+      'Este proyecto pretende recoger la realidad de la calle. No fomentamos la proliferación de gratifis o pintadas.',
   },
 ];

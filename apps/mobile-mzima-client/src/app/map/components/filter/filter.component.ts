@@ -152,14 +152,14 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
             value: filter.id,
             label: filter.name,
             checked: filter.id === this.filter.value,
-            info: `Applied filters: ${this.getObjectKeysCount(filter.filter)} of 24`,
+            info: `Filtros aplicados: ${this.getObjectKeysCount(filter.filter)} of 24`,
           }));
           this.isOptionsLoading = false;
         },
         error: ({ message, status }) => {
           this.isOptionsLoading = false;
           this.toastService.presentToast({
-            message: 'Saved Filters: ' + message,
+            message: 'Filtros guardados: ' + message,
             layout: 'stacked',
             duration: 3000,
           });
