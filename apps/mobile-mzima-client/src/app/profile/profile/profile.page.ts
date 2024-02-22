@@ -73,16 +73,16 @@ export class ProfilePage {
 
   private async logout(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Cerrar Sesión',
+      header: 'Cerrâh Çeçión',
       message:
-        '¿Está seguro de que desea cerrar la sesión de la aplicación? Esta acción finalizará su sesión actual y deberá volver a iniciar sesión para acceder a su cuenta.',
+        '¿Êttâh çeguro que deçea çerrâh la çeçión de la aplicaçión? Êtta âççión finaliçará tu çeçión âttuâh y deberá borbêh a iniçiâh çeçión pa âççedêh a çu cuenta.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelar',
           role: 'cancel',
         },
         {
-          text: 'Cerrar Sesión',
+          text: 'Cerrâh Çeçión',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -100,16 +100,16 @@ export class ProfilePage {
 
   private async clearPosts(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Borrar Posts Pendientes?',
+      header: 'Borrâh Publicaçionê Pendientê?',
       message:
-        '¿Estás seguro de que quieres borrar los mensajes pendientes? Esta acción no se puede deshacer y eliminará permanentemente todos los mensajes pendientes del sistema.',
+        '¿Êttâh çeguro que quiêh borrâh lô mençahê pendientê? Êtta âççión no çe pué deçaçêh y borrará permanentemente tôh lô mençahê pendientê der çîttema.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Borrar',
+          text: 'Borrâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -124,16 +124,16 @@ export class ProfilePage {
 
   private async resetAppData(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: '¿Limpiar datos de la App?',
+      header: '¿Limpiâh datô de la App?',
       message:
-        '¿Estás seguro de que quieres borrar los datos de la App? Esta acción eliminará toda la información almacenada en caché. Ten en cuenta que también se cerrará tu sesión y se borrará de tu dispositivo cualquier dato almacenado localmente, incluidos los ajustes y las preferencias. Esta acción no se puede deshacer.',
+        '¿Êttâh çeguro que quiêh borrâh lô datô de la App?Êtta âççión borrará toa la informaçión armaçená en caxé. Ten en cuenta que tamién çe çerrará tu çeçión y çe borrará de tu dîppoçitibo cuarquier dato armaçenao locarmente, incluíô lô ahûttê y lâ preferençiâ. Êtta âççión no çe pué deçaçêh.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Limpiar',
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },

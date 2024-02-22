@@ -200,7 +200,7 @@ export class PostEditPage {
     this.isConnection = status;
     this.connectionInfo = status
       ? ''
-      : 'Se perdió la conexión, la informacón se guardará en la base de datos';
+      : 'Çe perdió la conêççión, la informaçión çe guardará en la baçe datô';
   }
 
   async getSurveys(): Promise<any[]> {
@@ -716,7 +716,7 @@ export class PostEditPage {
       await this.uploadPost();
     } else {
       await this.postComplete(
-        'Gracias por contribuir. Se enviará el post cuando la conexión se haya restablecido.',
+        'Graçiâ por contribuîh. Çe embiará la publicaçión cuando la conêççión çe aya rêttableçío.',
       );
       this.backNavigation();
     }
@@ -833,7 +833,7 @@ export class PostEditPage {
       },
       complete: async () => {
         await this.postComplete(
-          'Gracias por contribuir. El post será revisado por el equipo de admins y podrás verlo públicamente en la plataforma una vez revisado.',
+          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamente en la plataforma una bêh çea rebiçá.',
         );
         this.backNavigation();
       },
@@ -842,7 +842,7 @@ export class PostEditPage {
 
   async postComplete(message: string) {
     await this.alertService.presentAlert({
-      header: '¡Perfecto!',
+      header: '¡Perfêtto!',
       message,
       buttons: [
         {
@@ -859,9 +859,9 @@ export class PostEditPage {
     }
     if (!objectHelpers.objectsCompare(this.initialFormData, this.form.value)) {
       const result = await this.alertService.presentAlert({
-        header: '¡Perfecto!',
+        header: '¡Perfêtto!',
         message:
-          'Gracias por contribuir. El post será revisado por el equipo de admins y podrás verlo públicamente en la plataforma una vez revisado.',
+          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamenete en la plataforma una bêh çea rebiçá.',
       });
       if (result.role !== 'confirm') return;
     }

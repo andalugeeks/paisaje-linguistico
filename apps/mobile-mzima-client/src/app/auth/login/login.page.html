@@ -1,12 +1,12 @@
 <ion-content class="page ion-padding-vertical" [fullscreen]="true">
   <div class="page-head ion-padding-horizontal ion-text-center ion-margin-bottom">
     <ion-title class="page-title" *ngIf="!isPrivate; else loginToPrivateDeployment">
-      ¡Te damos la bienvenida!
+      ¡Te damô la biembenía!
     </ion-title>
     <ng-template #loginToPrivateDeployment>
-      <ion-title class="page-title"> Acceder a despliegue privado </ion-title>
+      <ion-title class="page-title"> Âççedêh ar dêppliege pribao </ion-title>
       <ion-text class="page-head__info">
-        Por favor, introduce tu usuario y contraseña para acceder al despliegue. O contacta al Admin
+        Ar fabôh d'introduçîh tu uçuario y contraçeña pa âççedêh ar dêppliege. O contâtta al Admin
         <a href="mailto:{{ adminEmail }}">{{ adminEmail }}</a>
       </ion-text>
     </ng-template>
@@ -20,17 +20,17 @@
           label="Email"
           [required]="true"
           formControlName="email"
-          placeholder="Introduce tu email"
+          placeholder="Mete tu correo elêttrónico"
           [errors]="fieldErrorMessages(form.controls['email'], 'email')"
         >
         </app-form-control>
         <app-form-control
           type="password"
-          label="Contraseña"
+          label="Contraçeña"
           [required]="true"
           [togglePassword]="true"
           formControlName="password"
-          placeholder="Introduce tu contraseña"
+          placeholder="Mete tu contraçeña"
           [errors]="fieldErrorMessages(form.controls['password'], 'password')"
         >
           <div class="forgot-password-button" button>
@@ -40,7 +40,7 @@
               expand="inline"
               size="small"
             >
-              ¿Se te olvidó la contraseña?
+              ¿Te ça orbiao la contraçeña?
             </app-button>
           </div>
         </app-form-control>
@@ -50,7 +50,7 @@
       </div>
 
       <div class="bottom-panel">
-        <app-button type="submit" [disabled]="form.invalid || form.disabled"> Acceder </app-button>
+        <app-button type="submit" [disabled]="form.invalid || form.disabled"> Âççedêh </app-button>
         <app-button
           fill="clear"
           color="medium"
@@ -58,7 +58,7 @@
           *ngIf="!isPrivate; else cancelButton"
           class="ion-margin-top"
         >
-          Saltar esto por ahora
+          Çartarçe êtto de momento
         </app-button>
         <ng-template #cancelButton>
           <app-button
@@ -67,7 +67,7 @@
             class="ion-margin-top"
             (buttonClick)="chooseDeployment()"
           >
-            Cancelar
+            Cançelâh
           </app-button>
         </ng-template>
       </div>
@@ -78,14 +78,14 @@
 <app-modal
   class="forgot-password-modal"
   [isOpen]="isForgotPasswordModalOpen"
-  title="Recuperar Contraseña"
+  title="Recuperâh Contraçeña"
   (modalClose)="forgotPasswordModalCloseHandle()"
 >
   <div class="forgot-password-modal__info">
-    <ion-text class="forgot-password-modal__title">¿Se te olvidó la contraseña?</ion-text>
+    <ion-text class="forgot-password-modal__title">¿Te çe orbió la contraçeña?</ion-text>
     <p>
-      ¡No te preocupes! Introduce tu email de registro y recibirás un email de la plataforma
-      Ushahidi con un link para restablecerla.
+      ¡No te preocupê! Mete tu correo elêttrónico y reçibirâh un correo de la plataforma Ushahidi
+      con un enlaçe pa rêttableçêl-la.
     </p>
   </div>
   <form
@@ -100,7 +100,7 @@
         label="Email"
         [required]="true"
         formControlName="email"
-        placeholder="Introduce tu email"
+        placeholder="Mete tu correo elêttrónico"
         [errors]="fieldErrorMessages(form.controls['email'], 'email')"
       >
       </app-form-control>
@@ -118,7 +118,7 @@
         type="submit"
         [disabled]="forgotPasswordForm.invalid || forgotPasswordForm.disabled"
       >
-        Restablecer contraseña
+        Rêttableçêh contraçeña
       </app-button>
     </div>
   </form>

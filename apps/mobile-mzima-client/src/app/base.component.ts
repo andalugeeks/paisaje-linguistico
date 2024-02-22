@@ -53,8 +53,8 @@ export class BaseComponent {
 
     const showConfirm = async () => {
       const { value } = await Dialog.confirm({
-        title: 'Actualiza',
-        message: `Para que la aplicación funcione correctamente, por favor actualiza tu iOS`,
+        title: 'Âttualiça',
+        message: `Pa que l'aplicaçión funçione corrêttamente tiêh q'âttualiçá tu iOS`,
       });
 
       if (value) {
@@ -77,9 +77,7 @@ export class BaseComponent {
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe({
         next: async (value) => {
-          await this.showConnectionInfo(
-            value ? 'Se restableció la conexión' : 'Se perdió la conexión',
-          );
+          await this.showConnectionInfo(value ? 'Conêççión rêttableçía' : 'Ça perdío la conêççión');
         },
       });
   }
@@ -118,7 +116,7 @@ export class BaseComponent {
 
   async doubleTapExistToast() {
     const result = await this.toastService.presentToast({
-      message: 'Toca el botón de regresar otra vez para cerrar la App',
+      message: 'Dale de nuebo ar botón de regreçâh pa çerrâh la App',
       buttons: [],
     });
     if (result) {

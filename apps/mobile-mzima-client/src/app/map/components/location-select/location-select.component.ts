@@ -31,23 +31,23 @@ export class LocationSelectComponent implements ControlValueAccessor {
   public radiusOptions = [
     {
       value: 1,
-      label: 'Alrededor de 1 km',
+      label: 'A 1 km a la reonda',
     },
     {
       value: 10,
-      label: 'Alrededor de 10 km',
+      label: 'A 10 km a la reonda',
     },
     {
       value: 50,
-      label: 'Alrededor de 50 km',
+      label: 'A 50 km a la reonda',
     },
     {
       value: 100,
-      label: 'Alrededor de 100 km',
+      label: 'A 100 km a la reonda',
     },
     {
       value: 500,
-      label: 'Alrededor de 500 km',
+      label: 'A 500 km a la reonda',
     },
   ];
   private readonly searchSubject = new Subject<string>();

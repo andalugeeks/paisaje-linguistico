@@ -1,17 +1,17 @@
 <app-main-layout
   class="main"
   [isSearch]="true"
-  [title]="isProfile ? 'Colección' : 'Añadir Post a Colección'"
+  [title]="isProfile ? 'Colêççión' : 'Añadîh Publicaçión a Colêççión'"
   (back)="back.emit()"
 >
   <ion-item button lines="none" class="button-add" (click)="addNewCollection()">
     <app-icon class="button-add__icon" name="add" slot="start"></app-icon>
-    Crear nueva Colección
+    Creâh nueba Colêççión
   </ion-item>
 
   <ion-title class="title">
-    <ng-container *ngIf="!isSearchView">Colecciones</ng-container>
-    <ng-container *ngIf="isSearchView">Encontradas {{ totalCollections }} colecciones</ng-container>
+    <ng-container *ngIf="!isSearchView">Colêççionê</ng-container>
+    <ng-container *ngIf="isSearchView">Encontrâh {{ totalCollections }} colêççionê</ng-container>
   </ion-title>
   <app-spinner
     class="loader"
@@ -36,7 +36,7 @@
     </ng-container>
     <ng-template #emptyMessage>
       <ion-text color="medium" class="empty-box ion-text-center ion-padding">
-        ¡Aún no hay colecciones!
+        ¡Entoabía no ay colêççionê!
       </ion-text>
     </ng-template>
   </ng-template>
@@ -48,10 +48,10 @@
         (buttonClick)="updateCollections()"
         [disabled]="isPristine"
       >
-        Añadir
+        Añadîh
       </app-button>
       <app-button class="footer__button" fill="outline" color="medium" (buttonClick)="back.emit()">
-        Cancelar
+        Cançelâh
       </app-button>
     </ion-buttons>
   </ion-footer>
@@ -63,7 +63,7 @@
   [options]="{
     footer: true
   }"
-  title="Crear Colección"
+  title="Creâh Colêççión"
 >
   <form
     class="create-collection-form"
@@ -72,46 +72,46 @@
     [formGroup]="createCollectionForm"
   >
     <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Información General</ion-title>
+      <ion-title class="create-collection-form__title">Informaçión Henerâh</ion-title>
       <app-form-control
-        label="Nombre de la colección"
+        label="Nombre de la colêççión"
         [required]="true"
         class="form-control"
         formControlName="name"
-        placeholder="Introduce un nombre para la colección"
+        placeholder="Introduçe un nombre pa la colêççión"
         [errors]="fieldErrorMessages(createCollectionForm.controls['name'], 'name')"
       >
       </app-form-control>
       <app-form-control
         [rows]="3"
-        label="Descripción"
+        label="Dêccrîççión"
         class="form-control"
         formControlName="description"
-        placeholder="Introduce Descripción"
+        placeholder="Mete Dêccrîççión"
       >
       </app-form-control>
     </div>
     <!-- <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Mostrando</ion-title>
+      <ion-title class="create-collection-form__title">Môttrando</ion-title>
       <app-toggle type="item" formControlName="featured" (toggleChange)="featuredChange($event)"
-        >Destacado</app-toggle
+        >Dêttacao</app-toggle
       >
     </div> -->
     <div class="create-collection-form__group" *ngIf="roleOptions">
-      <ion-title class="create-collection-form__title">¿Quién puede ver esto?</ion-title>
+      <ion-title class="create-collection-form__title">¿Quién pué bêh êtto?</ion-title>
       <app-group-checkbox-select [data]="roleOptions" formControlName="visible_to">
       </app-group-checkbox-select>
     </div>
     <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Modo de visualización por defecto</ion-title>
+      <ion-title class="create-collection-form__title">Modo de biçualiçaçión por defêtto</ion-title>
       <app-select
         formControlName="view"
-        label="Modo de visualización por defecto"
+        label="Modo de biçualiçaçión por defêtto"
         [options]="viewingModeOptions"
       ></app-select>
     </div>
     <div class="create-collection-form__group">
-      <app-toggle formControlName="is_notifications_enabled">Recivir notificaciones</app-toggle>
+      <app-toggle formControlName="is_notifications_enabled">Reçibîh notificaçionê</app-toggle>
     </div>
   </form>
 
@@ -122,7 +122,7 @@
       (buttonClick)="createCollection()"
       [disabled]="createCollectionForm.disabled || createCollectionForm.invalid"
     >
-      Aceptar
+      Açêttâh
     </app-button>
     <app-button
       class="footer__button"
@@ -131,7 +131,7 @@
       (buttonClick)="close()"
       *ngIf="!collectionToEdit"
     >
-      Cancelar
+      Cançelâh
     </app-button>
     <app-button
       class="footer__button"
@@ -140,7 +140,7 @@
       (buttonClick)="deleteCollection()"
       *ngIf="collectionToEdit"
     >
-      Borrar
+      Borrâh
     </app-button>
   </ion-buttons>
 </app-modal>

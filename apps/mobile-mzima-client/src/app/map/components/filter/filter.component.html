@@ -10,7 +10,7 @@
           (click)="addClickHandle()"
         >
           <app-icon class="button-add__icon" name="add" slot="start"></app-icon>
-          Añadir nuevos ajustes de filtrado
+          Añadîh nuebô ahûttê de firtrao
         </ion-item>
         <ion-radio-group
           *ngIf="options?.length; else emptyBox"
@@ -18,8 +18,8 @@
           (ionChange)="radioChangeHandle($event)"
         >
           <app-radio [value]="null">
-            Todos los filtros
-            <ion-text class="info" color="medium">Filtros aplicados: todos</ion-text>
+            Tôh lô firtrô
+            <ion-text class="info" color="medium">Firtrô aplicaô: Tôh</ion-text>
           </app-radio>
           <app-radio
             *ngFor="let option of options"
@@ -74,7 +74,7 @@
               <div>
                 {{ option.label }}
                 <span class="multiselect-option__info">
-                  Selected {{ getCheckedSubcategoriesLength(option.options) }} of
+                  Elehiô {{ getCheckedSubcategoriesLength(option.options) }} de
                   {{ option.options?.length }}
                 </span>
               </div>
@@ -104,7 +104,7 @@
   <ion-toolbar class="footer__toolbar">
     <div class="btn-panel">
       <app-button expand="inline" [disabled]="isPristine" (buttonClick)="applyFilter()">
-        Aplicar
+        Aplicâh
       </app-button>
       <app-button
         clear-btn
@@ -115,7 +115,7 @@
         (buttonClick)="clearFilter()"
         *ngIf="filter.name !== 'saved-filters'"
       >
-        Limpiar
+        Limpiâh
       </app-button>
     </div>
   </ion-toolbar>
@@ -149,7 +149,7 @@
   [title]="selectedCategory?.label?.toString() ?? ''"
 >
   <ion-text color="medium" class="subcategories-modal__total-posts" header-end>
-    Posts encontrados:
+    Publicaçionê encontrâh:
     <strong class="subcategories-modal__total-posts__count">{{ totalPosts }}</strong>
   </ion-text>
   <div class="subcategories-modal__filters">
@@ -169,7 +169,7 @@
       [disabled]="isSubcategoriesPristine"
       (buttonClick)="applySelectedSubcategories()"
     >
-      Aplicar
+      Aplicâh
     </app-button>
     <app-button
       fill="outline"
@@ -178,7 +178,7 @@
       class="subcategories-modal__button"
       (buttonClick)="clearSelectedSubcategories()"
     >
-      Limpiar
+      Limpiâh
     </app-button>
   </div>
 </app-modal>

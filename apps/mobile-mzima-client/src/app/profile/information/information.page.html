@@ -10,19 +10,19 @@
   <!-- (photoChanged)="handlePhotoChange($event)" -->
   <!-- Sample" -->
 
-  <ion-title class="title">Nombre de Perfil</ion-title>
+  <ion-title class="title">Nombre de Perfîh</ion-title>
   <form class="information-form" novalidate [formGroup]="form" (ngSubmit)="updateUserInformation()">
     <app-form-control
-      label="Nombre a mostrar"
+      label="Nombre a môttrâh"
       [required]="true"
       formControlName="realname"
-      placeholder="Introduce tu nombre"
+      placeholder="Introduçe tu nombre"
       [errors]="fieldErrorMessages(form.controls['realname'], 'display_name')"
     >
     </app-form-control>
     <app-select label="Role" [options]="roleOptions" formControlName="role"> </app-select>
   </form>
-  <ion-title class="title">Ajustes del Perfil</ion-title>
+  <ion-title class="title">Ahûttê der Perfîh</ion-title>
   <div class="profile-settings-menu">
     <ion-item
       (click)="toggleChangeEmailModal(true)"
@@ -32,7 +32,7 @@
     >
       <app-icon class="profile-settings-item__icon" name="email" slot="start"></app-icon>
       <div class="profile-settings-item__inner">
-        Cambiar Email
+        Cambiâh Email
         <ion-text class="profile-settings-item__value" color="primary" *ngIf="userEmail">
           <span class="ellipsis">{{ userEmail[0] }}</span>{{ userEmail[1] }}
         </ion-text>
@@ -46,7 +46,7 @@
       lines="none"
     >
       <app-icon class="profile-settings-item__icon" name="lock" slot="start"></app-icon>
-      <div class="profile-settings-item__inner">Cambiar Contraseña</div>
+      <div class="profile-settings-item__inner">Cambiâh Contraçeña</div>
       <app-icon class="profile-settings-item__details" name="arrow-right" slot="end"></app-icon>
     </ion-item>
   </div>
@@ -61,10 +61,10 @@
           [disabled]="form.disabled || (form.invalid && !isPhotoChanged) || (!form.dirty && !isPhotoChanged)"
           (buttonClick)="updateUserInformation()"
         >
-          Guardar cambios
+          Guardâh cambiô
         </app-button>
         <app-button color="medium" fill="outline" expand="inline" (buttonClick)="back()">
-          Cancelar
+          Cançelâh
         </app-button>
       </ion-buttons>
     </ion-toolbar>
@@ -73,37 +73,37 @@
 
 <app-modal
   [isOpen]="isChangeEmailModalOpen"
-  title="Cambiar Email"
+  title="Cambiâh de Email"
   (modalClose)="toggleChangeEmailModal(false)"
 >
   <form novalidate class="modal-form" [formGroup]="changeEmailForm" (ngSubmit)="updateUserEmail()">
     <div>
       <app-form-control
         type="email"
-        label="Email actual"
+        label="Correo Elêttrónico actual"
         [required]="true"
         formControlName="currentEmail"
-        placeholder="Introduce tu email actual"
-        [errors]="changeEmailForm.get('currentEmail')?.touched && changeEmailForm.hasError('notSameAsCurrent') ? ['El email introducido no coincide con el actual que usaste, por favor comprueba que estás introduciendo el correcto.'] : undefined"
+        placeholder="Mete tu Correo Elêttrónico âttuâh"
+        [errors]="changeEmailForm.get('currentEmail')?.touched && changeEmailForm.hasError('notSameAsCurrent') ? ['Er correo elêttrónico introduçío no coinçide con el correo âttuâh. Ar fabôh de comprobâh que êttâh metiendo er corrêtto.'] : undefined"
       >
       </app-form-control>
       <app-form-control
         type="email"
-        label="Nuevo Email"
+        label="Nuebo Correo Elêttrónico"
         [required]="true"
         class="no-offset"
         formControlName="newEmail"
-        placeholder="Introduce el nuevo email"
+        placeholder="Mete er nuebo Correo Elêttrónico"
         [errors]="fieldErrorMessages(changeEmailForm.controls['newEmail'], 'email')"
       >
       </app-form-control>
       <app-form-control
         type="email"
-        label="Repite el nuevo email"
+        label="Repite er nuebo Correo Elêttrónico"
         [required]="true"
         formControlName="repeatEmail"
-        placeholder="Repite el nuevo email"
-        [errors]="changeEmailForm.hasError('notSame') ? ['No coinciden'] : undefined"
+        placeholder="Repite er nuebo Correo Elêttrónico"
+        [errors]="changeEmailForm.hasError('notSame') ? ['No coinçiden'] : undefined"
       >
       </app-form-control>
     </div>
@@ -115,10 +115,10 @@
             type="submit"
             [disabled]="changeEmailForm.invalid || changeEmailForm.disabled"
           >
-            Guardar cambios
+            Guardâh cambiô
           </app-button>
           <app-button fill="outline" color="medium" (buttonClick)="toggleChangeEmailModal(false)">
-            Cancelar
+            Cançelâh
           </app-button>
         </ion-buttons>
       </ion-toolbar>
@@ -128,7 +128,7 @@
 
 <app-modal
   [isOpen]="isChangePasswordModalOpen"
-  title="Cambiar contraseña"
+  title="Cambiâh contraçeña"
   (modalClose)="toggleChangePasswordModal(false)"
 >
   <form
@@ -150,13 +150,13 @@
       </app-form-control> -->
       <app-form-control
         type="password"
-        label="Nueva contraseña"
+        label="Nueba contraçeña"
         [required]="true"
         class="no-offset"
         formControlName="newPassword"
-        placeholder="Introducir nueva contraseña"
+        placeholder="Mete nueba contraçeña"
         [errors]="fieldErrorMessages(changePasswordForm.controls['newPassword'], 'newPassword')"
-        [hint]="!changePasswordForm.controls['newPassword'].value?.length ? 'La contraseña debe tener al menos 8 caracteres, una letra minúscula, una mayúscula, un número y un símbolo.' : undefined"
+        [hint]="!changePasswordForm.controls['newPassword'].value?.length ? 'La contraçeña debe tenêh ar menô 8 carâtterê, una letra minúccula, una mayúccula, un número y un çímbolo.' : undefined"
       >
         <app-password-strength
           additional
@@ -167,11 +167,11 @@
       </app-form-control>
       <app-form-control
         type="password"
-        label="Repetir nueva contraseña"
+        label="Repetîh nueba contraçeña"
         [required]="true"
         formControlName="repeatPassword"
-        placeholder="Repetir nueva contraseña"
-        [errors]="changePasswordForm.hasError('notSame') ? ['Las contraseñas no coinciden'] : undefined"
+        placeholder="Repetîh nueba contraçeña"
+        [errors]="changePasswordForm.hasError('notSame') ? ['Lâ contraçeñâ no coinçiden'] : undefined"
       >
       </app-form-control>
     </div>
@@ -183,14 +183,14 @@
             type="submit"
             [disabled]="changePasswordForm.invalid || changePasswordForm.disabled"
           >
-            Guardar cambios
+            Guardâh cambiô
           </app-button>
           <app-button
             fill="outline"
             color="medium"
             (buttonClick)="toggleChangePasswordModal(false)"
           >
-            Cancelar
+            Cançelâh
           </app-button>
         </ion-buttons>
       </ion-toolbar>

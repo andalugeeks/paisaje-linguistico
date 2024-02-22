@@ -71,9 +71,9 @@ export class LoginPage {
     this.authService.resetPassword({ email }).subscribe({
       next: async () => {
         await this.alertService.presentAlert({
-          header: 'Check your inbox',
+          header: 'Mira en tu correo',
           message:
-            'We sent a reset link to your Email. Follow the instructions to reset your password.',
+            "T'emo mandao un enlaçe de rêttableçimiento de contraçeña ar correo elêttrónico. Exa'r bîttaço y çige lâ indicaçionê.",
         });
         this.router.navigate(['auth/login']);
         this.forgotPasswordForm.reset();

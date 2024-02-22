@@ -145,30 +145,28 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   private getSavedFilters(): void {
     this.isOptionsLoading = true;
-    if (this.networkService.getCurrentNetworkStatus()) {
-      this.savedsearchesService.get().subscribe({
-        next: (response) => {
-          this.options = response.results.map((filter) => ({
-            value: filter.id,
-            label: filter.name,
-            checked: filter.id === this.filter.value,
-            info: `Filtros aplicados: ${this.getObjectKeysCount(filter.filter)} of 24`,
-          }));
-          this.isOptionsLoading = false;
-        },
-        error: ({ message, status }) => {
-          this.isOptionsLoading = false;
-          this.toastService.presentToast({
-            message: 'Filtros guardados: ' + message,
-            layout: 'stacked',
-            duration: 3000,
-          });
-          if (message.match(/Http failure response for/) && status !== 404) {
-            setTimeout(() => this.getSavedFilters(), 5000);
-          }
-        },
-      });
-    }
+    this.savedsearchesService.get().subscribe({
+      next: (response) => {
+        this.options = response.results.map((filter) => ({
+          value: filter.id,
+          label: filter.name,
+          checked: filter.id === this.filter.value,
+          info: `Firtrô aplicaô: ${this.getObjectKeysCount(filter.filter)} de 24`,
+        }));
+        this.isOptionsLoading = false;
+      },
+      error: ({ message, status }) => {
+        this.isOptionsLoading = false;
+        this.toastService.presentToast({
+          message,
+          layout: 'stacked',
+          duration: 3000,
+        });
+        if (message.match(/Http failure response for/) && status !== 404) {
+          setTimeout(() => this.getSavedFilters(), 5000);
+        }
+      },
+    });
   }
 
   private getDataSources(): void {
@@ -241,15 +239,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
   public async deleteOption(option: FilterControlOption): Promise<void> {
     if (this.filter.name === 'saved-filters' && option.value) {
       const result = await this.alertService.presentAlert({
-        header: '¿Seguro que quieres eliminar los filtros salvados?',
-        message: 'Esto significa que no volverás a ver tus filtros salvados en la lista. ',
+        header: '¿Çeguro que quierê eliminâh lô firtrô guardaô?',
+        message: 'Êtto çînnifica que no borberâh a bêh tû firtrô guardaô en la lîtta. ',
         buttons: [
           {
-            text: 'Cancelar',
+            text: 'Cançelâh',
             role: 'cancel',
           },
           {
-            text: 'Eliminar',
+            text: 'Eliminâh',
             role: 'confirm',
             cssClass: 'danger',
           },
@@ -317,15 +315,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearSelectedSubcategories(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `Limpiar el filtro ${this.selectedCategory?.label} ?`,
-      message: 'Este filtro será limpiado',
+      header: `Limpiâh er firtro ${this.selectedCategory?.label} ?`,
+      message: 'Êtte firtro çerá limpiao',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Limpiar',
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -353,15 +351,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearFilter(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `Limpiar el filtro ${this.filter.label} ?`,
-      message: 'Este filtro será limpiado',
+      header: `Limpiâh er firtro ${this.filter.label} ?`,
+      message: 'Êtte firtro çerá limpiao',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Limpiar',
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },

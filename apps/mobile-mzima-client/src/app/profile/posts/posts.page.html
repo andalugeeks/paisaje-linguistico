@@ -1,8 +1,7 @@
 <app-main-layout
-  title="Mis posts"
+  title="Mî publicaçionê"
   (back)="back()"
   [isSearch]="true"
-  [placeholderText]="'Buscar Posts'"
   (search)="searchPosts($event)"
 >
   <app-button
@@ -13,7 +12,7 @@
     color="custom"
   >
     <app-icon *ngIf="!isEditMode" name="edit" slot="icon-only"></app-icon>
-    <ng-container *ngIf="isEditMode">Hecho</ng-container>
+    <ng-container *ngIf="isEditMode">Exo</ng-container>
   </app-button>
   <ng-container *ngIf="posts.length; else emptyBox">
     <app-post-item
@@ -49,7 +48,7 @@
 <ng-template #emptyBox>
   <div class="empty-box">
     <ion-text color="medium" class="empty ion-text-center" *ngIf="!posts.length && !isPostsLoading">
-      ¡No se encuentra ningún post!
+      ¡No ç'encuentra ninguna publicaçión!
     </ion-text>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>
   </div>

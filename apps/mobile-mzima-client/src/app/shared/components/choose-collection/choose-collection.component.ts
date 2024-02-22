@@ -88,7 +88,7 @@ export class ChooseCollectionComponent {
       value: 'map',
     },
     {
-      label: 'Datos',
+      label: 'Datô',
       value: 'data',
     },
   ];
@@ -150,9 +150,9 @@ export class ChooseCollectionComponent {
         this.roleOptions = formHelper.roleTransform({
           roles: response.results,
           userRole: this.userRole,
-          onlyMe: 'Solo yo',
-          everyone: 'Todo el mundo',
-          specificRoles: 'Roles específicos...',
+          onlyMe: 'Çolo yo',
+          everyone: 'To quîqqui',
+          specificRoles: 'Rolê êppeçíficô...',
         });
       },
     });
@@ -308,8 +308,8 @@ export class ChooseCollectionComponent {
       await this.updateCollection();
     } else {
       this.toastService.presentToast({
-        header: 'Exito',
-        message: `El post se añadirá/borrará de la colección cuando se restablezca la conexión.`,
+        header: 'Éççito',
+        message: `La Publicaçión çe añadirá/borrará de la colêççión cuando çe rêttablêcca la conêççión.`,
         buttons: [],
       });
       this.modalController.dismiss();
@@ -408,15 +408,15 @@ export class ChooseCollectionComponent {
 
   async deleteCollection() {
     const result = await this.alertService.presentAlert({
-      header: `¿Seguro que quieres borrar esta colección?`,
-      message: 'Esta acción no se puede deshacer. Procede con cuidado.',
+      header: `¿Çeguro que quiêh borrâh êtta colêççión?`,
+      message: 'Êtta âççión no çe pué deçaçêh. Ándate con ohito.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Borrar',
+          text: 'Borrâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -426,7 +426,7 @@ export class ChooseCollectionComponent {
     if (result.role === 'confirm') {
       this.collectionsService.delete(this.collectionToEdit).subscribe(() => {
         this.toastService.presentToast({
-          message: `La colección se ha borrado satisfactoriamente.`,
+          message: `La colêççión ça borrao con éççito.`,
         });
         this.modalController.dismiss();
         this.getCollections();

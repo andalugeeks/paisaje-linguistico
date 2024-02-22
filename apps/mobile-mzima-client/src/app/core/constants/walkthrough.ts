@@ -1,25 +1,24 @@
 export const WalkthroughSlider = [
   {
     img: '/assets/images/walkthrough/slide_1.svg',
-    title: 'El andaluz está en las calles',
-    description:
-      'En establecimientos, rótulos, letreros, paredes ... ¡Vamos a mostrárselo al mundo! ',
+    title: "L'Andalûh êttá en la caye",
+    description: 'En êttableçimientô, rótulô, letrerô, paredê ... ¡Amô a ençeñárçelo ar mundo! ',
   },
   {
     img: '/assets/images/walkthrough/slide_2.svg',
-    title: 'Registra tu cuenta y contribuye',
-    description: 'O participa anónimamente. Revisamos manualmente todas las aportaciones.',
+    title: 'Rehîttra tu cuenta y contribuye',
+    description: 'O partiçipa anónimamente. Rebiçamô manuarmente cá aportaçión.',
   },
   {
     img: '/assets/images/walkthrough/slide_3.svg',
-    title: 'Contribuye responsablemente',
+    title: 'Contribuye rêpponçablemente',
     description:
-      'Puedes subir grafitis, pero preferimos rótulos publicitarios, pizarras y cartas de establecimientos.',
+      'Puedê çubîh grafitî, pero preferimô rótulô publiçitariô, piçarrâ en barê y cartâ de êttableçimientô.',
   },
   {
     img: '/assets/images/walkthrough/slide_4.svg',
-    title: 'Descargo de responsabilidad',
+    title: 'Dêccargo de rêpponçabiliá',
     description:
-      'Este proyecto pretende recoger la realidad de la calle. No fomentamos la proliferación de gratifis o pintadas.',
+      'Êtte proyêtto pretende arrecohêh la realiá de la caye. No fomentamô la proliferaçión de grafitî o pintâh.',
   },
 ];

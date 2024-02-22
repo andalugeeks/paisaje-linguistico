@@ -25,7 +25,7 @@ export enum PostItemActionTypeUserRole {
 export const postItemActions: PostItemAction[] = [
   {
     role: 'share',
-    text: 'Compartir post',
+    text: 'Compartîh publicaçión',
     icon: '/assets/icon/share.svg',
     data: {
       action: PostItemActionType.SHARE,
@@ -42,7 +42,7 @@ export const postItemActions: PostItemAction[] = [
   },
   {
     role: 'action',
-    text: 'Editar post',
+    text: 'Editâh publicaçión',
     icon: '/assets/icon/edit.svg',
     data: {
       action: PostItemActionType.EDIT,
@@ -51,7 +51,7 @@ export const postItemActions: PostItemAction[] = [
   },
   {
     role: 'action',
-    text: 'Añadir a una colección',
+    text: 'Añadîh a una colêççión',
     icon: '/assets/icon/add-to-collection.svg',
     data: {
       action: PostItemActionType.ADD_TO_COLLECTION,
@@ -69,7 +69,7 @@ export const postItemActions: PostItemAction[] = [
   {
     role: 'status',
     status: 'published',
-    text: 'Publicar',
+    text: 'Publicâh',
     icon: '/assets/icon/publish.svg',
     data: {
       action: PostItemActionType.PUBLISH,
@@ -79,7 +79,7 @@ export const postItemActions: PostItemAction[] = [
   {
     role: 'status',
     status: 'draft',
-    text: 'Poner bajo revisión',
+    text: 'Ponêh baho rebiçión',
     icon: '/assets/icon/put-under-review.svg',
     data: {
       action: PostItemActionType.PUT_UNDER_REVIEW,
@@ -89,7 +89,7 @@ export const postItemActions: PostItemAction[] = [
   {
     role: 'status',
     status: 'archived',
-    text: 'Archivar',
+    text: 'Arxibâh',
     icon: '/assets/icon/archive.svg',
     data: {
       action: PostItemActionType.ARCHIVE,
@@ -101,7 +101,7 @@ export const postItemActions: PostItemAction[] = [
     guard: [PostItemActionTypeUserRole.ADMIN],
   },
   {
-    text: 'Borrar post',
+    text: 'Borrâh publicaçión',
     role: 'destructive',
     icon: '/assets/icon/delete.svg',
     data: {
@@ -110,7 +110,7 @@ export const postItemActions: PostItemAction[] = [
     guard: [PostItemActionTypeUserRole.ADMIN, PostItemActionTypeUserRole.AUTHOR],
   },
   {
-    text: 'Cancelar',
+    text: 'Cançelâh',
     role: 'cancel',
     guard: [],
   },
@@ -141,15 +141,15 @@ export const getPostStatusActions = (
 
 export const postStatusChangedHeader: Record<PostStatus, string> = {
   [PostStatus.Published]: 'Publicando',
-  [PostStatus.Draft]: 'Revisando',
-  [PostStatus.Archived]: 'Archivando',
+  [PostStatus.Draft]: 'Rebiçando',
+  [PostStatus.Archived]: 'Arxibando',
 };
 
 export const postStatusChangedMessage = (status: PostStatus, title: string): string => {
   const messages: Record<PostStatus, string> = {
-    [PostStatus.Published]: `El post “${title}” fue publicado. Ahora todo el mundo puede verlo.`,
-    [PostStatus.Draft]: `El post “${title}” está bajo revisión.`,
-    [PostStatus.Archived]: `El post “${title}” fue archivado.`,
+    [PostStatus.Published]: `La publicaçión “${title}” çe a exo pública. Ara pué bêl-la to quîqqui.`,
+    [PostStatus.Draft]: `La publicaçión “${title}” êttá baho rebiçión.`,
+    [PostStatus.Archived]: `La publicaçión “${title}” fue arxibá.`,
   };
   return messages[status];
 };

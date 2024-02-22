@@ -19,11 +19,11 @@
       >
         <ng-container *ngIf="!photo; else changeButton">
           <app-icon class="icon" name="plus"></app-icon>
-          Añadir foto
+          Añadîh afoto
         </ng-container>
         <ng-template #changeButton>
           <app-icon class="icon" name="edit"></app-icon>
-          Reemplazar imagen
+          Reemplaçâh imahen
         </ng-template>
       </app-button>
 
@@ -37,7 +37,7 @@
         <app-icon slot="icon-only" name="delete"></app-icon>
       </app-button>
     </div>
-    <p class="error-msg" *ngIf="requiredError">Se requiere Imagen</p>
+    <p class="error-msg" *ngIf="requiredError">Çe neçeçita Imahen</p>
   </div>
 
   <div class="form-row" *ngIf="hasCaption">
@@ -48,7 +48,7 @@
       [disabled]="!!id"
     ></app-form-control>
     <p *ngIf="captionControl?.hasError('specialCharacters')">
-      Este campo contiene caracteres especiales
+      Êtte campo contiene carâtterê êppeçialê
     </p>
   </div>
 </div>

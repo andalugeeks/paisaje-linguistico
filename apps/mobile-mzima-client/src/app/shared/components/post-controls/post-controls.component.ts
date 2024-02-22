@@ -73,8 +73,8 @@ export class PostControlsComponent {
 
       if (uncompletedPosts.length > 0) {
         this.toastService.presentToast({
-          header: 'No se pueden publicar Posts',
-          message: `Los siguientes posts no han podido ser publicados: ${uncompletedPosts
+          header: 'No çe puén publicâh',
+          message: `Lâ çigientê publicaçionê no an podío çêh publicâh: ${uncompletedPosts
             .map((p) => p.title)
             .join(', ')}`,
           buttons: [],
@@ -87,7 +87,7 @@ export class PostControlsComponent {
       complete: () => {
         this.toastService.presentToast({
           header: postStatusChangedHeader[status],
-          message: `Cambiaron de ${this.posts.length > 1 ? 'estado' : 'estado'} `,
+          message: `Cambiaron de ${this.posts.length > 1 ? 'êttaô' : 'êttao'} `,
           buttons: [],
         });
         this.postChanged.emit();
@@ -114,11 +114,11 @@ export class PostControlsComponent {
       if (changed) {
         this.posts[0].sets = collections;
         this.toastService.presentToast({
-          header: 'Exito',
-          message: `El Post fue ${
+          header: 'Éççito',
+          message: `a Publicaçión fue ${
             collections?.length
-              ? `añadido en ${collections.length} colecciones`
-              : 'borrado de todas las colecciones'
+              ? `añadía en ${collections.length} colêççionê`
+              : 'borrá de toâ lâ colêççionê'
           }.`,
           buttons: [],
         });
@@ -141,23 +141,23 @@ export class PostControlsComponent {
     this.shareService.share({
       title,
       text,
-      dialogTitle: `Share ${this.posts.length > 1 ? 'post' : 'posts'}`,
+      dialogTitle: `Compartîh ${this.posts.length > 1 ? 'publicacionê' : 'publicaçión'}`,
     });
   }
 
   public async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `¿Seguro que quieres eliminar ${
-        this.posts.length > 1 ? 'estos posts' : 'este post'
+      header: `¿Çeguro que quiêh eliminâh ${
+        this.posts.length > 1 ? 'êttâ publicaçionê' : 'êtta publicaçión'
       }?`,
-      message: 'Esta acción no se puede deshacer. Procede con precaución.',
+      message: 'Êtta âççión no çe pué deçaçêh. Ándate con cuidao.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Eliminar',
+          text: 'Eliminâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -171,8 +171,8 @@ export class PostControlsComponent {
         complete: () => {
           this.toastService.presentToast({
             message: `${
-              this.posts.length > 1 ? count + ' posts' : 'Post'
-            } eliminado/s satosfactoriamente`,
+              this.posts.length > 1 ? count + ' publicaçionê' : 'Publicaçión'
+            } eliminao/ôh con éççito`,
           });
           this.postDeleted.emit(postIds);
         },

@@ -123,15 +123,15 @@ export class ChooseDeploymentComponent {
 
   public async callModal(event: any) {
     const result = await this.alertService.presentAlert({
-      header: '¿Seguro que quieres borrar este despliegue?',
-      message: 'Borrarlo significa que a partir de ahora no lo verá en su lista de despliegues.',
+      header: '¿Çeguro que quiêh borrâh êtte Dêppliege?',
+      message: 'Çi lo borrâ no lo berâh en tu lîtta de dêppliegê.',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Borrar',
+          text: 'Borrâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -213,9 +213,9 @@ export class ChooseDeploymentComponent {
         name: 'warning',
         color: 'danger',
       },
-      header: '¡Despliegue desactualizado!',
+      header: '¡Dêppliege deçâttualiçao!',
       message:
-        '<p>Lo sentimos, pero la opción de despliegue que está intentando seleccionar no es compatible con la aplicación, ya que el administrador aún no la ha actualizado. Hasta que no se realice la actualización, el despliegue no funcionará correctamente.</p><p>Si usted es el administrador de este despliegue, no dude en ponerse en contacto con nosotros para obtener más información.</p>',
+        '<p>Lo çentimô, pero la ôççión de dêppliege que êttá intentando çelêççionâh no êh compatible con la aplicaçión, ya que el âmminîttraôh toabía no la âttualiçao. Âtta que no çe realiçe la âttualiçaçión, er dêppliege no funçionará corrêttamente.</p><p> Çi tú erê el âmminîttraôh de êtte dêppliege, no dude en ponerçe en contâtto con noçotrâ pa ôttenêh mâ informaçión.</p>',
       buttons: [
         // {
         //   text: 'Contact us',

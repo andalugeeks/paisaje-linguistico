@@ -1,4 +1,4 @@
-<app-main-layout (back)="back()" title="Vista de Post">
+<app-main-layout (back)="back()" title="Bîtta de Publicaçionê">
   <app-spinner class="spinner" *ngIf="isPostLoading; else postTemplate"></app-spinner>
   <ng-template #postTemplate>
     <ng-container *ngIf="post; else errorMessage">
@@ -56,9 +56,9 @@
 
             <ion-text color="medium" class="post__info-item">
               <ng-container [ngSwitch]="post.status">
-                <ng-container *ngSwitchCase="'published'">Publicado</ng-container>
-                <ng-container *ngSwitchCase="'draft'">Bajo revisión</ng-container>
-                <ng-container *ngSwitchCase="'archived'">Archivado</ng-container>
+                <ng-container *ngSwitchCase="'published'">Publicao</ng-container>
+                <ng-container *ngSwitchCase="'draft'">Baho rebiçión</ng-container>
+                <ng-container *ngSwitchCase="'archived'">Arxibao</ng-container>
               </ng-container>
             </ion-text>
 
@@ -69,7 +69,7 @@
     </ng-container>
     <ng-template #errorMessage>
       <ion-text color="medium" class="error-msg ion-text-center ion-margin-vertical">
-        Fallo al cargar post #{{ postId }}
+        Fayo ar cargâh la publicaçión #{{ postId }}
       </ion-text>
     </ng-template>
   </ng-template>

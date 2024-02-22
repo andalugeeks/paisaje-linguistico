@@ -42,11 +42,11 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'saved-filters',
       icon: 'saved-filters',
-      label: 'Filtros guardados',
+      label: 'Firtrô guardaô',
       selected: 'none',
-      selectedLabel: 'Seleccionados:',
+      selectedLabel: 'Çelêççionaô:',
       value: this.getFilterDefaultValue('saved-filters'),
-      noOptionsText: 'No tienes ningún filtro guardado todavía',
+      noOptionsText: 'No tiêh toabía ningún firtro',
     },
     {
       name: 'form',
@@ -55,14 +55,14 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
       selected: 'none',
       selectedCount: '',
       value: [],
-      noOptionsText: 'No tienes ninguna encuesta todavía',
+      noOptionsText: 'No tiêh toabía ninguna encuêtta',
     },
     // Paisaje-Linguistico personalisation.
     // Hide Sources filters as only web is supported
     // {
     //   name: 'source',
     //   icon: 'sources',
-    //   label: 'Fuentes',
+    //   label: 'Fuentê',
     //   selectedCount: searchFormHelper.sources.length,
     //   selected: String(searchFormHelper.sources.length),
     //   value: this.getFilterDefaultValue('source'),
@@ -70,7 +70,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'status',
       icon: 'status',
-      label: 'Estado',
+      label: 'Êttao',
       selectedCount: searchFormHelper.statuses.length,
       selected: '2',
       value: this.getFilterDefaultValue('status'),
@@ -78,17 +78,17 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'tags',
       icon: 'categories',
-      label: 'Categorias',
+      label: 'Categoriâ',
       selected: 'none',
       value: this.getFilterDefaultValue('tags'),
-      noOptionsText: 'Aún no tienes categorías',
+      noOptionsText: 'No tiêh toabía ninguna categoría',
     },
     {
       name: 'date',
       icon: 'calendar',
-      label: 'Rango de fechas',
-      selectedLabel: 'Elije el rango de fechas',
-      selectedCount: 'Siempre',
+      label: 'Rango de fexâ',
+      selectedLabel: 'Elihe er rango de fexâ',
+      selectedCount: 'Çiempre',
       value: this.getFilterDefaultValue('date'),
     },
     // Paisaje-Linguistico personalisation.
@@ -423,16 +423,16 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async handleClearFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Limpiar todos los filtros?',
+      header: 'Limpiâh tôh lô firtrô??',
       message:
-        'Todos los filtros salvo <strong>Encuestas</strong> y <strong>Estados</strong> se limpiarán',
+        'Tôh lô firtrô êççêtto <strong>Encuêttâ</strong>, <strong>Fuentê</strong> y <strong>Êttaô</strong> çe limpiarán',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Limpiar',
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -576,7 +576,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     switch (filter.name) {
       case 'date':
         if (!filter.value?.start || !filter.value?.start) {
-          filter.selectedCount = 'Siempre';
+          filter.selectedCount = 'Çiempre';
         } else if (
           dateHelper.toUTC(filter.value.start, 'DD MMM') ===
           dateHelper.toUTC(filter.value.end, 'DD MMM')
@@ -597,7 +597,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
             ${filter.value?.location.label} (${filter.value?.distance}km)
           `;
         } else {
-          filter.selectedCount = 'Todas las localizaciones';
+          filter.selectedCount = 'Toâh lâ localiçaçionê';
         }
         break;
 
@@ -649,20 +649,20 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async saveSavedFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `${this.selectedSavedFilter ? 'Actualizar' : 'Guardar'} filtro?`,
+      header: `${this.selectedSavedFilter ? 'Âttualiçâh' : 'Guardâh'} filtro?`,
       inputs: [
         {
-          placeholder: 'Nombre del filtro',
+          placeholder: 'Nombre der firtro',
           value: this.selectedSavedFilter?.label,
         },
       ],
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Guardar',
+          text: 'Guardâh',
           role: 'confirm',
           cssClass: 'primary',
         },

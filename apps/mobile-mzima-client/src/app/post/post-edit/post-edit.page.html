@@ -1,8 +1,11 @@
-<app-header (back)="backNavigation()" title="{{!postId ? 'Crear' : 'Editar'}} post"></app-header>
+<app-header
+  (back)="backNavigation()"
+  title="{{!postId ? 'Creâh' : 'Editâh'}} publicaçión"
+></app-header>
 
 <ion-content class="ion-padding-horizontal ion-padding-top page">
   <app-select
-    [label]="surveyList.length ? 'Elije aquí primero' : 'Obteniendo info...'"
+    [label]="surveyList.length ? 'Elihe aquí primero' : 'Ôtteniendo info...'"
     [options]="surveyListOptions"
     [disabled]="!!postId"
     [(ngModel)]="selectedSurveyId"
@@ -23,13 +26,13 @@
           <h2 class="task-label">{{ task.label }}</h2>
 
           <div *ngIf="task.show_when_published">
-            <p>Esta tarea será visible cuando el post se haya publicado.</p>
+            <p>Êtta tarea çerá biçible cuando la publicaçión ç'aya aproabo.</p>
           </div>
 
           <div *ngIf="task.task_is_internal_only">
             <p>
-              Esta tarea está marcada para uso interno tan solo. Los usuarios no la verán al crear
-              un post.
+              Êtta tarea êttá deçînná unicamente pa uço intênno. Lô uçuariô no la berán ar creâh una
+              publicaçión.
             </p>
           </div>
 
@@ -41,7 +44,7 @@
               [checked]="task.completed"
               (ionChange)="taskComplete(task, $event)"
             >
-              Tarea completada
+              Tarea completá
               <span class="color-accent" *ngIf="task.required">*</span>
             </ion-toggle>
           </div>
@@ -120,7 +123,7 @@
                       [checked]="form.get(field.key)?.value.length === field.options.length"
                       (checkboxChange)="toggleAllSelection($event, field, field.key)"
                     >
-                      Seleccionar todo
+                      Çelêççionâh tó
                     </app-checkbox>
                   </li>
                   <li
@@ -473,8 +476,8 @@
                 <span class="color-accent" *ngIf="field?.required">*</span>
               </ion-label>
               <p class="form-control--tip">
-                Tenga en cuenta que las entradas a las que se refiere deben estar publicadas, los
-                posts que estén "bajo revisión" no aparecerán en los resultados de búsqueda.
+                Ten en cuentra que lâ entrâh a lâ que çe refiere deben êttâh publicâh, lâ
+                publicaçionê q'êttén "baho rebiçión" no apareçerán en lô reçurtaô de búqquea.
               </p>
               <div class="related-post-selected" *ngIf="selectedRelatedPost">
                 <div class="related-post-content">
@@ -504,7 +507,7 @@
                   [disabled]="!isConnection"
                   (buttonClick)="relationSearchPosts()"
                 >
-                  {{ isConnection ? 'Relation post search' : 'Search is not available' }}
+                  {{ isConnection ? 'Búqqueda de publicaçión' : 'La búqqueda no êttá dîpponible' }}
                 </app-button>
               </div>
 
@@ -545,16 +548,16 @@
             *ngIf="form.get(field.key)?.invalid && form.get(field.key)?.touched"
           >
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('required')">
-              {{ field.label }} es un campo requerido *
+              {{ field.label }} eh un campo obligatorio *
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('minlength')">
-              {{ field.label }} es demasiado corto, usa al menos 2 caracteres.
+              {{ field.label }} êh demaçiao corto, uça ar menô dô carâtterê.
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('pattern')">
-              {{ field.label }} no es válido
+              {{ field.label }} no êh bálido
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('specialCharacters')">
-              {{ field.label }} contiene caracteres especiales
+              {{ field.label }} contiene carâtterê êppecialê
             </ion-text>
           </div>
         </div>
@@ -564,7 +567,7 @@
 
   <ng-template #noOptions>
     <div>
-      <span class="no-options">Sin opciones</span>
+      <span class="no-options">Çin ôççionê</span>
     </div>
   </ng-template>
 </ion-content>
@@ -580,10 +583,10 @@
         [disabled]="isSubmitting==='yes' || form.disabled || form.invalid || emptyLocation || (!requireApproval || post?.status === 'published' ? taskForm.invalid : false)"
         (buttonClick)="submitPost()"
       >
-        Aceptar
+        Açêttâh
       </app-button>
       <app-button color="medium" fill="outline" expand="inline" (buttonClick)="backNavigation()">
-        Cancelar
+        Cançelâh
       </app-button>
     </ion-buttons>
   </ion-toolbar>

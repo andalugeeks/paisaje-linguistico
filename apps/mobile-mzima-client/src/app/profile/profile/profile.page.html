@@ -6,7 +6,7 @@
   <app-deployment-info (deploymentClick)="goTo(['/profile/deployment'])"></app-deployment-info>
   -->
 
-  <ion-title class="title">Perfil</ion-title>
+  <ion-title class="title">Perfîh</ion-title>
   <ion-list class="profile-menu">
     <app-profile-menu-item
       (action)="callAction($event)"
@@ -15,7 +15,7 @@
     ></app-profile-menu-item>
   </ion-list>
 
-  <ion-title class="title">Información sobre Ushahidi</ion-title>
+  <ion-title class="title">Información çobre Ushahidi</ion-title>
   <ion-list class="profile-menu">
     <app-profile-menu-item
       (action)="callAction($event)"
@@ -29,7 +29,7 @@
 
 <app-modal
   [isOpen]="isSupportModalOpen"
-  title="Ayuda y Soporte"
+  title="Ayuda y Çoporte"
   (modalClose)="isSupportModalOpen = false"
 >
   <ng-container *ngIf="filteredSupportItems.length; else emptySupportItems">
@@ -49,6 +49,6 @@
     </ion-item>
   </ng-container>
   <ng-template #emptySupportItems>
-    <ion-text color="medium" class="empty ion-text-center"> ¡No se encontró nada! </ion-text>
+    <ion-text color="medium" class="empty ion-text-center"> ¡No ç'encontró ná! </ion-text>
   </ng-template>
 </app-modal>

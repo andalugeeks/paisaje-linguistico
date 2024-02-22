@@ -6,12 +6,12 @@ export const navigationMenu = [
     activeRoutes: ['/search/', '/collection/'],
   },
   {
-    label: 'Actividad',
+    label: 'Âttibiá',
     icon: 'activity',
     route: '/activity',
   },
   {
-    label: 'Perfil',
+    label: 'Perfîh',
     icon: 'profile',
     route: '/profile',
   },

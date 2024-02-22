@@ -40,9 +40,9 @@ export class DeploymentInfoComponent {
           name: 'warning',
           color: 'danger',
         },
-        header: '¡Despliegue desactualizado!',
+        header: '¡Dêppliege deçâttualiçao!',
         message:
-          'El despliegue no está actualizado, por lo que pueden producirse errores hasta que el administrador lo actualice.',
+          "Er dêppliege no êttá âttualiçao, por lo que puén produçirçe errorê âtta q'er âmminîttraôh lo âttualiçe.",
       });
     }
   }

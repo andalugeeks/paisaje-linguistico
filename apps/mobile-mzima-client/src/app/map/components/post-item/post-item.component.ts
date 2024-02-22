@@ -118,7 +118,7 @@ export class PostItemComponent implements OnInit {
           url: `https://${this.deploymentService.getDeployment()!.fqdn}/feed/${
             this.post.id
           }/view?mode=ID`,
-          dialogTitle: 'Share Post',
+          dialogTitle: 'Compartîh Publicaçión',
         }),
       [PostItemActionType.EDIT]: () => this.editPost(),
       [PostItemActionType.ADD_TO_COLLECTION]: () => this.addToCollection(),
@@ -149,11 +149,11 @@ export class PostItemComponent implements OnInit {
         this.post.sets = collections;
         this.postUpdated.emit({ post: this.post });
         this.toastService.presentToast({
-          header: 'Success',
-          message: `The post “${this.post.title}” was ${
+          header: 'Corrêtto',
+          message: `La publicaçión “${this.post.title}” fue ${
             collections?.length
-              ? `added in ${collections.length} collections`
-              : 'removed from all collections'
+              ? `añadía a ${collections.length} colêççionê`
+              : 'retirá de tó lâ colêççionê'
           }.`,
           buttons: [],
         });
@@ -176,15 +176,15 @@ export class PostItemComponent implements OnInit {
 
   private async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Seguro que quieres eliminar el post?',
-      message: 'Esta acción no se puede deshacer. Procede con precaución.',
+      header: 'Êttâh çeguro que quiêh eliminâh la publicaçión?',
+      message: 'Êtta âççión no çe pué deçaçêh. Gâtta cuidao!',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: 'Eliminar',
+          text: 'Eliminâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -197,7 +197,7 @@ export class PostItemComponent implements OnInit {
         next: () => {
           this.postDeleted.emit({ post });
           this.toastService.presentToast({
-            message: 'El post se ha eliminado satisfactoriamente',
+            message: 'La publicaçión ça elimiao con éççito',
           });
         },
       });
@@ -207,7 +207,7 @@ export class PostItemComponent implements OnInit {
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       mode: 'ios',
-      header: 'Acciones para el post',
+      header: 'Âççionê pa la publicaçión',
       buttons: this.actionSheetButtons!,
     });
     actionSheet.onWillDismiss().then((event) => {

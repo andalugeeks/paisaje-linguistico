@@ -18,22 +18,22 @@ export interface ProfileMenuItem {
 
 export const profileMenu: ProfileMenuItem[] = [
   {
-    label: 'Información del perfil',
-    description: 'Edita tu foto o información',
+    label: 'Informaçión der perfîh',
+    description: 'Edita tu afoto o informaçión',
     icon: 'user',
     route: '/profile/information',
     isLoggedGuard: true,
   },
   {
-    label: 'Colecciones',
-    description: 'Añadir o Editar colecciones',
+    label: 'Colêççionê',
+    description: 'Añadîh o Editâh colêççionê',
     icon: 'collections',
     route: '/profile/collection',
     isLoggedGuard: true,
   },
   {
-    label: 'Mis posts',
-    description: 'Post que tú has creado',
+    label: 'Mî publicaçionê',
+    description: 'Publicaçionê creâh por ti',
     icon: 'posts',
     route: '/profile/posts',
     isLoggedGuard: true,
@@ -51,14 +51,14 @@ export const profileMenu: ProfileMenuItem[] = [
   //   hideDetails: true,
   // },
   {
-    label: 'Salir',
+    label: 'Çalîh',
     icon: 'logout',
     action: ProfileMenuActions.LOGOUT,
     hideDetails: true,
     isLoggedGuard: true,
   },
   {
-    label: 'Acceder o Registrarse',
+    label: 'Aççedêh o Rehîttrarçe',
     icon: 'logout',
     route: '/auth',
     hideDetails: true,
@@ -76,12 +76,12 @@ export const profileInformationMenu: ProfileMenuItem[] = [
   //   action: ProfileMenuActions.SUPPORT,
   // },
   {
-    label: 'Términos y Condiciones',
+    label: 'Términô y Condiçionê',
     icon: 'info-rounded',
     route: '/terms-and-conditions',
   },
   {
-    label: 'Política de Privacidad',
+    label: 'Política de Pribaçiá',
     icon: 'info-shield',
     route: '/privacy-policy',
   },
