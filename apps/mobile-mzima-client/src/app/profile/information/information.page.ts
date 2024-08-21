@@ -285,7 +285,7 @@ export class InformationPage {
               };
               this.usersService.update(userId, payload, 'settings/' + settings.id).subscribe({
                 next: async () => {
-                  console.log('Profile photo updated successfully');
+                  console.log('Afoto de perfîh corrêttamente âttualiçá');
                   this.profilePhotoComponent.uploadingSpinner = false;
                   this.userPhoto = photoUrl;
                   this.isUploadInProgress = false;
@@ -294,19 +294,22 @@ export class InformationPage {
                   await this.databaseService.remove(STORAGE_KEYS.PROFILE_PHOTO);
                   this.isPhotoChanged = false;
                   this.toastService.presentToast({
-                    message: 'Profile photo updated successfully',
+                    message: 'Afoto de perfîh corrêttamente âttualiçá',
                     duration: 3000,
                     position: 'bottom',
                   });
                 },
                 error: async (error) => {
-                  console.error('Failed to update profile photo. Please try again', error);
+                  console.error(
+                    'Fayó er çubîh tu afoto de perfîh. Por fabôh intenta de nuebo',
+                    error,
+                  );
                   this.isUploadInProgress = false;
                   this.profilePhotoComponent.uploadingSpinner = false;
                   await this.databaseService.remove(STORAGE_KEYS.PROFILE_PHOTO);
                   this.isPhotoChanged = false;
                   this.toastService.presentToast({
-                    message: 'Failed to add profile photo',
+                    message: 'Fayó al añadîh afoto de perfîh. Prueba de nuebo.',
                     duration: 3000,
                     position: 'bottom',
                   });
@@ -324,7 +327,7 @@ export class InformationPage {
                   this.userPhoto = photoUrl;
                   this.isUploadInProgress = false;
                   this.toastService.presentToast({
-                    message: 'Profile photo updated successfully',
+                    message: 'Afoto de perfîh corrêttamente âttualiçá',
                     duration: 3000,
                     position: 'bottom',
                   });
@@ -336,7 +339,7 @@ export class InformationPage {
                   this.isUploadInProgress = false;
                   this.profilePhotoComponent.uploadingSpinner = false;
                   this.toastService.presentToast({
-                    message: 'Failed to add profile photo. Please try again',
+                    message: 'Fayó al añadîh afoto de perfîh. Prueba de nuebo',
                     duration: 3000,
                     position: 'bottom',
                   });
