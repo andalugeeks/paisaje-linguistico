@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.ushahidi.mobile"
+    namespace "es.andaluh.paisaje"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "es.andaluh.paisaje"
@@ -43,6 +43,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+    /* From https://stackoverflow.com/a/75298544 */
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0"
 }
 
 apply from: 'capacitor.build.gradle'
