@@ -1,17 +1,24 @@
 <app-main-layout
   class="main"
   [isSearch]="true"
-  [title]="isProfile ? 'Colêççión' : 'Añadîh Publicaçión a Colêççión'"
+  [title]="isProfile 
+    ? fieldAppMessages('choose_collection_component_title_collection') 
+    : fieldAppMessages('choose_collection_component_title_add_collection')"
   (back)="back.emit()"
+  (search)="searchSubject.next($event)"
+  (searchFocus)="isSearchView = true"
+  (searchBlur)="isSearchView = false"
+  [ngClass]="{ 'main--search-view': isSearchView }"
 >
   <ion-item button lines="none" class="button-add" (click)="addNewCollection()">
     <app-icon class="button-add__icon" name="add" slot="start"></app-icon>
-    Creâh nueba Colêççión
+    {{fieldAppMessages('choose_collection_component_add_button_text')}}
   </ion-item>
 
   <ion-title class="title">
-    <ng-container *ngIf="!isSearchView">Colêççionê</ng-container>
-    <ng-container *ngIf="isSearchView">Encontrâh {{ totalCollections }} colêççionê</ng-container>
+    <ng-container *ngIf="!isSearchView">{{fieldAppMessages('choose_collection_component_no_search_view_title')}}</ng-container>
+    <ng-container *ngIf="isSearchView">{{fieldAppMessages('choose_collection_component_is_search_view_title_first_part')}} 
+      {{ totalCollections }} {{fieldAppMessages('choose_collection_component_is_search_view_title_second_part')}}</ng-container>
   </ion-title>
   <app-spinner
     class="loader"
@@ -36,22 +43,33 @@
     </ng-container>
     <ng-template #emptyMessage>
       <ion-text color="medium" class="empty-box ion-text-center ion-padding">
-        ¡Entoabía no ay colêççionê!
+        {{fieldAppMessages('choose_collection_component_empty_box_text')}}
       </ion-text>
     </ng-template>
   </ng-template>
 
-  <ion-footer footer class="footer" *ngIf="!isProfile">
+  <ion-footer
+    footer
+    class="footer"
+    [ngClass]="{ 'footer--search-view': isSearchView }"
+    *ngIf="!isProfile"
+  >
     <ion-buttons class="footer__buttons">
       <app-button
         class="footer__button"
         (buttonClick)="updateCollections()"
         [disabled]="isPristine"
       >
-        Añadîh
+      {{fieldAppMessages('choose_collection_component_add_footer_button_text')}}
       </app-button>
-      <app-button class="footer__button" fill="outline" color="medium" (buttonClick)="back.emit()">
-        Cançelâh
+      <app-button
+        class="footer__button"
+        fill="outline"
+        color="medium"
+        (buttonClick)="back.emit()"
+        *ngIf="!isSearchView"
+      >
+        {{fieldAppMessages('choose_collection_component_cancel_footer_button_text')}}
       </app-button>
     </ion-buttons>
   </ion-footer>
@@ -63,7 +81,7 @@
   [options]="{
     footer: true
   }"
-  title="Creâh Colêççión"
+  [title]="fieldAppMessages('choose_collection_component_add_collection_modal_title')"
 >
   <form
     class="create-collection-form"
@@ -72,46 +90,51 @@
     [formGroup]="createCollectionForm"
   >
     <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Informaçión Henerâh</ion-title>
+      <ion-title class="create-collection-form__title">
+      {{fieldAppMessages('choose_collection_component_add_collection_modal_general_info_form_title')}}</ion-title>
       <app-form-control
-        label="Nombre de la colêççión"
+        [label]="fieldAppMessages('choose_collection_component_add_collection_modal_general_info_form_control_name_label')"
         [required]="true"
         class="form-control"
         formControlName="name"
-        placeholder="Introduçe un nombre pa la colêççión"
+        [placeholder]="fieldAppMessages('choose_collection_component_add_collection_modal_general_info_form_control_name_placeholder')"
         [errors]="fieldErrorMessages(createCollectionForm.controls['name'], 'name')"
       >
       </app-form-control>
       <app-form-control
         [rows]="3"
-        label="Dêccrîççión"
+        [label]="fieldAppMessages('choose_collection_component_add_collection_modal_general_info_form_control_description_label')"
         class="form-control"
         formControlName="description"
-        placeholder="Mete Dêccrîççión"
+        [placeholder]="fieldAppMessages('choose_collection_component_add_collection_modal_general_info_form_control_description_placeholder')"
       >
       </app-form-control>
     </div>
-    <!-- <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Môttrando</ion-title>
+    <div class="create-collection-form__group">
+      <ion-title class="create-collection-form__title">
+        {{fieldAppMessages('choose_collection_component_add_collection_modal_showing_form_title')}}</ion-title>
       <app-toggle type="item" formControlName="featured" (toggleChange)="featuredChange($event)"
-        >Dêttacao</app-toggle
+        >{{fieldAppMessages('choose_collection_component_add_collection_modal_showing_toggle_text')}}</app-toggle
       >
-    </div> -->
+    </div>
     <div class="create-collection-form__group" *ngIf="roleOptions">
-      <ion-title class="create-collection-form__title">¿Quién pué bêh êtto?</ion-title>
+      <ion-title class="create-collection-form__title">
+        {{fieldAppMessages('choose_collection_component_add_collection_modal_visible_to_title')}}</ion-title>
       <app-group-checkbox-select [data]="roleOptions" formControlName="visible_to">
       </app-group-checkbox-select>
     </div>
     <div class="create-collection-form__group">
-      <ion-title class="create-collection-form__title">Modo de biçualiçaçión por defêtto</ion-title>
+      <ion-title class="create-collection-form__title">
+        {{fieldAppMessages('choose_collection_component_add_collection_modal_view_title')}}</ion-title>
       <app-select
         formControlName="view"
-        label="Modo de biçualiçaçión por defêtto"
+        [label]="fieldAppMessages('choose_collection_component_add_collection_modal_view_label')"
         [options]="viewingModeOptions"
       ></app-select>
     </div>
     <div class="create-collection-form__group">
-      <app-toggle formControlName="is_notifications_enabled">Reçibîh notificaçionê</app-toggle>
+      <app-toggle formControlName="is_notifications_enabled">
+        {{fieldAppMessages('choose_collection_component_add_collection_modal_notifications_enabled_toggle_text')}}</app-toggle>
     </div>
   </form>
 
@@ -122,7 +145,7 @@
       (buttonClick)="createCollection()"
       [disabled]="createCollectionForm.disabled || createCollectionForm.invalid"
     >
-      Açêttâh
+    {{fieldAppMessages('choose_collection_component_add_collection_modal_accept_footer_button_text')}}
     </app-button>
     <app-button
       class="footer__button"
@@ -131,7 +154,7 @@
       (buttonClick)="close()"
       *ngIf="!collectionToEdit"
     >
-      Cançelâh
+    {{fieldAppMessages('choose_collection_component_add_collection_modal_cancel_footer_button_text')}}
     </app-button>
     <app-button
       class="footer__button"
@@ -140,7 +163,7 @@
       (buttonClick)="deleteCollection()"
       *ngIf="collectionToEdit"
     >
-      Borrâh
+    {{fieldAppMessages('choose_collection_component_add_collection_modal_remove_footer_button_text')}}
     </app-button>
   </ion-buttons>
 </app-modal>

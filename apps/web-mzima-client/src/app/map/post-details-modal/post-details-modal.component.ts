@@ -10,7 +10,6 @@ export class PostDetailsModalComponent {
   public post: any;
   public color: string;
   public editable: boolean;
-  public urlEnd: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,7 +18,6 @@ export class PostDetailsModalComponent {
     this.post = data?.post;
     this.color = data?.color;
     this.editable = data?.editable;
-    this.urlEnd = data?.urlEnd;
   }
 
   public handleEditPost(): void {
@@ -43,20 +41,4 @@ export class PostDetailsModalComponent {
       statusChanged: true,
     });
   }
-
-  /* --------------------------------------------
-    If modal is no longer employed in data/feed
-    view, the postIs obj can be removed/discarded
-  ----------------------------------------------*/
-  public postIs = {
-    available: () => {
-      return !this.urlEnd || !this.postIs.notfound() || !this.postIs.notAllowed();
-    },
-    notfound: () => {
-      return this.urlEnd === 'not-found';
-    },
-    notAllowed: () => {
-      return this.urlEnd === 'not-allowed';
-    },
-  };
 }

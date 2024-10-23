@@ -22,7 +22,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortByFieldModule } from '@pipes';
 import { DirectiveModule, MapWithMarkerModule, PipeModule, SpinnerModule } from '@shared';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { PostRoutingModule } from './post-routing.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { PostEditComponent } from './post-edit/post-edit.component';
@@ -36,8 +35,6 @@ import { MzimaUiModule } from '@mzima-client/mzima-ui';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PostNotFoundComponent } from './post-not-found/post-not-found.component';
-import { PostNotAllowedComponent } from './post-not-allowed/post-not-allowed.component';
-import { PostConversationComponent } from './post-conversation/post-conversation.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +47,6 @@ import { PostConversationComponent } from './post-conversation/post-conversation
     PostHeadComponent,
     ImageUploaderComponent,
     PostNotFoundComponent,
-    PostNotAllowedComponent,
-    PostConversationComponent,
   ],
   imports: [
     CommonModule,
@@ -84,7 +79,6 @@ import { PostConversationComponent } from './post-conversation/post-conversation
     NgxMatNativeDateModule,
     MzimaUiModule,
     SortByFieldModule,
-    NgxPaginationModule,
   ],
   exports: [
     PostPreviewComponent,
@@ -92,8 +86,6 @@ import { PostConversationComponent } from './post-conversation/post-conversation
     PostMetadataComponent,
     PostEditComponent,
     PostNotFoundComponent,
-    PostNotAllowedComponent,
-    PostConversationComponent,
   ],
 })
 export class PostModule {}

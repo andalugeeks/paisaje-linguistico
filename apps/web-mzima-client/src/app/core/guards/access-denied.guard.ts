@@ -8,11 +8,14 @@ import { SessionService } from '@services';
 export class AccessDeniedGuard implements CanActivate {
   constructor(private router: Router, private service: SessionService) {}
 
-  canActivate() {
+  canActivate(): boolean {
     const access: boolean = this.service.accessToSite;
+
     if (access) {
       return true;
+    } else {
+      this.router.navigate([`/forbidden`]);
     }
-    return this.router.parseUrl('/forbidden');
+    return false;
   }
 }

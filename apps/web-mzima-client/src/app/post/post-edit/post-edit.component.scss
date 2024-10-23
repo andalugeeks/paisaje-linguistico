@@ -1,7 +1,7 @@
 @import 'helpers';
 
 .post-item-page {
-  padding: 0 24px 24px 24px;
+  padding: 24px;
   max-height: 100%;
   height: 100%;
   overflow-y: auto;
@@ -20,25 +20,10 @@
       }
     }
   }
-
-  .other {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    &__input {
-      width: 100%;
-      padding: 8px 12px;
-      &__radio {
-        width: 45px;
-      }
-      &__checkbox {
-        max-width: 55px;
-      }
-    }
-  }
 }
 
 .translate-container {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   .form-row {
@@ -46,7 +31,7 @@
     align-items: center;
     justify-content: flex-start;
     max-width: 200px;
-    margin-bottom: 16px;
+    margin-bottom: 0;
     .tooltip-btn {
       margin-right: 5px;
     }
@@ -60,10 +45,6 @@
   background: var(--color-light);
   box-shadow: inset 0 0 0 1px var(--color-neutral-30);
   max-width: 833px;
-
-  &__isLoading {
-    min-height: 100%;
-  }
 }
 
 .survey-name {
@@ -79,10 +60,6 @@
   &__instruction {
     display: block;
     margin-bottom: 8px;
-  }
-  .field__icon {
-    vertical-align: middle;
-    display: inline;
   }
 }
 
@@ -208,12 +185,4 @@
   .mat-form-field-appearance-outline .mat-form-field-suffix {
     flex-direction: row;
   }
-}
-
-.info-message {
-  display: block;
-  background-color: var(--color-neutral-10);
-  border-radius: 4px;
-  padding: 20px;
-  margin-bottom: 20px;
 }

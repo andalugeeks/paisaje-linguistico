@@ -6,6 +6,7 @@ import { Subject, debounceTime, distinctUntilChanged, lastValueFrom } from 'rxjs
 import { DatabaseService, NetworkService, SessionService } from '@services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -18,7 +19,6 @@ export class PostsPage {
     limit: 6,
     page: 1,
     q: '',
-    currentView: 'myposts',
   };
   public isPostsLoading = false;
   public posts: PostResult[] = [];
@@ -28,6 +28,7 @@ export class PostsPage {
   private readonly searchSubject = new Subject<string>();
   public isEditMode = false;
   public permissions: string[] = ['add_to_collection', 'edit'];
+  public fieldAppMessages = fieldAppMessages;
   private user: { id?: string; role?: string } = {
     id: undefined,
     role: undefined,
@@ -119,12 +120,6 @@ export class PostsPage {
       1,
     );
     this.totalPosts--;
-  }
-
-  public handlePostsDeleted(deletedPostIds: any): void {
-    this.posts = this.posts.filter((post) => !deletedPostIds.includes(post.id));
-    this.totalPosts -= deletedPostIds.length;
-    this.isEditMode = false;
   }
 
   public showPost(id: string): void {

@@ -7,7 +7,6 @@ describe("Automated Tests for Edit Post", () => {
 
   beforeEach(() => {
     loginFunctions.login_as_admin();
-    cy.visit(Cypress.env('baseUrl'));
   });
 
   it("Steps for Edit Post", () => {

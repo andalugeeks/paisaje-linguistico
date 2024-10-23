@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { AlertService, DeploymentService, ShareService, ToastService } from '@services';
 import { CollectionsModalComponent } from '../collections-modal/collections-modal.component';
 import { Router } from '@angular/router';
+import { fieldAppMessages, LocalStorageManager } from '@helpers';
 
 @Component({
   selector: 'app-post-controls',
@@ -20,6 +21,8 @@ export class PostControlsComponent {
   @Output() postDeleted = new EventEmitter();
 
   public statusOptionsButtons?: ActionSheetButton[] = getPostStatusActions();
+  public fieldAppMessages = fieldAppMessages;
+  public LocalStorageManager = LocalStorageManager;
 
   constructor(
     private postsService: PostsService,
@@ -73,10 +76,10 @@ export class PostControlsComponent {
 
       if (uncompletedPosts.length > 0) {
         this.toastService.presentToast({
-          header: 'No çe puén publicâh',
-          message: `Lâ çigientê publicaçionê no an podío çêh publicâh: ${uncompletedPosts
-            .map((p) => p.title)
-            .join(', ')}`,
+          header: fieldAppMessages('post_controls_uncompleted_posts_header'),
+          message: `${fieldAppMessages(
+            'post_controls_uncompleted_posts_message',
+          )}: ${uncompletedPosts.map((p) => p.title).join(', ')}`,
           buttons: [],
         });
         return;
@@ -86,8 +89,10 @@ export class PostControlsComponent {
     forkJoin(this.posts.map((p) => this.postsService.updateStatus(p.id, status))).subscribe({
       complete: () => {
         this.toastService.presentToast({
-          header: postStatusChangedHeader[status],
-          message: `Cambiaron de ${this.posts.length > 1 ? 'êttaô' : 'êttao'} `,
+          header:
+            postStatusChangedHeader[status][LocalStorageManager.getStoredSpellingProposalId()],
+          message: fieldAppMessages('post_controls_completed_posts_message_first_part'),
+          // message: `Cambiaron de ${this.posts.length > 1 ? 'êttaô' : 'êttao'} `,
           buttons: [],
         });
         this.postChanged.emit();
@@ -105,20 +110,27 @@ export class PostControlsComponent {
     const modal = await this.modalController.create({
       component: CollectionsModalComponent,
       componentProps: {
-        postId: this.posts[0].id,
-        selectedCollections: new Set(this.posts[0].sets ?? []),
+        postIds: this.posts[0].id,
       },
     });
     modal.onWillDismiss().then(({ data }) => {
       const { collections, changed } = data ?? {};
-      if (changed) {
-        this.posts[0].sets = collections;
+      if (changed && this.posts?.length) {
+        this.posts.forEach((post) => {
+          post.sets = collections;
+        });
         this.toastService.presentToast({
-          header: 'Éççito',
-          message: `a Publicaçión fue ${
+          header: fieldAppMessages('post_controls_add_post_to_collection_header'),
+          message: `${fieldAppMessages(
+            'post_controls_add_post_to_collection_message_first_part',
+          )} ${
             collections?.length
-              ? `añadía en ${collections.length} colêççionê`
-              : 'borrá de toâ lâ colêççionê'
+              ? `${fieldAppMessages(
+                  'post_controls_add_post_to_collection_message_second_part_a',
+                )} ${collections.length} ${fieldAppMessages(
+                  'post_controls_add_post_to_collection_message_third_part_a',
+                )}`
+              : fieldAppMessages('post_controls_add_post_to_collection_message_second_part_b')
           }.`,
           buttons: [],
         });
@@ -135,29 +147,35 @@ export class PostControlsComponent {
     const text = this.posts
       .map(
         (post) =>
-          `https://${this.deploymentService.getDeployment()!.fqdn}/feed/${post.id}/view?mode=ID`,
+          `https://${this.deploymentService.getDeployment()!.fqdn}/feed/${post.id}/view?mode=POST`,
       )
       .join(', ');
     this.shareService.share({
       title,
       text,
-      dialogTitle: `Compartîh ${this.posts.length > 1 ? 'publicacionê' : 'publicaçión'}`,
+      dialogTitle: `${fieldAppMessages('post_controls_component_share_dialog_title_first_part')} ${
+        this.posts.length > 1
+          ? fieldAppMessages('post_controls_component_share_dialog_title_second_part_a')
+          : fieldAppMessages('post_controls_component_share_dialog_title_second_part_b')
+      }`,
     });
   }
 
   public async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `¿Çeguro que quiêh eliminâh ${
-        this.posts.length > 1 ? 'êttâ publicaçionê' : 'êtta publicaçión'
+      header: `${fieldAppMessages('post_controls_component_delete_post_alert_header_first_part')} ${
+        this.posts.length > 1
+          ? fieldAppMessages('post_controls_component_delete_post_alert_header_second_part_a')
+          : fieldAppMessages('post_controls_component_delete_post_alert_header_second_part_b')
       }?`,
-      message: 'Êtta âççión no çe pué deçaçêh. Ándate con cuidao.',
+      message: fieldAppMessages('post_controls_component_delete_post_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('post_controls_component_delete_post_alert_cancel_button'),
           role: 'cancel',
         },
         {
-          text: 'Eliminâh',
+          text: fieldAppMessages('post_controls_component_delete_post_alert_confirm_button'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -166,15 +184,24 @@ export class PostControlsComponent {
 
     if (result.role === 'confirm') {
       const count = this.posts.length;
-      const postIds = this.posts.map((p) => p.id);
       forkJoin(this.posts.map((p) => this.postsService.delete(p.id))).subscribe({
         complete: () => {
           this.toastService.presentToast({
             message: `${
-              this.posts.length > 1 ? count + ' publicaçionê' : 'Publicaçión'
-            } eliminao/ôh con éççito`,
+              this.posts.length > 1
+                ? count +
+                  ' ' +
+                  fieldAppMessages(
+                    'post_controls_component_delete_post_confirmed_toast_message_first_part_a',
+                  )
+                : fieldAppMessages(
+                    'post_controls_component_delete_post_confirmed_toast_message_first_part_b',
+                  )
+            } ${fieldAppMessages(
+              'post_controls_component_delete_post_confirmed_toast_message_second_part',
+            )}`,
           });
-          this.postDeleted.emit(postIds);
+          this.postDeleted.emit();
         },
       });
     }

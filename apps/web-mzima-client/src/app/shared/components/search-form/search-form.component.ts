@@ -35,18 +35,10 @@ import {
   Savedsearch,
   SurveyItem,
   AccountNotificationsInterface,
-  GeoJsonFilter,
 } from '@mzima-client/sdk';
 import dayjs from 'dayjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  DEFAULT_FILTERS,
-  DEFAULT_FILTERS_LOGGED_OUT,
-  DEFAULT_STATUSES_LOGGED_IN,
-  DEFAULT_STATUSES_LOGGED_OUT,
-  loggedOutStatuses,
-} from '../../../core/helpers/search-form';
 
 @UntilDestroy()
 @Component({
@@ -62,7 +54,7 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   public activeFilters: any;
   public savedSearches: Savedsearch[];
   public surveyList: SurveyItem[] = [];
-  public statuses = loggedOutStatuses;
+  public statuses = searchFormHelper.statuses;
   public sources = searchFormHelper.sources;
   public categoriesData: MultilevelSelectOption[];
   public activeSavedSearch?: Savedsearch;
@@ -104,13 +96,8 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
     super(sessionService, breakpointService);
     this.checkDesktop();
 
-    let defaultFilters = searchFormHelper.DEFAULT_FILTERS_LOGGED_OUT;
-    if (this.isLoggedIn) {
-      defaultFilters = searchFormHelper.DEFAULT_FILTERS;
-    }
-
-    this.form = this.formBuilder.group(defaultFilters);
-    this.defaultFormValue = this.formBuilder.group(defaultFilters).value;
+    this.form = this.formBuilder.group(searchFormHelper.DEFAULT_FILTERS);
+    this.defaultFormValue = this.formBuilder.group(searchFormHelper.DEFAULT_FILTERS).value;
     this.filters = localStorage.getItem(this.session.getLocalStorageNameMapper('filters'))!;
     this.activeSaved = localStorage.getItem(
       this.session.getLocalStorageNameMapper('activeSavedSearch'),
@@ -118,13 +105,12 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isMapView = this.router.url.includes('/map');
+    this.getUserData();
     this.eventBusInit();
     this.getSavedFilters();
-    this.initFilters();
     this.getSurveys();
     this.getCategories();
-    this.getUserData();
+    this.initFilters();
 
     if (this.activeSaved) {
       this.activeSavedSearch = JSON.parse(this.activeSaved!);
@@ -133,10 +119,11 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
       this.checkSavedSearchNotifications();
     }
 
+    // TODO: There should be a better way to check if the context is a map view
+    this.isMapView = this.router.url.includes('/map');
     this.router.events.pipe(filter((event) => event instanceof NavigationStart)).subscribe({
       next: (params: any) => {
         this.isMapView = params.url.includes('/map');
-        this.applyFilters(false);
       },
     });
 
@@ -185,27 +172,6 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
       error: (err) => console.log('isMainFiltersHidden:', err),
     });
 
-    this.session.currentUserData$.pipe(untilDestroyed(this)).subscribe({
-      next: (currentUser) => {
-        if (this.activeFilters && this.activeFilters['status[]']) {
-          const existingStatuses = this.activeFilters['status[]'];
-          const newStatuses = currentUser.role
-            ? DEFAULT_STATUSES_LOGGED_IN
-            : DEFAULT_STATUSES_LOGGED_OUT;
-          if (
-            existingStatuses.length !== newStatuses.length ||
-            existingStatuses.every(
-              (element: string, index: number) => element !== newStatuses[index],
-            )
-          ) {
-            this.activeFilters['status[]'] = newStatuses;
-            this.form.get('status')?.enable();
-            this.form.patchValue({ status: newStatuses }, { onlySelf: false, emitEvent: true });
-          }
-        }
-      },
-    });
-
     this.getPostsFilters();
     this.getTotalPosts();
   }
@@ -213,13 +179,8 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   loadData(): void {
     this.getSavedFilters();
     this.getPostsStatistic();
-    if (this.isLoggedIn) {
-      this.statuses = searchFormHelper.statuses;
-      if (this.collectionInfo) {
-        this.getNotification(String(this.collectionInfo.id));
-      }
-    } else {
-      this.statuses = searchFormHelper.loggedOutStatuses;
+    if (this.isLoggedIn && this.collectionInfo) {
+      this.getNotification(String(this.collectionInfo.id));
     }
   }
 
@@ -335,12 +296,14 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
           return {
             id: category.id,
             name: category.tag,
-            children: category?.children?.map((cat: CategoryInterface) => {
-              return {
-                id: cat.id,
-                name: cat.tag,
-              };
-            }),
+            children: response?.results
+              ?.filter((cat: CategoryInterface) => cat.parent_id === category.id)
+              .map((cat: CategoryInterface) => {
+                return {
+                  id: cat.id,
+                  name: cat.tag,
+                };
+              }),
           };
         });
         if (!this.categoriesData.length) {
@@ -360,39 +323,41 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   private getActiveFilters(values: any): void {
     // Check if values.form contains an item with id 0
     let fetchPostsWithoutFormId = false;
-    if (!this.isMapView && Array.isArray(values.form)) {
+    if (Array.isArray(values.form)) {
       const index = values.form.findIndex((id: any) => id === 0);
-      fetchPostsWithoutFormId = index !== -1;
+      if (index !== -1) {
+        // Remove the item with id 0
+        values.form.splice(index, 1);
+        fetchPostsWithoutFormId = true;
+      }
     }
 
-    const filters: GeoJsonFilter = {
+    const filters: any = {
       'source[]': values.source,
       'status[]': values.status,
       'form[]': values.form,
       'tags[]': values.tags,
-      currentView: this.isMapView ? 'map' : 'feed',
       include_unstructured_posts: fetchPostsWithoutFormId,
       set: values.set,
-      date_after: values.date.start ? dayjs(values.date.start).toISOString() : undefined,
+      date_after: values.date.start ? dayjs(values.date.start).toISOString() : null,
       date_before: values.date.end
         ? dayjs(values.date.end)
             .endOf('day')
             .add(dayjs(values.date.end).utcOffset(), 'minute')
             .toISOString()
-        : undefined,
+        : null,
       q: this.searchQuery,
       center_point:
         values.center_point?.location?.lat && values.center_point?.location?.lng
           ? [values.center_point.location.lat, values.center_point.location.lng].join(',')
-          : undefined,
+          : null,
       within_km: values.center_point.distance,
     };
 
     this.activeFilters = {};
     for (const key in filters) {
-      const val = filters[key as keyof typeof filters];
-      if (val === undefined) continue;
-      this.activeFilters[key] = val;
+      if (!filters[key] && !filters[key]?.length) continue;
+      this.activeFilters[key] = filters[key];
     }
   }
 
@@ -466,7 +431,7 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
 
     forkJoin([
       this.surveysService.get('', { show_unknown_form: true }),
-      this.getPostsStatistic(),
+      this.postsService.getPostStatistics(null, this.isMapView),
     ]).subscribe({
       next: (responses) => {
         const values = responses[1].result.group_by_total_posts;
@@ -531,7 +496,7 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   }
 
   public getPostsStatistic(): Observable<any> {
-    return this.postsService.getPostStatistics(this.activeFilters).pipe(
+    return this.postsService.getPostStatistics(null, this.isMapView).pipe(
       map((res) => {
         this.notMappedPostsCount = res.result.unmapped;
         const values = res.result.group_by_total_posts;
@@ -711,17 +676,18 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
   }
 
   public resetForm(filters: any = {}): void {
-    let fetchPostsWithoutFormId = false;
     // Check if this.surveyList contains an item with id 0
-    if (!this.isMapView) {
-      const index = this.surveyList.findIndex((s) => s.id === 0);
-      fetchPostsWithoutFormId = index !== -1;
+    let fetchPostsWithoutFormId = false;
+    const index = this.surveyList.findIndex((s) => s.id === 0);
+    if (index !== -1) {
+      // Remove the item with id 0
+      this.surveyList.splice(index, 1);
+      fetchPostsWithoutFormId = true;
     }
 
-    this.activeFilters = this.isLoggedIn ? DEFAULT_FILTERS : DEFAULT_FILTERS_LOGGED_OUT;
     this.form.patchValue({
       query: '',
-      status: this.isLoggedIn ? DEFAULT_STATUSES_LOGGED_IN : DEFAULT_STATUSES_LOGGED_OUT,
+      status: ['published', 'draft'],
       tags: [],
       source: this.sources.map((s) => s.value),
       form: this.surveyList.map((s) => s.id),
@@ -730,8 +696,6 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
         start: '',
         end: '',
       },
-      date_before: '',
-      date_after: '',
       place: '',
       center_point: {
         location: {
@@ -752,33 +716,11 @@ export class SearchFormComponent extends BaseComponent implements OnInit {
 
   public clearFilter(filterName: string): void {
     this.total = 0;
-    this.form.controls[filterName].patchValue('');
-  }
-
-  public showAllButton(filterName: string) {
-    return (
-      JSON.stringify(this.form.controls[filterName].getRawValue()) === JSON.stringify(['none'])
-    );
-  }
-
-  public toggleSidebarFilters(filterName: string): void {
-    let newValue;
-    if (this.showAllButton(filterName)) {
-      if (filterName === 'form') {
-        newValue = this.surveyList.map((survey: any) => {
-          return survey.id;
-        });
-      }
-      if (filterName === 'source') {
-        newValue = this.sources.map((source: any) => {
-          return source.value;
-        });
-      }
+    if (filterName === 'form' || filterName === 'source') {
+      this.form.controls[filterName].patchValue(['none']);
     } else {
-      this.total = 0;
-      newValue = ['none'];
+      this.form.controls[filterName].patchValue('');
     }
-    this.form.controls[filterName].patchValue(newValue);
   }
 
   public searchPosts(): void {

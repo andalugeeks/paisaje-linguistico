@@ -1,6 +1,6 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
-const appName: string = 'Paisaje Andalûh';
+const appName: string = 'Paisaje Andaluz';
 
 const config: CapacitorConfig = {
   // need change to app id before publish
@@ -8,7 +8,6 @@ const config: CapacitorConfig = {
   appName: appName,
   webDir: '../../dist/apps/mobile-mzima-client',
   bundledWebRuntime: false,
-  loggingBehavior: process.env['NODE_ENV'] === 'production' ? 'production' : 'debug',
   plugins: {
     SplashScreen: {
       launchShowDuration: 1000,
@@ -34,28 +33,12 @@ const config: CapacitorConfig = {
         biometricSubTitle: 'Log in using your biometric',
       },
     },
-    Keyboard: {
-      resizeOnFullScreen: true,
-    },
-    CapacitorHttp: {
-      enabled: false,
-    },
     Intercom: {
       iosApiKey: 'ios_sdk-39fba04b7c5ab918fb743cc4a55ea9380221eb3c',
       iosAppId: 'hl5rfiga',
       androidApiKey: 'android_sdk-1643361a166d7bca0ba7ae40945250a1c8ebe9ff',
       androidAppId: 'hl5rfiga',
     },
-  },
-  android: {
-    appendUserAgent: 'Mzima-Mobile-Android',
-  },
-  ios: {
-    preferredContentMode: 'mobile',
-    appendUserAgent: 'Mzima-Mobile-Ios',
-  },
-  server: {
-    cleartext: process.env['NODE_ENV'] === 'production' ? false : true,
   },
 };
 

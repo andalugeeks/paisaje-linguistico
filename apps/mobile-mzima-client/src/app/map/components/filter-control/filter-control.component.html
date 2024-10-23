@@ -9,7 +9,7 @@
   <div class="filter-control__main">
     <span class="filter-control__title">{{ filter.label }}</span>
     <span class="filter-control__info">
-      {{ filter.selectedLabel ?? 'Filtros Seleccionados:' }} {{ filter.selected }}
+      {{ filter.selectedLabel ?? fieldAppMessages('filter_control_component_info') }} {{ filter.selected }}
     </span>
   </div>
   <div slot="end" class="filter-control__controls">

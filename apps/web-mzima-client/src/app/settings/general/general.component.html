@@ -90,10 +90,7 @@
       </div>
       <div class="checkbox">
         <!-- FIXME: isDisableRegistrationEnabled -->
-        <mat-checkbox
-          [data-qa]="'site-disable-registration'"
-          formControlName="disable_registration"
-        >
+        <mat-checkbox [data-qa]="'site-disable-registration'" formControlName="disable_registration">
           {{ 'settings.site_disable_registration' | translate }}
         </mat-checkbox>
         <p translate="settings.site_disable_registration_desc"></p>
@@ -124,13 +121,7 @@
     </mat-form-field>
   </div>
 
-  <mzima-client-button
-    fill="outline"
-    [expand]="false"
-    color="secondary"
-    (click)="generateApiKey()"
-    [data-qa]="'generate-api-key'"
-  >
+  <mzima-client-button fill="outline" [expand]="false" color="secondary" (click)="generateApiKey()">
     <span>{{ 'settings.general_settings.generate_api_key' | translate }}</span>
     <mat-icon icon svgIcon="key"></mat-icon>
   </mzima-client-button>
@@ -147,10 +138,10 @@
   <mzima-client-button
     type="button"
     fill="outline"
-    class="cancel-button"
     color="secondary"
-    (click)="openConfirmModal()"
-    data-qa="'btn-cancel'"
+    routerLink="/settings"
+    [data-qa]="'btn-cancel'"
+    *ngIf="!(isDesktop$ | async)!"
   >
     {{ 'app.cancel' | translate }}
   </mzima-client-button>
@@ -162,7 +153,7 @@
       generalForm.invalid ||
       generalForm.disabled ||
       submitted ||
-      !isIntegerAndZeroToNine(mapSettings.mapConfig.location_precision)
+      !isInteger(mapSettings.mapConfig.location_precision)
     "
   >
     {{ 'app.save' | translate }}

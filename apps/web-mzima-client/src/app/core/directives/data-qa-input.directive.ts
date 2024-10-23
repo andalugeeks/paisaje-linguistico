@@ -10,7 +10,7 @@ export class DataQaInputDirective {
     @Attribute('formControlName') name: string,
   ) {
     const el = elementRef.nativeElement;
-    if (!el.hasAttribute('data-qa') && name) {
+    if (!el.hasAttribute('data-qa')) {
       el.setAttribute('data-qa', name);
     }
   }

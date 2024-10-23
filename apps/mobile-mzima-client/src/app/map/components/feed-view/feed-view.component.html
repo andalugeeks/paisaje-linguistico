@@ -2,8 +2,7 @@
   class="page-content ion-padding-horizontal"
   [ngClass]="{
     'at-bottom': atBottom,
-    'at-top': atTop,
-    collection: isCollection
+    'at-top': atTop
   }"
 >
   <app-select
@@ -19,28 +18,9 @@
       <app-icon name="sorting"></app-icon>
     </ng-container>
   </app-select>
-
-  <div *ngIf="isCollection" class="feed-header">
-    <div class="feed-header--button">
-      <app-button
-        fill="clear"
-        [color]="'primary'"
-        *ngIf="isCollection"
-        (buttonClick)="removeCollection()"
-      >
-        <app-icon name="arrow-back"></app-icon>
-      </app-button>
-      <span>Back</span>
-    </div>
-    <p class="feed-header--title" *ngIf="!isPostsLoading">
-      {{ totalPosts }} {{ totalPosts > 1 ? 'publicaçionê' : 'publicaçión' }} {{ ' - ' + collectionName }}
-    </p>
+  <div class="total-posts" *ngIf="!isPostsLoading">
+    {{ totalPosts }} {{ totalPosts > 1 ? fieldAppMessages('feed_view_uncompleted_total_posts_pl') : fieldAppMessages('feed_view_uncompleted_total_posts_sing') }}
   </div>
-
-  <div class="total-posts" *ngIf="!isPostsLoading && !isCollection">
-    {{ totalPosts }} {{ totalPosts > 1 ? 'posts' : 'post' }}
-  </div>
-
   <ng-container *ngIf="posts.length; else emptyBox">
     <app-post-item
       *ngFor="let post of posts"
@@ -57,17 +37,17 @@
     </ion-infinite-scroll>
   </ng-container>
 
-  <app-menu class="menu"> </app-menu>
+  <app-menu class="menu" [ngClass]="{ 'menu--hidden': atBottom }"> </app-menu>
 </div>
 
 <ng-template #emptyBox>
   <div class="empty-box" [ngClass]="{ 'empty-box--loading': isPostsLoading }">
     <ng-container *ngIf="!posts.length && !isPostsLoading">
       <ion-text color="medium" class="empty ion-text-center">
-        No ay publicaçión ninguna. Añade una publicaçión.
+        {{fieldAppMessages('feed_view_empty_box_text')}}
       </ion-text>
       <app-button class="create-post-btn" (buttonClick)="createPost()" iconName="plus">
-        Añadîh una publicaçión
+        {{fieldAppMessages('feed_view_empty_box_button_tag')}}
       </app-button>
     </ng-container>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>

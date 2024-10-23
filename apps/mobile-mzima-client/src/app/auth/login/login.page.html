@@ -1,12 +1,12 @@
 <ion-content class="page ion-padding-vertical" [fullscreen]="true">
   <div class="page-head ion-padding-horizontal ion-text-center ion-margin-bottom">
     <ion-title class="page-title" *ngIf="!isPrivate; else loginToPrivateDeployment">
-      ¡Te damô la biembenía!
+      {{ fieldAppMessages('login_signup_pages_welcome_text') }}
     </ion-title>
     <ng-template #loginToPrivateDeployment>
-      <ion-title class="page-title"> Âççedêh ar dêppliege pribao </ion-title>
+      <ion-title class="page-title"> {{ fieldAppMessages('login_page_login_to_private_deployment_title') }} </ion-title>
       <ion-text class="page-head__info">
-        Ar fabôh d'introduçîh tu uçuario y contraçeña pa âççedêh ar dêppliege. O contâtta al Admin
+        {{ fieldAppMessages('login_page_login_to_private_deployment_head_info') }}
         <a href="mailto:{{ adminEmail }}">{{ adminEmail }}</a>
       </ion-text>
     </ng-template>
@@ -20,17 +20,17 @@
           label="Email"
           [required]="true"
           formControlName="email"
-          placeholder="Mete tu correo elêttrónico"
+          [placeholder]="fieldAppMessages('signup_form_email_placeholder')" 
           [errors]="fieldErrorMessages(form.controls['email'], 'email')"
         >
         </app-form-control>
         <app-form-control
           type="password"
-          label="Contraçeña"
+          [label]="fieldAppMessages('signup_form_password_label')" 
           [required]="true"
           [togglePassword]="true"
           formControlName="password"
-          placeholder="Mete tu contraçeña"
+          [placeholder]="fieldAppMessages('signup_form_password_placeholder')"
           [errors]="fieldErrorMessages(form.controls['password'], 'password')"
         >
           <div class="forgot-password-button" button>
@@ -40,7 +40,7 @@
               expand="inline"
               size="small"
             >
-              ¿Te ça orbiao la contraçeña?
+            {{ fieldAppMessages('login_page_forgot_password_button_tag') }}
             </app-button>
           </div>
         </app-form-control>
@@ -50,7 +50,7 @@
       </div>
 
       <div class="bottom-panel">
-        <app-button type="submit" [disabled]="form.invalid || form.disabled"> Âççedêh </app-button>
+        <app-button type="submit" [disabled]="form.invalid || form.disabled"> {{ fieldAppMessages('login_page_access_button_tag') }} </app-button>
         <app-button
           fill="clear"
           color="medium"
@@ -58,7 +58,7 @@
           *ngIf="!isPrivate; else cancelButton"
           class="ion-margin-top"
         >
-          Çartarçe êtto de momento
+        {{ fieldAppMessages('login_page_skip_button_tag') }}
         </app-button>
         <ng-template #cancelButton>
           <app-button
@@ -67,7 +67,7 @@
             class="ion-margin-top"
             (buttonClick)="chooseDeployment()"
           >
-            Cançelâh
+          {{ fieldAppMessages('login_page_cancel_button_tag') }}
           </app-button>
         </ng-template>
       </div>
@@ -78,14 +78,13 @@
 <app-modal
   class="forgot-password-modal"
   [isOpen]="isForgotPasswordModalOpen"
-  title="Recuperâh Contraçeña"
+  [title]="fieldAppMessages('login_page_forgot_password_modal_title')"
   (modalClose)="forgotPasswordModalCloseHandle()"
 >
   <div class="forgot-password-modal__info">
-    <ion-text class="forgot-password-modal__title">¿Te çe orbió la contraçeña?</ion-text>
+    <ion-text class="forgot-password-modal__title">{{ fieldAppMessages('login_page_forgot_password_modal_tag') }}</ion-text>
     <p>
-      ¡No te preocupê! Mete tu correo elêttrónico y reçibirâh un correo de la plataforma Ushahidi
-      con un enlaçe pa rêttableçêl-la.
+      {{ fieldAppMessages('login_page_forgot_password_modal_content') }}
     </p>
   </div>
   <form
@@ -100,7 +99,7 @@
         label="Email"
         [required]="true"
         formControlName="email"
-        placeholder="Mete tu correo elêttrónico"
+        [placeholder]="fieldAppMessages('signup_form_email_placeholder')" 
         [errors]="fieldErrorMessages(form.controls['email'], 'email')"
       >
       </app-form-control>
@@ -118,7 +117,7 @@
         type="submit"
         [disabled]="forgotPasswordForm.invalid || forgotPasswordForm.disabled"
       >
-        Rêttableçêh contraçeña
+      {{ fieldAppMessages('login_page_forgot_password_modal_button_tag') }}
       </app-button>
     </div>
   </form>

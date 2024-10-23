@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { LanguageInterface } from '@mzima-client/sdk';
+import { LanguageInterface } from '@models';
 import { TranslateService } from '@ngx-translate/core';
 import {
   GroupCheckboxItemInterface,
@@ -137,10 +137,13 @@ export class SurveyTaskComponent implements OnInit, OnChanges {
   }
 
   private splitTaskFields(taskFields: FormAttributeInterface[]) {
-    const nonDraggableFieldType = (fieldType: string) =>
-      fieldType === 'title' || fieldType === 'description';
-    this.nonDraggableFields = taskFields.filter((field) => nonDraggableFieldType(field.type));
-    this.draggableFields = taskFields.filter((field) => !nonDraggableFieldType(field.type));
+    const nonDraggableType = ['title', 'description'];
+    this.nonDraggableFields = taskFields.filter((field) =>
+      nonDraggableType.includes(field.label.toLowerCase()),
+    );
+    this.draggableFields = taskFields.filter(
+      (field) => !nonDraggableType.includes(field.label.toLowerCase()),
+    );
   }
 
   private getSurveyRoles() {

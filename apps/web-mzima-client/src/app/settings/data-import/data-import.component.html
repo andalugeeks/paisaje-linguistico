@@ -30,7 +30,7 @@
       placeholder="{{ 'survey.choose_survey' | translate }}"
       (selectionChange)="formChanged()"
     >
-      <mat-option *ngFor="let option of surveys | async" [value]="option">
+      <mat-option *ngFor="let option of forms$ | async" [value]="option">
         {{ option.name }}
       </mat-option>
     </mat-select>
@@ -130,44 +130,36 @@
         </div>
       </mat-radio-group>
     </div>
-    <ng-container>
+
+    <ng-container *ngIf="selectedForm.attributes">
       <div class="table-description">
         <mat-label class="form-label">{{
           'data_import.choose_which_column' | translate
         }}</mat-label>
         <p>{{ 'data_import.each_survey_field' | translate }}</p>
       </div>
-    </ng-container>
 
-    <ng-container *ngFor="let task of selectedForm.tasks">
-      <div class="table-description">
-        <mat-label class="form-label">
-          {{ task.label }}
-        </mat-label>
-        <p>{{ task.description }}</p>
-      </div>
-
-      <table mat-table [dataSource]="task.fields">
+      <table mat-table [dataSource]="selectedForm.attributes">
         <ng-container matColumnDef="survey">
           <th mat-header-cell *matHeaderCellDef>{{ 'data_import.survey_field' | translate }}</th>
-          <td mat-cell *matCellDef="let field">
-            {{ field.label }}&nbsp;
-            <ng-container *ngIf="field.required">*</ng-container>
+          <td mat-cell *matCellDef="let attribute">
+            {{ attribute.label }}&nbsp;
+            <ng-container *ngIf="attribute.required">*</ng-container>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="csv">
           <th mat-header-cell *matHeaderCellDef>{{ 'data_import.csv_column' | translate }}</th>
-          <td mat-cell *matCellDef="let field">
+          <td mat-cell *matCellDef="let attribute">
             <mat-form-field appearance="outline">
               <mat-select
                 [data-qa]="'select-columns'"
                 disableOptionCentering
-                [(ngModel)]="maps_to[getFieldKey(field)]"
+                [(ngModel)]="maps_to[attribute.key]"
                 [placeholder]="'data_import.leave_empty' | translate"
               >
                 <mat-option selected="selected" value="">
-                  {{ 'data_import.leave_empty' | translate }} {{ field.key }}
+                  {{ 'data_import.leave_empty' | translate }}
                 </mat-option>
                 <mat-option *ngFor="let column of uploadedCSV.columns; let i = index" [value]="i">
                   {{ column }}
@@ -182,10 +174,7 @@
       </table>
     </ng-container>
 
-    <mat-error *ngIf="importErrors">
-      {{ 'notify.data_import.csv_import_error' | translate }}
-    </mat-error>
-    <div class="form-controls-spacer"></div>
+    <div class="form-controls-spacer" *ngIf="!isDesktop"></div>
     <div class="form-controls-panel form-controls-panel--sticky">
       <mzima-client-button
         fill="outline"

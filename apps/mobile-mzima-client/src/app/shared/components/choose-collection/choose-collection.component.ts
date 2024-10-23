@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, Subject, debounceTime, forkJoin, lastValueFrom } from 'rxjs';
-import { fieldErrorMessages, formHelper } from '@helpers';
+import { fieldErrorMessages, formHelper, fieldAppMessages } from '@helpers';
 import { FormBuilder, Validators } from '@angular/forms';
 import { InfiniteScrollCustomEvent, ModalController } from '@ionic/angular';
 import {
@@ -47,6 +46,7 @@ export class ChooseCollectionComponent {
   @Input() public isProfile?: boolean;
   @Input() public selectedCollections: Set<number> = new Set();
   @Output() back = new EventEmitter();
+  public fieldAppMessages = fieldAppMessages;
   public isAddCollectionModalOpen = false;
   collectionToEdit: string | number;
   public createCollectionForm = this.formBuilder.group({
@@ -84,11 +84,11 @@ export class ChooseCollectionComponent {
   public totalCollections: number;
   public viewingModeOptions = [
     {
-      label: 'Mapa',
+      label: fieldAppMessages('choose_collection_component_viewing_mode_options_map'),
       value: 'map',
     },
     {
-      label: 'Datô',
+      label: fieldAppMessages('choose_collection_component_viewing_mode_options_data'),
       value: 'data',
     },
   ];
@@ -104,7 +104,6 @@ export class ChooseCollectionComponent {
     private toastService: ToastService,
     private notificationsService: NotificationsService,
     private databaseService: DatabaseService,
-    private router: Router,
   ) {
     this.searchSubject.pipe(debounceTime(500)).subscribe({
       next: (query: string) => {
@@ -150,9 +149,9 @@ export class ChooseCollectionComponent {
         this.roleOptions = formHelper.roleTransform({
           roles: response.results,
           userRole: this.userRole,
-          onlyMe: 'Çolo yo',
-          everyone: 'To quîqqui',
-          specificRoles: 'Rolê êppeçíficô...',
+          onlyMe: fieldAppMessages('choose_collection_component_only_me_role'),
+          everyone: fieldAppMessages('choose_collection_component_everyone_role'),
+          specificRoles: fieldAppMessages('choose_collection_component_specific_roles_role'),
         });
       },
     });
@@ -308,8 +307,8 @@ export class ChooseCollectionComponent {
       await this.updateCollection();
     } else {
       this.toastService.presentToast({
-        header: 'Éççito',
-        message: `La Publicaçión çe añadirá/borrará de la colêççión cuando çe rêttablêcca la conêççión.`,
+        header: fieldAppMessages('choose_collection_component_collection_updated_toast_header'),
+        message: fieldAppMessages('choose_collection_component_collection_updated_toast_message'),
         buttons: [],
       });
       this.modalController.dismiss();
@@ -408,15 +407,17 @@ export class ChooseCollectionComponent {
 
   async deleteCollection() {
     const result = await this.alertService.presentAlert({
-      header: `¿Çeguro que quiêh borrâh êtta colêççión?`,
-      message: 'Êtta âççión no çe pué deçaçêh. Ándate con ohito.',
+      header: fieldAppMessages('choose_collection_component_delete_collection_alert_header'),
+      message: fieldAppMessages('choose_collection_component_delete_collection_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('choose_collection_component_delete_collection_alert_cancel_text'),
           role: 'cancel',
         },
         {
-          text: 'Borrâh',
+          text: fieldAppMessages(
+            'choose_collection_component_delete_collection_alert_confirm_text',
+          ),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -426,7 +427,9 @@ export class ChooseCollectionComponent {
     if (result.role === 'confirm') {
       this.collectionsService.delete(this.collectionToEdit).subscribe(() => {
         this.toastService.presentToast({
-          message: `La colêççión ça borrao con éççito.`,
+          message: fieldAppMessages(
+            'choose_collection_component_delete_collection_confirmed_toast_message',
+          ),
         });
         this.modalController.dismiss();
         this.getCollections();
@@ -439,6 +442,7 @@ export class ChooseCollectionComponent {
   }
 
   public showCollection(collectionId: number): void {
-    this.router.navigate([`/collection/${collectionId}`]);
+    // TODO: Open collection page
+    console.log('showCollection: ', collectionId);
   }
 }

@@ -1,5 +1,4 @@
 const SignupLocators = {
-    loginModal: '[data-qa="btn-auth"]',
     signupTab: '[role="tab"]',
     nameField: '[data-qa="name"]',
     emailField: '[data-qa="email"]',
@@ -11,8 +10,7 @@ const SignupLocators = {
     closeDialogBtn: '[data-qa="btn-close"]',
     accountInfoBtn: '[data-qa="account-info"]',
     accountStnsBtn: '[data-qa="account-settings"]',
-    displayName: '[data-qa="user-name"]',
-    displayEmail: '[data-qa="user-email"]',
+    displayNameField: '[data-qa="display_name"]',
   };
   
   export default SignupLocators;

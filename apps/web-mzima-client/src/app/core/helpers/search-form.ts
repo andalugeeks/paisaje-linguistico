@@ -18,21 +18,7 @@ export const statuses = [
   },
 ];
 
-export const loggedOutStatuses = [statuses[0]];
-
 export const sources = [
-  {
-    name: 'Web',
-    value: 'web',
-    total: 0,
-    checked: true,
-  },
-  {
-    name: 'Mobile',
-    value: 'mobile',
-    total: 0,
-    checked: true,
-  },
   {
     name: 'Email',
     value: 'email',
@@ -48,6 +34,12 @@ export const sources = [
   {
     name: 'Twitter',
     value: 'twitter',
+    total: 0,
+    checked: true,
+  },
+  {
+    name: 'Web',
+    value: 'web',
     total: 0,
     checked: true,
   },
@@ -129,8 +121,6 @@ export const DEFAULT_FILTERS = {
       end: '',
     },
   ],
-  date_before: '',
-  date_after: '',
   center_point: [
     {
       location: {
@@ -141,14 +131,6 @@ export const DEFAULT_FILTERS = {
     },
   ],
 };
-
-export const DEFAULT_FILTERS_LOGGED_OUT = {
-  ...DEFAULT_FILTERS,
-  status: [['published']],
-};
-
-export const DEFAULT_STATUSES_LOGGED_IN = ['published', 'draft'];
-export const DEFAULT_STATUSES_LOGGED_OUT = ['published'];
 
 export const compareForms = (form1: any, form2: any) => {
   return !_.isEqual(form1, form2);

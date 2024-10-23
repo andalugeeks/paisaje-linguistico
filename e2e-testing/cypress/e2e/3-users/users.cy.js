@@ -7,20 +7,10 @@ describe("Automated Tests for Users", () => {
 
   beforeEach(() => {
     loginFunctions.login_as_admin();
-    cy.visit(Cypress.env('baseUrl'));
   });
   it("Adds User", () => {
     userFunctions.add_user();
   });
-
-  it("Verifies User",()=>{
-    userFunctions.verify_user();
-  })
-
-  it("Verifies User List",()=>{
-    userFunctions.verify_user_list_visible();
-  })
-
   it("Deletes User",()=>{
     userFunctions.delete_user();
   })

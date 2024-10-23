@@ -16,7 +16,7 @@ export class NotPrivateDeploymentGuard implements CanActivate {
 
     this.sessionService.siteConfig$.subscribe({
       next: (config) => {
-        this.isPrivate = !!(config?.private ?? null);
+        this.isPrivate = !!config.private;
       },
     });
   }

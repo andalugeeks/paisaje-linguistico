@@ -15,6 +15,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { preparingVideoUrl } from '@validators';
 import { lastValueFrom } from 'rxjs';
 import { STORAGE_KEYS } from '@constants';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -38,6 +39,7 @@ export class PostPage implements OnDestroy {
   public videoUrls: any[] = [];
   private queryParams: Params;
   public isManagePosts: boolean = false;
+  public fieldAppMessages = fieldAppMessages;
 
   constructor(
     private networkService: NetworkService,
@@ -135,7 +137,7 @@ export class PostPage implements OnDestroy {
         if (relativeField.value?.value) {
           const url = `https://${this.deploymentService.getDeployment()!.fqdn}/feed/${
             relativeField.value.value
-          }/view?mode=ID`;
+          }/view?mode=POST`;
           const relative = await this.getPostInformation(relativeField.value.value);
           const { title } = relative;
           relativeField.value.postTitle = title;

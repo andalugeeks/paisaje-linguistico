@@ -39,26 +39,6 @@
       }
     }
 
-    .p-datatable {
-      .p-datatable-thead {
-        > tr > th {
-          color: var(--color-black);
-        }
-      }
-
-      .p-sortable-column {
-        .p-sortable-column-icon {
-          color: var(--color-black);
-        }
-
-        &.p-highlight {
-          .p-sortable-column-icon {
-            color: var(--color-primary-50);
-          }
-        }
-      }
-    }
-
     .p-datatable-tbody {
       @include breakpoint-max($tablet) {
         display: block;

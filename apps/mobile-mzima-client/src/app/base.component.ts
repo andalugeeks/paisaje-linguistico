@@ -12,8 +12,10 @@ import { untilDestroyed } from '@ngneat/until-destroy';
 import { distinctUntilChanged } from 'rxjs';
 import { NetworkService, ToastService } from '@services';
 import { Location } from '@angular/common';
+import { fieldAppMessages } from '@helpers';
 
 export class BaseComponent {
+  public fieldAppMessages = fieldAppMessages;
   tap = 0;
 
   constructor(
@@ -22,8 +24,8 @@ export class BaseComponent {
     protected toastService: ToastService,
     protected alertCtrl: AlertController,
     protected networkService: NetworkService,
-    protected location: Location,
     @Optional() protected routerOutlet?: IonRouterOutlet,
+    @Optional() protected location?: Location,
   ) {
     this.platform.ready().then(async () => {
       if (this.platform.is('hybrid')) {
@@ -53,8 +55,8 @@ export class BaseComponent {
 
     const showConfirm = async () => {
       const { value } = await Dialog.confirm({
-        title: 'Âttualiça',
-        message: `Pa que l'aplicaçión funçione corrêttamente tiêh q'âttualiçá tu iOS`,
+        title: fieldAppMessages('base_components_confirm_dialog_title'),
+        message: fieldAppMessages('base_components_confirm_dialog_message'),
       });
 
       if (value) {
@@ -77,7 +79,11 @@ export class BaseComponent {
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe({
         next: async (value) => {
-          await this.showConnectionInfo(value ? 'Conêççión rêttableçía' : 'Ça perdío la conêççión');
+          await this.showConnectionInfo(
+            value
+              ? fieldAppMessages('base_components_network_status_text_1')
+              : fieldAppMessages('base_components_network_status_text_2'),
+          );
         },
       });
   }
@@ -94,21 +100,14 @@ export class BaseComponent {
     const urls = ['/', '/deployment'];
     if (Capacitor.getPlatform() === 'android') {
       this.platform.backButton.subscribeWithPriority(10, async () => {
-        console.log("We're trying to go back here");
-        if (!this.routerOutlet?.canGoBack()) {
-          if (urls.includes(this.router.url)) {
+        if (urls.includes(this.router.url)) {
+          if (!this.routerOutlet?.canGoBack()) {
             this.tap++;
             if (this.tap === 2) await App.exitApp();
             else this.doubleTapExistToast();
-          } else {
-            console.log(this.location);
-            console.log('We can go back in a location');
-            this.location.back();
           }
         } else {
-          console.log(this.location);
-          console.log('We can go back in a location');
-          this.location.back();
+          this.location?.back();
         }
       });
     }
@@ -116,7 +115,7 @@ export class BaseComponent {
 
   async doubleTapExistToast() {
     const result = await this.toastService.presentToast({
-      message: 'Dale de nuebo ar botón de regreçâh pa çerrâh la App',
+      message: fieldAppMessages('base_components_double_tap_toast_message'),
       buttons: [],
     });
     if (result) {

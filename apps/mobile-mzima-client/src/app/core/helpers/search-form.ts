@@ -1,38 +1,43 @@
+// <ARCHIVO_CON_TRADUCCIONES>
 import _ from 'lodash';
 
 export const statuses = [
   {
     value: 'published',
-    name: 'Publicado',
+    // name: 'Publicado',
+    name: {
+      pao: 'Publicao',
+      nota: '¿?',
+      epa: 'Publicao',
+      cas: 'Publicado',
+    },
     icon: 'globe',
   },
   {
     value: 'draft',
-    name: 'Revisando',
+    // name: 'Revisando',
+    name: {
+      pao: 'Rebisando',
+      nota: '¿?',
+      epa: 'Rebisando',
+      cas: 'Revisando',
+    },
     icon: 'document',
   },
   {
     value: 'archived',
-    name: 'Archivado',
+    // name: 'Archivado',
+    name: {
+      pao: 'Arxibao',
+      nota: '¿?',
+      epa: 'Arxibao',
+      cas: 'Archivado',
+    },
     icon: 'box',
   },
 ];
 
-export const loggedOutStatuses = [statuses[0]];
-
 export const sources = [
-  {
-    name: 'Web',
-    value: 'web',
-    total: 0,
-    checked: true,
-  },
-  {
-    name: 'Mobile',
-    value: 'mobile',
-    total: 0,
-    checked: true,
-  },
   {
     name: 'Email',
     value: 'email',
@@ -48,6 +53,12 @@ export const sources = [
   {
     name: 'Twitter',
     value: 'twitter',
+    total: 0,
+    checked: true,
+  },
+  {
+    name: 'Web',
+    value: 'web',
     total: 0,
     checked: true,
   },
@@ -138,11 +149,6 @@ export const DEFAULT_FILTERS: Filter = {
     },
     distance: 1,
   },
-};
-
-export const DEFAULT_FILTERS_LOGGED_OUT = {
-  ...DEFAULT_FILTERS,
-  status: ['published'],
 };
 
 export const compareForms = (form1: any, form2: any) => {

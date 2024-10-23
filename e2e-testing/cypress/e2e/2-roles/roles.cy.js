@@ -7,7 +7,6 @@ describe("Automated Tests for Roles", () => {
 
   beforeEach(() => {
     loginFunctions.login_as_admin();
-    cy.visit(Cypress.env('baseUrl'));
   });
   it("Create Role", () => {
     roleFunctions.add_and_verify_role();

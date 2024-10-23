@@ -34,13 +34,8 @@ class GeneralSettingsFunctions {
   }
 
   // Api Key value
-  verify_api_field_should_have_value() {
-    cy.get(GeneralSettingsLocator.apiKeyField).invoke('val').should('not.be.empty');
-  }
-
-  generate_new_api_key() {
-    cy.get(GeneralSettingsLocator.generateAPIKeyBtn).click();
-    cy.get(GeneralSettingsLocator.acceptGenerateAPIKeyBtn).click();
+  get_api_key_field_value() {
+    cy.get(GeneralSettingsLocator.apiKeyField).should('not.be.empty');
   }
 
   // verify signup is disabled
@@ -62,33 +57,12 @@ class GeneralSettingsFunctions {
     this.verify_signup_is_disabled();
   }
 
-  verify_deployment_changes_reflect(deploymentName) {
-    cy.get(GeneralSettingsLocator.panelTitle).contains(deploymentName);
-  }
-
-  verify_the_map_coordinates() {
-    cy.get(GeneralSettingsLocator.queryLocationField).type('Nairobi County');
-    cy.get(GeneralSettingsLocator.geocoderList)
-      .find(GeneralSettingsLocator.geocoderListItem)
-      .eq(0)
-      .click();
-    cy.wait(1000);
-    cy.get(GeneralSettingsLocator.defaultLatitudeField).should('have.value', '-1.3026148499999999');
-    cy.get(GeneralSettingsLocator.defaultLongitudeField).should('have.value', '36.82884201813725');
-  }
-
-  steps_to_generate_new_api_key() {
-    this.generate_new_api_key();
-    this.verify_api_field_should_have_value();
-    this.click_save_button();
-  }
-
   // tests
   edit_general_page() {
     this.type_deployment_name('-Automated');
+    this.click_save_button();
     this.type_site_description('Fixtures are a great way to mock data for responses to routes');
     this.click_save_button();
-    this.verify_deployment_changes_reflect('-Automated');
   }
 }
 

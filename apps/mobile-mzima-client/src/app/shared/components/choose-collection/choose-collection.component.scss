@@ -39,8 +39,13 @@
   transition-timing-function: ease;
   transition-property: height, margin-bottom, opacity;
 
-  .main & {
-    margin-bottom: 15px;
+  .main:not(.main--search-view) & {
+    margin-bottom: 105px;
+  }
+
+  .main--search-view & {
+    height: 0;
+    opacity: 0;
   }
 
   @media (prefers-color-scheme: light) {
@@ -61,7 +66,7 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   padding-inline: 0;
   line-height: 20px;

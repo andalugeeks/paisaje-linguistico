@@ -1,9 +1,8 @@
 <ion-content class="page-not-found ion-padding">
   <ion-text class="page-not-found__code">404</ion-text>
-  <ion-text class="page-not-found__title" color="primary"> Esta URL no existe </ion-text>
+  <ion-text class="page-not-found__title" color="primary"> {{fieldAppMessages('page_not_found_component_title')}} </ion-text>
   <p class="page-not-found__description">
-    Caxinlamâh!...Dîccurpa, no poemô encontrâh la páhina que êttâh bûccando. <br />
-    Ar fabôh de buccâh por otra fraçe o guerbe a la bîtta der mapa.
+    {{fieldAppMessages('page_not_found_component_description')}}
   </p>
-  <app-button routerLink="/">Buerbe a la bîtta der mapa</app-button>
+  <app-button routerLink="/">{{fieldAppMessages('page_not_found_component_router_link_button_text')}}</app-button>
 </ion-content>

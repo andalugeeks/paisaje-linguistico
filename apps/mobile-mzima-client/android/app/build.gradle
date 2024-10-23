@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "es.andaluh.paisaje"
-    compileSdk rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "es.andaluh.paisaje"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "4.0"
+        versionCode 3
+        versionName '3.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -18,11 +17,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable false // rootProject.ext.debuggable
-            testCoverageEnabled false
-            shrinkResources false
+            debuggable rootProject.ext.debuggable
         }
     }
 }
@@ -43,8 +40,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-    /* From https://stackoverflow.com/a/75298544 */
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0"
 }
 
 apply from: 'capacitor.build.gradle'

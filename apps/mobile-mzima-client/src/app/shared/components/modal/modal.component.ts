@@ -30,7 +30,6 @@ export class ModalComponent implements OnInit, OnChanges {
   @Input() public options: ModalOptions = {};
   @Output() public modalClose = new EventEmitter();
   @Output() public search = new EventEmitter<string>();
-  @Output() back = new EventEmitter();
   @ViewChild('modal') modal: IonModal;
   public modalOptions: ModalOptions = {
     header: true,
@@ -67,11 +66,6 @@ export class ModalComponent implements OnInit, OnChanges {
 
   public closeModalHandle(): void {
     this.modalClose.emit();
-  }
-
-  public goBackThenCloseModal(): void {
-    this.back.emit();
-    this.closeModalHandle();
   }
 
   public searchQueryChanged(): void {

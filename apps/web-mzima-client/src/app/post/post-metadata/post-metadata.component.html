@@ -10,12 +10,12 @@
     />
   </div>
   <div class="post-info__content">
-    <span *ngIf="author" class="post-info__username" [data-qa]="'author'">
+    <span *ngIf="author" class="post-info__username">
       {{ author }}
     </span>
 
     <div class="post-info__list">
-      <span class="post-info__item" [data-qa]="'post-date'">
+      <span class="post-info__item">
         {{ post.post_date | dateAgo }}
       </span>
 
@@ -27,7 +27,6 @@
             'post-info__status--draft': post.status === 'draft',
             'post-info__status--archived': post.status === 'archived'
           }"
-          [data-qa]="'status'"
         >
           <ng-container [ngSwitch]="post.status">
             <ng-container *ngSwitchCase="'published'">{{

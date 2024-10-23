@@ -36,11 +36,6 @@ export class DatabaseService {
     return this._storage?.get(key);
   }
 
-  public async remove(key: string): Promise<void> {
-    await this.ready();
-    await this._storage?.remove(key);
-  }
-
   private getKeyName(key: string): string {
     switch (key) {
       case 'geoJsonPosts':

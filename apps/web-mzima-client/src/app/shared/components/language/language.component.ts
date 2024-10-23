@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MAT_SELECT_CONFIG, MatSelectChange } from '@angular/material/select';
 import { LanguageService } from '@services';
-import * as locale from 'locale-codes';
 
 @Component({
   selector: 'app-language',
@@ -14,22 +13,11 @@ import * as locale from 'locale-codes';
     },
   ],
 })
-export class LanguageComponent implements OnInit {
+export class LanguageComponent {
   @Input() languages: any;
   @Input() selectedLanguage: any;
 
   constructor(private languageService: LanguageService) {}
-
-  ngOnInit() {
-    if (!this.checkLanguage(this.selectedLanguage)) {
-      const newLanguage: any = locale.where('tag', this.selectedLanguage)['iso639-1'];
-      this.selectedLanguage = this.checkLanguage(newLanguage) ? newLanguage : 'en';
-    }
-  }
-
-  private checkLanguage(lang: any) {
-    return this.languages.find((language: any) => language.code === lang);
-  }
 
   public changeLanguage(e: MatSelectChange) {
     this.languageService.changeLanguage(e.value);

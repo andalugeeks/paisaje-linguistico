@@ -73,37 +73,22 @@ export class MapViewComponent implements AfterViewInit {
     this.sessionService.mapConfig$.subscribe({
       next: (mapConfig) => {
         if (mapConfig) {
-          // The map can only be configured using leafletOptions on creation...
-          if (!this.mapConfig && this.mapLayers.length === 0) {
-            this.mapConfig = mapConfig;
-            this.baseLayer = this.mapConfig.default_view!.baselayer;
-            const currentLayer = mapHelper.getMapLayer(this.baseLayer, this.isDarkMode);
-            this.offlineLayer = tileLayerOffline(currentLayer.url, currentLayer.layerOptions);
-            this.onlineLayer = tileLayer(currentLayer.url, currentLayer.layerOptions);
-            this.leafletOptions = {
-              minZoom: 4,
-              maxZoom: 17,
-              scrollWheelZoom: true,
-              zoomControl: false,
-              layers: [this.offlineLayer, this.onlineLayer],
-              center: [this.mapConfig.default_view!.lat, this.mapConfig.default_view!.lon],
-              zoom: this.mapConfig.default_view!.zoom,
-            };
-          } else {
-            // So if the baseLayer has changed and its an already created map, we need to manipulate the layers manually
-            if (this.mapConfig.default_view!.baselayer !== mapConfig.default_view.baselayer) {
-              this.map.eachLayer((layer) => {
-                if (layer instanceof TileLayer) this.map.removeLayer(layer);
-              });
-              this.mapConfig = mapConfig;
-              this.baseLayer = this.mapConfig.default_view!.baselayer;
-              const currentLayer = mapHelper.getMapLayer(this.baseLayer, this.isDarkMode);
-              this.offlineLayer = tileLayerOffline(currentLayer.url, currentLayer.layerOptions);
-              this.onlineLayer = tileLayer(currentLayer.url, currentLayer.layerOptions);
-              this.map.addLayer(this.offlineLayer);
-              this.map.addLayer(this.onlineLayer);
-            }
-          }
+          this.mapConfig = mapConfig;
+
+          this.baseLayer = this.mapConfig.default_view!.baselayer;
+          const currentLayer = mapHelper.getMapLayer(this.baseLayer, this.isDarkMode);
+          this.offlineLayer = tileLayerOffline(currentLayer.url, currentLayer.layerOptions);
+          this.onlineLayer = tileLayer(currentLayer.url, currentLayer.layerOptions);
+
+          this.leafletOptions = {
+            minZoom: 4,
+            maxZoom: 17,
+            scrollWheelZoom: true,
+            zoomControl: false,
+            layers: [this.offlineLayer, this.onlineLayer],
+            center: [this.mapConfig.default_view!.lat, this.mapConfig.default_view!.lon],
+            zoom: this.mapConfig.default_view!.zoom,
+          };
           this.markerClusterOptions.maxClusterRadius = this.mapConfig.cluster_radius;
         }
       },
@@ -244,30 +229,28 @@ export class MapViewComponent implements AfterViewInit {
   // }
 
   public getPostsGeoJson() {
-    if (this.isConnection) {
-      this.postsService
-        .getGeojson({ limit: 500, offset: 0, page: 1, currentView: 'map' })
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: async (postsResponse) => {
-            await this.databaseService.set(STORAGE_KEYS.GEOJSONPOSTS, postsResponse);
-            this.geoJsonDataProcessor(postsResponse);
-          },
-          error: async ({ message }) => {
-            this.toastService.presentToast({
-              message: 'GeoJson: ' + message,
-              layout: 'stacked',
-              duration: 3000,
-            });
-            if (message.match(/Http failure response for/)) {
-              const posts = await this.databaseService.get(STORAGE_KEYS.GEOJSONPOSTS);
-              if (posts) {
-                this.geoJsonDataProcessor(posts);
-              }
+    this.postsService
+      .getGeojson({ limit: 100000, offset: 0, page: 1 })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: async (postsResponse) => {
+          await this.databaseService.set(STORAGE_KEYS.GEOJSONPOSTS, postsResponse);
+          this.geoJsonDataProcessor(postsResponse);
+        },
+        error: async ({ message }) => {
+          this.toastService.presentToast({
+            message,
+            layout: 'stacked',
+            duration: 3000,
+          });
+          if (message.match(/Http failure response for/)) {
+            const posts = await this.databaseService.get(STORAGE_KEYS.GEOJSONPOSTS);
+            if (posts) {
+              this.geoJsonDataProcessor(posts);
             }
-          },
-        });
-    }
+          }
+        },
+      });
   }
 
   private geoJsonDataProcessor(posts: GeoJsonPostsResponse) {

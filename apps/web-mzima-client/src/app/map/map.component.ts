@@ -48,7 +48,6 @@ export class MapComponent extends MainViewComponent implements OnInit {
   fitBoundsOptions: FitBoundsOptions = {
     animate: true,
   };
-  cachedFilter: string;
   filtersSubscription$: Observable<any>;
   public leafletOptions: MapOptions;
   public progress = 0;
@@ -81,7 +80,6 @@ export class MapComponent extends MainViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reInitParams();
     this.route.params.subscribe(() => {
       this.initCollection();
     });
@@ -92,7 +90,7 @@ export class MapComponent extends MainViewComponent implements OnInit {
       mapHelper.getMapLayers().baselayers[this.mapConfig.default_view!.baselayer];
 
     this.leafletOptions = {
-      minZoom: 1,
+      minZoom: 0,
       maxZoom: 22,
       scrollWheelZoom: true,
       zoomControl: false,
@@ -132,33 +130,29 @@ export class MapComponent extends MainViewComponent implements OnInit {
   }
 
   loadData(): void {
+    this.reInitParams();
     this.getPostsGeoJson();
   }
 
   private initFilterListener() {
     this.filtersSubscription$.pipe(debounceTime(1000)).subscribe({
-      next: (filter) => {
+      next: () => {
         if (this.route.snapshot.data['view'] === 'search' && !this.searchId) return;
         if (this.route.snapshot.data['view'] === 'collection' && !this.collectionId) return;
 
-        this.getPostsGeoJson(1, filter);
+        this.reInitParams();
+        this.getPostsGeoJson();
       },
     });
   }
 
   private reInitParams() {
     this.params.page = 1;
-    this.params.limit = 500;
-    this.params.currentView = 'map';
-    this.resetMapLayers();
-    this.mapLayers = [];
-  }
-
-  private resetMapLayers() {
     this.mapLayers.map((layer) => {
       this.map.removeLayer(layer);
       this.markerClusterData.removeLayer(layer);
     });
+    this.mapLayers = [];
   }
 
   onMapReady(map: Map) {
@@ -167,7 +161,7 @@ export class MapComponent extends MainViewComponent implements OnInit {
     // Fix initial zoom flicker of map view's map when bounds exist in local storage
     const bounds = localStorage.getItem('bounds');
     if (bounds === null) {
-      this.map.setZoom(this.leafletOptions.zoom ?? this.leafletOptions.minZoom ?? 1);
+      this.map.setZoom(0);
     } else {
       const { fit, zoom, center } = JSON.parse(bounds as string);
       this.map.setMaxBounds(fit);
@@ -181,9 +175,9 @@ export class MapComponent extends MainViewComponent implements OnInit {
     control.zoom({ position: 'bottomleft' }).addTo(map);
   }
 
-  getPostsGeoJson(pageNumber: number = 1, filter?: any) {
+  getPostsGeoJson() {
     this.postsService
-      .getGeojson({ ...this.params, page: pageNumber })
+      .getGeojson(this.params)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (posts) => {
@@ -250,19 +244,8 @@ export class MapComponent extends MainViewComponent implements OnInit {
 
                             comp.instance.deleted$.subscribe({
                               next: () => {
-                                comp.destroy();
-                                this.map.closePopup();
-                                this.mapLayers.forEach((outerLayer: any) => {
-                                  outerLayer.eachLayer((innerLayer: any) => {
-                                    if (innerLayer.feature.properties.id === postV5.id)
-                                      outerLayer.removeLayer(innerLayer);
-                                  });
-                                });
+                                layer.togglePopup();
                                 this.loadData();
-                                this.eventBusService.next({
-                                  type: EventType.RefreshSurveysCounters,
-                                  payload: true,
-                                });
                               },
                             });
 
@@ -297,70 +280,34 @@ export class MapComponent extends MainViewComponent implements OnInit {
             },
           });
 
-          // Do we have any markers (layers) at all?
-          const isFirstLayerEmpty = this.mapLayers.length === 0;
-
-          // Do the number of markers equal what we expect?
-          // const isLayerCountMismatch =
-          //   pageNumber > 1 &&
-          //   !isFirstLayerEmpty &&
-          //   this.mapLayers[0].getLayers().length !== geoPosts.getLayers().length;
-
-          // Is the client in the middle of retrieving multiple pages of markers?
-          const isThisInProgress =
-            pageNumber > 1 && posts.meta.total !== this.mapLayers[0].getLayers().length;
-
-          // Has the filter changed from when we last saw it?
-          let hasTheFilterChanged = false;
-          if (filter !== undefined) {
-            const currentFilter = JSON.stringify(filter);
-            if (this.cachedFilter && currentFilter !== this.cachedFilter) {
-              hasTheFilterChanged = true;
-            }
-            this.cachedFilter = currentFilter;
+          if (this.mapConfig.clustering) {
+            this.markerClusterData.addLayer(geoPosts);
+            this.mapLayers.push(this.markerClusterData);
           } else {
-            hasTheFilterChanged = this.cachedFilter === undefined;
+            this.mapLayers.push(geoPosts);
           }
 
           if (
-            isFirstLayerEmpty ||
-            hasTheFilterChanged ||
-            isThisInProgress // ||
-            // isLayerCountMismatch
+            this.params.limit &&
+            this.params.page &&
+            posts.meta.total > this.params.limit * this.params.page
           ) {
-            if (!isFirstLayerEmpty && !isThisInProgress) {
-              this.resetMapLayers();
-            }
+            this.progress = ((this.params.limit * this.params.page) / posts.count) * 100;
 
-            if (this.mapConfig.clustering) {
-              this.markerClusterData.addLayer(geoPosts);
-              this.mapLayers.push(this.markerClusterData);
-            } else {
-              this.mapLayers.push(geoPosts);
-            }
+            this.params.page++;
+            this.getPostsGeoJson();
+          } else {
+            this.progress = 100;
+            if (posts.results.length) {
+              this.mapFitToBounds = geoPosts.getBounds();
 
-            if (
-              this.params.limit &&
-              pageNumber &&
-              posts.meta.total > this.params.limit * pageNumber
-            ) {
-              this.progress = ((this.params.limit * pageNumber) / posts.count) * 100;
-              pageNumber++;
-              this.params.page = pageNumber;
-              this.getPostsGeoJson(pageNumber, filter);
-            } else {
-              this.progress = 100;
-              if (posts.results.length) {
-                this.mapFitToBounds = geoPosts.getBounds();
-
-                // Save bounds to localstorage to fix flicker when map is ready
-                const bounds = {
-                  fit: this.mapFitToBounds,
-                  zoom: this.map.getBoundsZoom(this.mapFitToBounds),
-                  center: this.map.getCenter(),
-                };
-                localStorage.setItem('bounds', JSON.stringify(bounds));
-              }
+              // Save bounds to localstorage to fix flicker when map is ready
+              const bounds = {
+                fit: this.mapFitToBounds,
+                zoom: this.map.getBoundsZoom(this.mapFitToBounds),
+                center: this.map.getCenter(),
+              };
+              localStorage.setItem('bounds', JSON.stringify(bounds));
             }
           }
 

@@ -5,53 +5,52 @@
   }}
 </h1>
 
-<div *ngIf="!isLoading; else showLoader">
-  <div class="form-row" *ngIf="onCreating">
-    <mat-label>
-      {{ 'settings.data_sources.type_of_data_source' | translate }}
-      <span class="color-accent">*</span>
-    </mat-label>
-    <mat-form-field appearance="outline">
-      <mat-select
-        disableOptionCentering
-        [placeholder]="'settings.data_sources.choose_data_source' | translate"
-        [(ngModel)]="currentProviderId"
-        (selectionChange)="setCurrentProvider($event.value)"
-        [data-qa]="'select-provider'"
+<div class="form-row" *ngIf="onCreating">
+  <mat-label>
+    {{ 'settings.data_sources.type_of_data_source' | translate }}
+    <span class="color-accent">*</span>
+  </mat-label>
+  <mat-form-field appearance="outline">
+    <mat-select
+      disableOptionCentering
+      [placeholder]="'settings.data_sources.choose_data_source' | translate"
+      [(ngModel)]="currentProviderId"
+      (selectionChange)="setCurrentProvider($event.value)"
+      [data-qa]="'select-provider'"
+    >
+      <ng-container *ngFor="let provider of providersData">
+        <mat-option
+          [value]="provider.id"
+          *ngIf="!isProviderEnabled(provider)"
+          [data-qa]="provider.id"
+        >
+          {{ provider.name }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="survey" *ngIf="provider; else showLoader">
+  <div class="form-row toggle-group">
+    <div class="toggle" *ngIf="!onCreating">
+      <mat-slide-toggle
+        name="accept-survey"
+        [(ngModel)]="provider.enabled"
+        (change)="turnOffDataSource($event)"
+        [data-qa]="'toogle-available-provider'"
       >
-        <ng-container *ngFor="let provider of providersData">
-          <mat-option
-            [value]="provider.id"
-            *ngIf="!isProviderEnabled(provider)"
-            [data-qa]="provider.id"
-          >
-            {{ provider.name }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="survey" *ngIf="currentProviderId">
-    <div class="form-row toggle-group">
-      <div class="toggle" *ngIf="!onCreating">
-        <mat-slide-toggle
-          name="accept-survey"
-          [(ngModel)]="provider.enabled"
-          (change)="turnOffDataSource($event)"
-          [data-qa]="'toogle-available-provider'"
-        >
-          {{ 'settings.data_sources.enable_provider_message' | translate }}
-        </mat-slide-toggle>
-      </div>
-      <div class="toggle">
-        <mat-slide-toggle
-          name="import-to-survey"
-          [(ngModel)]="provider.visible_survey"
-          [data-qa]="'toogle-import-to-survey'"
-        >
-          {{ 'settings.data_sources.associate_with_form' | translate }}
-        </mat-slide-toggle>
-      </div>
+        {{ 'settings.data_sources.enable_provider_message' | translate }}
+      </mat-slide-toggle>
+    </div>
+    <div class="toggle">
+      <mat-slide-toggle
+        name="import-to-survey"
+        [(ngModel)]="provider.visible_survey"
+        [data-qa]="'toogle-import-to-survey'"
+      >
+        {{ 'settings.data_sources.associate_with_form' | translate }}
+      </mat-slide-toggle>
     </div>
   </div>
 </div>
@@ -135,66 +134,58 @@
   <br />
 
   <div *ngFor="let control of provider?.options" [data-qa]="'provider-options'">
-    <ng-container [ngSwitch]="control.input">
-      <ng-container *ngSwitchCase="'read-only-text'">
-        <h2 *ngIf="control.label?.length">{{ control.label }}</h2>
-        <p *ngIf="control.description?.length" [innerHTML]="control.description"></p>
-      </ng-container>
-      <ng-container *ngSwitchCase="'hidden'">
-        <input
-          [formControlName]="control.id"
-          type="hidden"
-          [data-qa]="'control-text' + control.id"
-        />
-      </ng-container>
-      <ng-container *ngSwitchDefault>
-        <div class="form-row">
-          <mat-label>
-            {{ control.label }}
-            <span class="color-accent" *ngIf="control.rules?.indexOf('required') > -1">*</span>
-          </mat-label>
-          <mat-form-field
-            *ngIf="control.input === 'text'"
-            appearance="outline"
-            [data-qa]="'control-type-text'"
-          >
-            <input
-              matInput
-              [placeholder]="control.description"
-              [formControlName]="control.id"
-              [type]="control.input"
-              [data-qa]="'control-text' + control.id"
-            />
-            <mat-hint
-              *ngIf="control.description?.length"
-              [innerHTML]="control.description"
-            ></mat-hint>
-            <mat-error
-              *ngIf="
-                (form.get(control.id)?.touched || form.get(control.id)?.dirty) &&
-                form.get(control.id)?.hasError('required')
-              "
-            >
-              {{ 'form.field_required' | translate }}
-            </mat-error>
-          </mat-form-field>
+    <ng-container *ngIf="control.input === 'read-only-text'">
+      <h2 *ngIf="control.label?.length">{{ control.label }}</h2>
+      <p *ngIf="control.description?.length" [innerHTML]="control.description"></p>
+    </ng-container>
 
-          <mat-radio-group
-            *ngIf="control.input === 'radio'"
-            aria-label="Select an option"
+    <ng-container *ngIf="control.input !== 'read-only-text'">
+      <div class="form-row">
+        <mat-label>
+          {{ control.label }}
+          <span class="color-accent" *ngIf="control.rules?.indexOf('required') > -1">*</span>
+        </mat-label>
+        <mat-form-field
+          *ngIf="control.input === 'text'"
+          appearance="outline"
+          [data-qa]="'control-type-text'"
+        >
+          <input
+            matInput
+            [placeholder]="control.description"
             [formControlName]="control.id"
-            [data-qa]="'control-type-radio'"
+            [type]="control.input"
+            [data-qa]="'control-text' + control.id"
+          />
+          <mat-hint
+            *ngIf="control.description?.length"
+            [innerHTML]="control.description"
+          ></mat-hint>
+          <mat-error
+            *ngIf="
+              (form.get(control.id)?.touched || form.get(control.id)?.dirty) &&
+              form.get(control.id)?.hasError('required')
+            "
           >
-            <mat-radio-button
-              *ngFor="let item of control.options"
-              [value]="item"
-              [data-qa]="'control-text' + item"
-            >
-              {{ item }}
-            </mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </ng-container>
+            {{ 'form.field_required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-radio-group
+          *ngIf="control.input === 'radio'"
+          aria-label="Select an option"
+          [formControlName]="control.id"
+          [data-qa]="'control-type-radio'"
+        >
+          <mat-radio-button
+            *ngFor="let item of control.options"
+            [value]="item"
+            [data-qa]="'control-text' + item"
+          >
+            {{ item }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
     </ng-container>
   </div>
 

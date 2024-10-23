@@ -9,12 +9,12 @@ import {
   PostResult,
   PostsService,
   SavedsearchesService,
-  CollectionsService,
 } from '@mzima-client/sdk';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { DatabaseService, EnvService, SessionService } from '@services';
 import { lastValueFrom, Subject } from 'rxjs';
 import { MainViewComponent } from '../main-view.component';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -26,6 +26,7 @@ export class FeedViewComponent extends MainViewComponent {
   @Input() public atTop = false;
   @Input() public atBottom = false;
 
+  public fieldAppMessages = fieldAppMessages;
   public posts: PostResult[] = [];
   public isPostsLoading = true;
   public totalPosts = 0;
@@ -36,31 +37,29 @@ export class FeedViewComponent extends MainViewComponent {
   public destroy$ = new Subject();
   public isConnection = true;
   public sorting = 'created?desc';
-  public isCollection = false;
-  public collectionName: string;
   public sortingOptions = [
     {
-      label: 'Por fexa de creaçión (Nuebô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_creation_date_newest_first'),
       value: 'created?desc',
     },
     {
-      label: 'Por fexa de creaçión (Antiguô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_creation_date_oldest_first'),
       value: 'created?asc',
     },
     {
-      label: 'Por fexa de publicaçión (Nuebô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_posting_date_newest_first'),
       value: 'post_date?desc',
     },
     {
-      label: 'Por fexa de publicaçión (Antiguô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_posting_date_oldest_first'),
       value: 'post_date?asc',
     },
     {
-      label: 'Por fexa de âttualiçaçión (Nuebô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_updating_date_newest_first'),
       value: 'updated?desc',
     },
     {
-      label: 'Por fexa de âttualiçaçión (Antiguô primero)',
+      label: fieldAppMessages('feed_view_components_sorting_options_updating_date_oldest_first'),
       value: 'updated?asc',
     },
   ];
@@ -74,7 +73,6 @@ export class FeedViewComponent extends MainViewComponent {
     private databaseService: DatabaseService,
     private mediaService: MediaService,
     private envService: EnvService,
-    private collectionService: CollectionsService,
   ) {
     super(router, route, postsService, savedSearchesService, sessionService);
     this.envService.deployment$.subscribe({
@@ -82,26 +80,6 @@ export class FeedViewComponent extends MainViewComponent {
         this.posts = [];
       },
     });
-    if (this.route.snapshot.data['view'] === 'collection') {
-      this.openCollection();
-    }
-  }
-
-  openCollection() {
-    const collectionId: any = this.route.snapshot.paramMap.get('id');
-    this.collectionService.getCollection(collectionId).subscribe((result: any) => {
-      this.isCollection = true;
-      this.collectionName = result.result.name;
-    });
-  }
-
-  removeCollection() {
-    this.postsService.applyFilters({
-      ...this.postsService.normalizeFilter(this.filters),
-    });
-    this.router.navigate(['/']);
-    this.isCollection = false;
-    this.collectionName = '';
   }
 
   ionViewDidLeave(): void {
@@ -113,9 +91,7 @@ export class FeedViewComponent extends MainViewComponent {
   private async getPosts(params: any, add = false): Promise<void> {
     this.isPostsLoading = true;
     try {
-      const response = await lastValueFrom(
-        this.postsService.getPosts('', { currentView: 'feed', ...params }),
-      );
+      const response = await lastValueFrom(this.postsService.getPosts('', { ...params }));
       await this.updateObjectsWithUploadInput(response);
 
       const currentPosts = await this.databaseService.get(STORAGE_KEYS.POSTS);

@@ -1,0 +1,40 @@
+<app-main-layout [header]="false" class="main">
+
+  <ion-img class="img" src="assets/images/spelling_proposal_header.png"></ion-img>
+
+  <app-select
+    [label]="fieldAppMessages('select_spelling_proposal_page_combobox_label')"
+    [options]="spellingProposalsListOptions"
+    [(ngModel)]="selectedSpelleingProposalOptionId"
+    (ngModelChange)="selectionCallback()"
+  >
+  </app-select>
+  <p>
+    {{fieldAppMessages('select_spelling_proposal_page_content')}}
+  </p>
+  <p>
+    <!-- Se ha seleccionado: {{selectedSpelleingProposalOptionId}} -->
+    <br>
+  </p>
+  <ion-title class="title">{{fieldAppMessages('select_spelling_proposal_page_abous_us_title')}}</ion-title>
+  <ion-list class="generic-menu">
+    <app-generic-menu-item
+      [menuItem]="menuItem"
+      *ngFor="let menuItem of aboutUsMenu"
+    ></app-generic-menu-item>
+  </ion-list>
+
+  <ion-footer class="footer" footer>
+    <ion-toolbar class="footer__toolbar">
+      <ion-buttons class="form-controls-panel">
+        <app-button
+          expand="inline"
+          type="button"
+          (buttonClick)="goToWalkthrough()"
+        >
+          {{fieldAppMessages('walkthrough_select_spelling_proposal_page_continue_button_text')}}
+        </app-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</app-main-layout>

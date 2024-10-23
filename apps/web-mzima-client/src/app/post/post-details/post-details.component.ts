@@ -13,13 +13,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Permissions } from '@enums';
 import {
   CategoryInterface,
+  FormsService,
   MediaService,
   PostContent,
   PostContentField,
   postHelpers,
   PostResult,
   PostsService,
-  SurveysService,
 } from '@mzima-client/sdk';
 import { TranslateService } from '@ngx-translate/core';
 import { lastValueFrom } from 'rxjs';
@@ -34,7 +34,7 @@ import { BreakpointService, EventBusService, EventType, SessionService } from '@
   styleUrls: ['./post-details.component.scss'],
 })
 export class PostDetailsComponent extends BaseComponent implements OnChanges, OnDestroy {
-  @Input() post: PostResult;
+  @Input() post?: PostResult;
   @Input() feedView: boolean = true;
   @Input() userId?: number | string;
   @Input() color?: string;
@@ -47,6 +47,7 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
   public videoUrls: any[] = [];
   public isPostLoading: boolean = true;
   public isManagePosts: boolean = false;
+  public postNotFound: boolean = false;
 
   constructor(
     protected override sessionService: SessionService,
@@ -57,7 +58,7 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     private metaService: Meta,
     private route: ActivatedRoute,
     private postsService: PostsService,
-    private surveyService: SurveysService,
+    private formsService: FormsService,
     private sanitizer: DomSanitizer,
     private eventBusService: EventBusService,
   ) {
@@ -68,6 +69,8 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
 
     this.route.params.subscribe((params) => {
       if (params['id']) {
+        this.post = undefined;
+
         this.allowed_privileges = localStorage.getItem('USH_allowed_privileges') ?? '';
 
         this.postId = Number(params['id']);
@@ -109,12 +112,15 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     if (!this.postId) return;
     this.post = await this.getPostInformation(id);
     if (this.post) {
-      this.surveyService.getById(this.post.form_id!).subscribe((form) => {
-        this.post!.form = form.result;
+      this.formsService.getById(this.post.form_id!).subscribe((form) => {
+        this.post!.form = form;
       });
       this.isPostLoading = false;
       this.getData(this.post);
       this.preparePostForView();
+
+      // TODO: remove me after testing on dev
+      // console.log('💬 post task modify:', this.post);
     }
   }
 
@@ -123,32 +129,7 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
       this.preparingMediaField(content.fields);
       this.preparingSafeVideoUrls(content.fields);
       this.preparingRelatedPosts(content.fields);
-      this.preparingCategories(content.fields);
     }
-  }
-
-  private preparingCategories(fields: PostContentField[]): void {
-    fields
-      .filter((field: any) => field.type === 'tags')
-      .map((categories: any) => {
-        categories.value = categories.value.filter((category: any) => {
-          // Adding children to parents
-          if (!category.parent_id) {
-            category.children = categories.value.filter(
-              (child: any) => child.parent_id === category.id,
-            );
-            return category;
-          }
-          // Removing children with parents from values to avoid repetition
-          if (
-            category.parent_id &&
-            !categories.value.filter((parent: any) => category.parent_id === parent.id).length
-          ) {
-            return category;
-          }
-        });
-        return categories;
-      });
   }
 
   private preparingRelatedPosts(fields: PostContentField[]): void {
@@ -156,7 +137,7 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
       .filter((field: any) => field.type === 'relation')
       .map(async (relativeField) => {
         if (relativeField.value?.value) {
-          const url = `${window.location.origin}/feed/${relativeField.value.value}/view?mode=ID`;
+          const url = `${window.location.origin}/feed/${relativeField.value.value}/view?mode=POST`;
           const relative = await this.getPostInformation(relativeField.value.value);
           if (relative) {
             const { title } = relative;
@@ -198,6 +179,8 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
       return await lastValueFrom(this.postsService.getById(postId));
     } catch (err: any) {
       this.isPostLoading = false;
+      console.log(err);
+      if (err.status === 404) this.postNotFound = true;
       return;
     }
   }
@@ -240,14 +223,6 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     this.statusChanged.emit();
     this.eventBusService.next({
       type: EventType.UpdatedPost,
-      payload: this.post,
-    });
-  }
-
-  public deletedHandle(): void {
-    this.getPost(this.postId);
-    this.eventBusService.next({
-      type: EventType.DeletedPost,
       payload: this.post,
     });
   }

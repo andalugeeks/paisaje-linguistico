@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { STORAGE_KEYS, profileMenu } from '@constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { fieldAppMessages } from '@helpers';
 import {
   AlertService,
   AuthService,
@@ -24,11 +25,21 @@ interface SupportItem {
 })
 export class ProfilePage {
   public profileMenu: profileMenu.ProfileMenuItem[] = profileMenu.profileMenu;
+  public aboutUsMenu = profileMenu.aboutUsMenu;
   public profileInformationMenu = profileMenu.profileInformationMenu;
   public isSupportModalOpen = false;
   public isSupportModalSearchView = false;
   public supportSearchQuery = '';
-  public supportItems: SupportItem[] = [];
+  public fieldAppMessages = fieldAppMessages;
+  public supportItems: SupportItem[] = [
+    {
+      title: 'Intercom',
+      description: 'Contact Ushahidi staff for chat support',
+      action: () => {
+        this.intercomService.displayMessenger();
+      },
+    },
+  ];
   public filteredSupportItems: SupportItem[] = this.supportItems;
 
   constructor(
@@ -46,14 +57,6 @@ export class ProfilePage {
         this.profileMenu = profileMenu.profileMenu.filter(
           (i) => i.isLoggedGuard === undefined || i.isLoggedGuard === !!userData.userId,
         );
-        if (userData.userId)
-          this.supportItems.push(<SupportItem>{
-            title: 'Intercom',
-            description: 'Contact Ushahidi staff for chat support',
-            action: () => {
-              this.intercomService.displayMessenger();
-            },
-          });
       });
   }
 
@@ -73,16 +76,15 @@ export class ProfilePage {
 
   private async logout(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Cerrâh Çeçión',
-      message:
-        '¿Êttâh çeguro que deçea çerrâh la çeçión de la aplicaçión? Êtta âççión finaliçará tu çeçión âttuâh y deberá borbêh a iniçiâh çeçión pa âççedêh a çu cuenta.',
+      header: fieldAppMessages('profile_page_logout_alert_header'),
+      message: fieldAppMessages('profile_page_logout_alert_message'),
       buttons: [
         {
-          text: 'Cançelar',
+          text: fieldAppMessages('profile_page_logout_cancel_button_text'),
           role: 'cancel',
         },
         {
-          text: 'Cerrâh Çeçión',
+          text: fieldAppMessages('profile_page_logout_confirm_button_text'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -100,16 +102,15 @@ export class ProfilePage {
 
   private async clearPosts(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Borrâh Publicaçionê Pendientê?',
-      message:
-        '¿Êttâh çeguro que quiêh borrâh lô mençahê pendientê? Êtta âççión no çe pué deçaçêh y borrará permanentemente tôh lô mençahê pendientê der çîttema.',
+      header: fieldAppMessages('profile_page_clear_posts_alert_header'),
+      message: fieldAppMessages('profile_page_clear_posts_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('profile_page_clear_posts_cancel_button_text'),
           role: 'cancel',
         },
         {
-          text: 'Borrâh',
+          text: fieldAppMessages('profile_page_clear_posts_confirm_button_text'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -124,16 +125,15 @@ export class ProfilePage {
 
   private async resetAppData(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: '¿Limpiâh datô de la App?',
-      message:
-        '¿Êttâh çeguro que quiêh borrâh lô datô de la App?Êtta âççión borrará toa la informaçión armaçená en caxé. Ten en cuenta que tamién çe çerrará tu çeçión y çe borrará de tu dîppoçitibo cuarquier dato armaçenao locarmente, incluíô lô ahûttê y lâ preferençiâ. Êtta âççión no çe pué deçaçêh.',
+      header: fieldAppMessages('profile_page_reset_app_data_alert_header'),
+      message: fieldAppMessages('profile_page_reset_app_data_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('profile_page_reset_app_data_cancel_button_text'),
           role: 'cancel',
         },
         {
-          text: 'Limpiâh',
+          text: fieldAppMessages('profile_page_reset_app_data_confirm_button_text'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -144,7 +144,8 @@ export class ProfilePage {
       localStorage.clear();
       this.authService.logout();
       this.dataBaseService.clear();
-      this.router.navigate(['/walkthrough']);
+      this.router.navigate(['/walkthrough-select-spelling-proposal']);
+      // this.router.navigate(['/walkthrough']);
     }
   }
 

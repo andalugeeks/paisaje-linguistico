@@ -17,16 +17,13 @@ class SignupFunctions {
   }
   navigate_to_signup_modal() {
     loginFunctions.launch_login_modal(Cypress.env('baseUrl'));
-    cy.get('#mat-tab-label-1-1')
-      .click()
-    cy.get(SignupLocators.signupTab).eq(1).click({force: true});
+    cy.wait(1000);
+    cy.get(SignupLocators.signupTab).eq(1).click();
   }
 
   type_name(name) {
     cy.wait(1000);
-    cy.get(SignupLocators.nameField)
-      .type(name, {force: true})
-      .should('have.value', name);
+    cy.get(SignupLocators.nameField).type(name).should('have.value', name);
   }
 
   fill_all_fields() {
@@ -45,23 +42,21 @@ class SignupFunctions {
   }
 
   empty_name_field() {
-    cy.get(SignupLocators.nameField).clear({force: true});
+    cy.get(SignupLocators.nameField).clear();
   }
 
   alter_email_field() {
     // delete xyz.com
-    cy.get(SignupLocators.emailField).type(backspace(7), {force: true});
-    cy.get(SignupLocators.emailField).blur({ force: true });
+    cy.get(SignupLocators.emailField).type(backspace(7));
+    cy.get(SignupLocators.emailField).blur();
   }
 
   verify_email_is_invalid() {
-    cy.get(SignupLocators.invalidEmailError)
-      .invoke('css', 'overflow-x', 'visible')
-      .should('have.css', 'overflow-x', 'visible');
+    cy.get(SignupLocators.invalidEmailError).should('be.visible');
   }
 
   restore_correct_email_value() {
-    cy.get(SignupLocators.emailField).type('xyz.com',{ force: true });
+    cy.get(SignupLocators.emailField).type('xyz.com');
   }
 
   verify_privacy_and_terms_link() {
@@ -74,7 +69,7 @@ class SignupFunctions {
   }
 
   click_signup_button() {
-    cy.get(SignupLocators.signupBtn).click({ force: true });
+    cy.get(SignupLocators.signupBtn).click();
   }
 
   open_account_modal() {
@@ -87,24 +82,14 @@ class SignupFunctions {
   }
 
   verify_name_and_email_matches() {
-    console.log(this.uniqueEmail, this.uniqueName)
-    cy.get(SignupLocators.displayName).contains(this.uniqueName);
-    cy.get(SignupLocators.displayEmail).contains(this.uniqueEmail);
+    cy.get(SignupLocators.displayNameField).should('have.value', this.uniqueName);
+    cy.get(SignupLocators.emailField).should('have.value', this.uniqueEmail);
   }
 
   verify_signed_user() {
     this.open_account_modal();
     this.verify_name_and_email_matches();
     this.close_account_modal();
-  }
-
-  login_created_user(){
-    loginFunctions.logout();
-    cy.get(SignupLocators.loginModal).click()
-    // loginFunctions.launch_login_modal(Cypress.env('baseUrl'));
-    loginFunctions.type_email(this.uniqueEmail);
-    loginFunctions.type_password('Password@Cypress2023')
-    loginFunctions.click_login_button();
   }
 
   signup() {
@@ -122,7 +107,6 @@ class SignupFunctions {
     this.verify_privacy_and_terms_link();
     this.click_signup_button();
     this.verify_signed_user();
-    this.login_created_user();
   }
 }
 

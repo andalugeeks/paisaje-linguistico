@@ -12,7 +12,7 @@ import {
 import { Subject, debounceTime, lastValueFrom, takeUntil } from 'rxjs';
 import { AlertService, EnvService, SearchService, SessionService } from '@services';
 import { FilterControl, FilterControlOption } from '@models';
-import { searchFormHelper, dateHelper } from '@helpers';
+import { searchFormHelper, dateHelper, fieldAppMessages } from '@helpers';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import _ from 'lodash';
 import { Router } from '@angular/router';
@@ -38,24 +38,25 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
   public isFiltersModalOpen = false;
   public isAddSavedFiltersMode = false;
   public selectedSavedFilter: FilterControlOption | null;
+  public fieldAppMessages = fieldAppMessages;
   public filters: FilterControl[] = [
     {
       name: 'saved-filters',
       icon: 'saved-filters',
-      label: 'Firtrô guardaô',
-      selected: 'none',
-      selectedLabel: 'Çelêççionaô:',
+      label: fieldAppMessages('filter_form_component_saved_filters_label'),
+      selected: fieldAppMessages('filter_form_component_saved_filters_no_selected_label'),
+      selectedLabel: fieldAppMessages('filter_form_component_saved_filters_selected_label'),
       value: this.getFilterDefaultValue('saved-filters'),
-      noOptionsText: 'No tiêh toabía ningún firtro',
+      noOptionsText: fieldAppMessages('filter_form_component_saved_filters_no_options_text'),
     },
     {
       name: 'form',
       icon: 'surveys',
-      label: 'Encuestas',
-      selected: 'none',
+      label: fieldAppMessages('filter_form_component_surveys_label'),
+      selected: fieldAppMessages('filter_form_component_surveys_no_selected_label'),
       selectedCount: '',
       value: [],
-      noOptionsText: 'No tiêh toabía ninguna encuêtta',
+      noOptionsText: fieldAppMessages('filter_form_component_surveys_no_options_text'),
     },
     // Paisaje-Linguistico personalisation.
     // Hide Sources filters as only web is supported
@@ -70,7 +71,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'status',
       icon: 'status',
-      label: 'Êttao',
+      label: fieldAppMessages('filter_form_component_status_label'),
       selectedCount: searchFormHelper.statuses.length,
       selected: '2',
       value: this.getFilterDefaultValue('status'),
@@ -78,17 +79,17 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     {
       name: 'tags',
       icon: 'categories',
-      label: 'Categoriâ',
-      selected: 'none',
+      label: fieldAppMessages('filter_form_component_categories_label'),
+      selected: fieldAppMessages('filter_form_component_categories_no_selected_label'),
       value: this.getFilterDefaultValue('tags'),
-      noOptionsText: 'No tiêh toabía ninguna categoría',
+      noOptionsText: fieldAppMessages('filter_form_component_categories_no_options_text'),
     },
     {
       name: 'date',
       icon: 'calendar',
-      label: 'Rango de fexâ',
-      selectedLabel: 'Elihe er rango de fexâ',
-      selectedCount: 'Çiempre',
+      label: fieldAppMessages('filter_form_component_calendar_label'),
+      selectedLabel: fieldAppMessages('filter_form_component_calendar_selected_label'),
+      selectedCount: fieldAppMessages('filter_form_component_calendar_no_options_text'),
       value: this.getFilterDefaultValue('date'),
     },
     // Paisaje-Linguistico personalisation.
@@ -156,21 +157,6 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
       next: (totalPosts) => {
         this.totalPosts = totalPosts;
         this.isTotalLoading = false;
-      },
-    });
-
-    this.session.currentUserData$.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (currentUser) => {
-        const statusFilter = this.filters.find((filter) => filter.name === 'status');
-        if (statusFilter) {
-          const isLoggedIn = !!currentUser.userId;
-          statusFilter.value = this.getFilterDefaultValue('status', isLoggedIn);
-          statusFilter.selectedCount = isLoggedIn
-            ? searchFormHelper.statuses.length
-            : searchFormHelper.loggedOutStatuses.length;
-          statusFilter.selected = String(statusFilter.selectedCount);
-          this.updateFilterSelectedText(statusFilter);
-        }
       },
     });
   }
@@ -376,7 +362,7 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     formFilter.selected = String(formFilter?.value?.length ?? 'none');
   }
 
-  private getFilterDefaultValue(filterName: string, isLoggedIn: boolean = false): any {
+  private getFilterDefaultValue(filterName: string): any {
     if (filterName === 'source') {
       return searchFormHelper.sources.map((s) => s.value);
     }
@@ -388,13 +374,6 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     if (filterName === 'saved-filters') {
       return this.activatedSavedFilterId;
     }
-
-    if (filterName === 'status') {
-      return isLoggedIn
-        ? searchFormHelper.DEFAULT_FILTERS[filterName]
-        : searchFormHelper.DEFAULT_FILTERS_LOGGED_OUT[filterName];
-    }
-
     return searchFormHelper.DEFAULT_FILTERS[filterName] ?? null;
   }
 
@@ -423,16 +402,15 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async handleClearFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Limpiâh tôh lô firtrô??',
-      message:
-        'Tôh lô firtrô êççêtto <strong>Encuêttâ</strong>, <strong>Fuentê</strong> y <strong>Êttaô</strong> çe limpiarán',
+      header: fieldAppMessages('filter_form_component_clear_filters_header'),
+      message: fieldAppMessages('filter_form_component_clear_filters_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('filter_form_component_clear_filters_cancel_button_text'),
           role: 'cancel',
         },
         {
-          text: 'Limpiâh',
+          text: fieldAppMessages('filter_form_component_clear_filters_confirm_button_text'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -576,7 +554,9 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     switch (filter.name) {
       case 'date':
         if (!filter.value?.start || !filter.value?.start) {
-          filter.selectedCount = 'Çiempre';
+          filter.selectedCount = fieldAppMessages(
+            'filter_form_component_update_filter_selected_text_date',
+          );
         } else if (
           dateHelper.toUTC(filter.value.start, 'DD MMM') ===
           dateHelper.toUTC(filter.value.end, 'DD MMM')
@@ -597,20 +577,22 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
             ${filter.value?.location.label} (${filter.value?.distance}km)
           `;
         } else {
-          filter.selectedCount = 'Toâh lâ localiçaçionê';
+          filter.selectedCount = fieldAppMessages(
+            'filter_form_component_update_filter_selected_text_center_point',
+          );
         }
         break;
 
-      case 'status':
-        filter.selected = filter.value.length ? String(filter.value.length) : 'none';
-        break;
-
       case 'saved-filters':
-        filter.selected = this.activeSavedFilter?.name ?? 'none';
+        filter.selected =
+          this.activeSavedFilter?.name ??
+          fieldAppMessages('filter_form_component_update_filter_selected_text_saved_filters');
         break;
 
       default:
-        filter.selected = filter.value?.length ? String(filter.value.length) : 'none';
+        filter.selected = filter.value?.length
+          ? String(filter.value.length)
+          : fieldAppMessages('filter_form_component_update_filter_selected_text_default');
         break;
     }
   }
@@ -649,20 +631,26 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
 
   public async saveSavedFilters(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `${this.selectedSavedFilter ? 'Âttualiçâh' : 'Guardâh'} filtro?`,
+      header: `¿${
+        this.selectedSavedFilter
+          ? fieldAppMessages('filter_form_component_save_saved_filters_header_first_part_a')
+          : fieldAppMessages('filter_form_component_save_saved_filters_header_first_part_b')
+      } ${fieldAppMessages('filter_form_component_save_saved_filters_header_second_part')}?`,
       inputs: [
         {
-          placeholder: 'Nombre der firtro',
+          placeholder: fieldAppMessages(
+            'filter_form_component_save_saved_filters_inputs_placeholder',
+          ),
           value: this.selectedSavedFilter?.label,
         },
       ],
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('filter_form_component_save_saved_filters_cancel_button_text'),
           role: 'cancel',
         },
         {
-          text: 'Guardâh',
+          text: fieldAppMessages('filter_form_component_save_saved_filters_confirm_button_text'),
           role: 'confirm',
           cssClass: 'primary',
         },

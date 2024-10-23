@@ -102,7 +102,7 @@ export class PostHeadComponent extends BaseComponent {
         title: this.translate.instant('notify.confirm_modal.deleted.success'),
         description: `<p>${this.translate.instant(
           'notify.confirm_modal.deleted.success_description',
-          { count: '1 post' },
+          { count: 1 },
         )}</p>`,
         buttonSuccess: this.translate.instant('notify.confirm_modal.deleted.success_button'),
       });
@@ -117,9 +117,10 @@ export class PostHeadComponent extends BaseComponent {
         payload: this.post,
       });
     } else {
-      if (this.post.allowed_privileges.includes('update')) this.edit.emit();
+      this.edit.emit();
     }
   }
+
   public sharePost() {
     event?.stopPropagation();
     this.dialog.open(ShareModalComponent, {

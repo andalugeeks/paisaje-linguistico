@@ -5,11 +5,10 @@ import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '@shared';
 import { PostItemModule } from '../post-item/post-item.module';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [FeedViewComponent],
-  imports: [CommonModule, IonicModule, SharedModule, PostItemModule, FormsModule, TranslateModule],
+  imports: [CommonModule, IonicModule, SharedModule, PostItemModule, FormsModule],
   exports: [FeedViewComponent],
 })
 export class FeedViewModule {}

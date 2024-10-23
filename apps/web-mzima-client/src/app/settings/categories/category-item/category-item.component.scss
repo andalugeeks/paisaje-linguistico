@@ -2,7 +2,9 @@
   z-index: 1;
   padding: 13.5px 16px;
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  align-items: flex-start;
+  justify-content: flex-start;
   transition: background-color 0.35s ease;
   background: var(--color-neutral-10);
   margin-bottom: 8px;
@@ -23,14 +25,10 @@
   }
 
   &__title {
-    display: flex;
-    justify-content: flex-start;
-    h4 {
-      margin-bottom: 0;
-      font-size: 14px;
-      line-height: 28px;
-      font-weight: 700;
-    }
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 28px;
+    font-weight: 700;
 
     &--lvl2 {
       font-weight: 400;
@@ -51,17 +49,5 @@
 
   &__controls {
     margin-inline-start: 24px;
-  }
-
-  &__expand {
-    overflow: visible;
-  }
-
-  &__arrow {
-    transition: transform 0.35s ease;
-  }
-
-  &--expanded {
-    transform: rotate(180deg);
   }
 }

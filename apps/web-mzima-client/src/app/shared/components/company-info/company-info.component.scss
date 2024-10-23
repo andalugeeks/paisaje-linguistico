@@ -114,14 +114,6 @@
 }
 
 .mat-expansion-panel {
-  overflow: visible;
-
-  .mat-expansion-panel-header {
-    &:focus {
-      outline: revert !important;
-    }
-  }
-
   &:not(.mat-expanded):not([aria-disabled='true']) {
     .mat-expansion-panel-header {
       &:hover {

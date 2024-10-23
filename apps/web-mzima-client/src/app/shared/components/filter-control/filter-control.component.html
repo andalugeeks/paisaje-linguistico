@@ -77,7 +77,6 @@
         (ngModelChange)="valueChanged()"
         (click)="$event.stopPropagation()"
         (selectionChange)="filterChange.emit($event)"
-        [attr.data-qa]="'filter-selection-list'"
       >
         <mat-list-option
           color="primary"
@@ -87,7 +86,6 @@
           [selected]="option.checked"
           [disabled]="option.disabled"
           *ngFor="let option of options"
-          [attr.data-qa]="'filter-list-option'"
         >
           {{ option[fields[1]] | translate }}
         </mat-list-option>
@@ -158,12 +156,6 @@
 
     <ng-container *ngSwitchCase="filterType.Daterange">
       <div class="daterange" *ngIf="value" (click)="$event.stopPropagation()">
-        <div
-          class="daterange-display"
-          [ngClass]="{ 'daterange-display__grey': !dateIsValid(value.start) }"
-        >
-          <span class="daterange-display__sm">{{ displayDateRange() }}</span>
-        </div>
         <mat-calendar #calendar [selected]="value" (selectedChange)="selectedChange($event)">
         </mat-calendar>
       </div>

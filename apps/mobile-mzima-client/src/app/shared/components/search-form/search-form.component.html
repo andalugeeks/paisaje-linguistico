@@ -1,12 +1,13 @@
 <app-form-control
   #searchControl
   class="search-form"
-  [placeholder]="placeholder"
+  placeholder="Search"
   [(ngModel)]="value"
   [rounded]="!isSearchView"
   [clearable]="!!value?.length"
   (inputClear)="resetSearchForm()"
   (inputFocus)="showSearchResults()"
+  (inputClear)="searchQueryChanged()"
   (ngModelChange)="searchQueryChanged()"
   [color]="isSearchView ? 'light' : 'default'"
 >
@@ -18,7 +19,7 @@
       color="medium"
       class="back-button"
       *ngIf="isSearchView"
-      (buttonClick)="clearSearchAndGoBack()"
+      (buttonClick)="hideSearchResults()"
     >
       <app-icon slot="icon-only" name="arrow-back"></app-icon>
     </app-button>

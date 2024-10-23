@@ -6,7 +6,6 @@ import { SharedModule } from '@shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateSelectModule } from '../date-select/date-select.module';
 import { LocationSelectModule } from '../location-select/location-select.module';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [FilterComponent],
@@ -18,7 +17,6 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     DateSelectModule,
     LocationSelectModule,
-    TranslateModule,
   ],
   exports: [FilterComponent],
 })

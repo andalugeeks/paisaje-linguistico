@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 })
 export abstract class MainViewComponent {
   searchId = '';
-  collectionId: any = '';
+  collectionId = '';
   params: any = {
     limit: 200,
     offset: 0,
@@ -56,22 +56,14 @@ export abstract class MainViewComponent {
   abstract loadData(): void;
 
   initCollection() {
-    if (this.route.snapshot.data['view'] === 'collection') {
-      this.collectionId = this.route.snapshot.paramMap.get('id');
-      this.params.set = this.collectionId;
-      this.postsService.applyFilters({
-        ...this.postsService.normalizeFilter(this.filters),
-        set: this.collectionId,
+    this.collectionId = '';
+    this.params.set = '';
+
+    if (this.route.snapshot.data['view'] === 'search') {
+      this.searchId = this.route.snapshot.paramMap.get('id')!;
+      this.savedSearchesService.getById(this.searchId).subscribe((sSearch) => {
+        this.postsService.applyFilters(Object.assign(sSearch.result.filter, { set: [] }));
       });
-    } else {
-      this.collectionId = '';
-      this.params.set = '';
-      if (this.route.snapshot.data['view'] === 'search') {
-        this.searchId = this.route.snapshot.paramMap.get('id')!;
-        this.savedSearchesService.getById(this.searchId).subscribe((sSearch) => {
-          this.postsService.applyFilters(Object.assign(sSearch.result.filter, { set: [] }));
-        });
-      }
     }
   }
 }

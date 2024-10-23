@@ -1,5 +1,4 @@
 <mat-expansion-panel
-  tabindex="0"
   hideToggle
   class="company-info"
   [expanded]="isDescriptionOpen"
@@ -7,13 +6,8 @@
   (closed)="descriptionToggleHandle(false)"
 >
   <mat-expansion-panel-header>
-    <mat-panel-title class="company-info__header" [data-qa]="'panel-title'">
-      <img
-        [src]="logo"
-        [alt]="title + ' deployment Logo'"
-        class="company-info__logo"
-        *ngIf="logo"
-      />
+    <mat-panel-title class="company-info__header">
+      <img [src]="logo" [alt]="title" class="company-info__logo" *ngIf="logo" />
       <span class="company-info__title">{{ title }}</span>
       <mat-icon svgIcon="arrow-down" class="company-info__header__arrow"></mat-icon>
     </mat-panel-title>
@@ -21,9 +15,7 @@
   <div>
     <p>
       {{ 'app.contact_email_address' | translate }}
-      <a class="company-info__email" href="mailto:{{ email }}" [data-qa]="'contact-email'">{{
-        email
-      }}</a>
+      <a class="company-info__email" href="mailto:{{ email }}">{{ email }}</a>
     </p>
     <p [innerHTML]="description | safeUrl"></p>
   </div>

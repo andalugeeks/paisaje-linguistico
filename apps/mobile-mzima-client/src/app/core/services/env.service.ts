@@ -21,7 +21,6 @@ export class EnvService {
 
   async initEnv(): Promise<EnvConfigInterface> {
     const envy: EnvConfigInterface = await fetch('./env.json').then((res) => res.json());
-    envy['backend_url'] = null;
     if (this.deploymentUrl) {
       envy.backend_url = this.deploymentUrl;
     }
@@ -32,19 +31,15 @@ export class EnvService {
 
   get deploymentUrl(): string | null {
     const deployment: any = this.deploymentService.getDeployment();
-    let url = null;
-    if (deployment) {
-      const subdomain =
-        deployment.subdomain && deployment.subdomain !== '' ? `${deployment.subdomain}.` : '';
-      url = checkBackendURL(`${subdomain}${deployment.domain}`);
-    }
-    return url;
+    return deployment ? checkBackendURL(`${deployment.subdomain}.${deployment.domain}`) : null;
   }
 
   setDynamicBackendUrl() {
     const deployment: any = this.deploymentService.getDeployment();
     const envy: EnvConfigInterface = this.env;
-    envy.backend_url = this.deploymentUrl;
+    envy.backend_url = deployment
+      ? checkBackendURL(`${deployment.subdomain}.${deployment.domain}`)
+      : null;
     EnvService.ENV = envy;
     this.env = envy;
     this.deployment.next(deployment);

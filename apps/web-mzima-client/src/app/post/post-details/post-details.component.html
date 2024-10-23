@@ -14,7 +14,6 @@
         [editable]="post.allowed_privileges.includes('update')"
         [deleteable]="post.allowed_privileges.includes('delete')"
         (statusChanged)="statusChangedHandle()"
-        (deleted)="deletedHandle()"
       >
       </app-post-head>
     </div>
@@ -28,15 +27,10 @@
       <p>{{ post.form.description }}</p>
     </div>
 
-    <h2 *ngIf="post.title?.length || post.content?.length" data-qa="postTitleValue">
-      {{ post.title || post.content }}
-    </h2>
-    <div class="post__metadata-container">
-      <app-post-metadata *ngIf="post.id" [post]="post"></app-post-metadata>
-    </div>
+    <h2 *ngIf="post.title?.length || post.content?.length">{{ post.title || post.content }}</h2>
 
     <div class="post__description" *ngIf="post.title?.length && post.content?.length">
-      <p [innerHTML]="post.content" data-qa="postDescriptionValue"></p>
+      <p [innerHTML]="post.content"></p>
     </div>
 
     <ng-container *ngFor="let post_content of post.post_content; let i = index">
@@ -60,18 +54,10 @@
 
             <ng-container *ngIf="field.input === 'tags'">
               <ng-container *ngFor="let category of field.value">
-                <div class="category" *ngIf="category.tag">
+                <div class="category" *ngIf="!isParentCategory(post.categories, category.id)">
                   <mat-icon svgIcon="tag" class="category__icon"></mat-icon>
                   {{ category.tag }}
                 </div>
-                <ng-container *ngIf="category.children">
-                  <ng-container *ngFor="let child of category.children">
-                    <div class="category__child">
-                      <mat-icon svgIcon="tag" class="category__icon"></mat-icon>
-                      {{ child.tag }}
-                    </div>
-                  </ng-container>
-                </ng-container>
               </ng-container>
             </ng-container>
 
@@ -82,23 +68,20 @@
                 [color]="color || 'var(--color-neutral-100)'"
                 [type]="post.source?.toLowerCase() || 'default'"
                 tabindex="-1"
-                data-qa="postLocationMap"
               ></app-map-with-marker>
-              <p data-qa="postLocationValues">
-                {{ field.value.value.lat }} {{ field.value.value.lon }}
-              </p>
+              <p>{{ field.value.value.lat }} {{ field.value.value.lon }}</p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'date'">
-              <p data-qa="postDateValue">{{ getDate(field.value.value, 'LL') }}</p>
+              <p>{{ getDate(field.value.value, 'LL') }}</p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'datetime'">
-              <p data-qa="postDateTimeValue">{{ getDate(field.value.value, 'LL LTS') }}</p>
+              <p>{{ getDate(field.value.value, 'LL LTS') }}</p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'time'">
-              <p data-qa="postTimeValue">{{ getDate(field.value.value, 'LTS') }}</p>
+              <p>{{ getDate(field.value.value, 'LTS') }}</p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'radio'">
@@ -106,7 +89,7 @@
             </ng-container>
 
             <ng-container *ngIf="field.input === 'number'">
-              <p data-qa="postNumberValue">{{ field.value.value }}</p>
+              <p>{{ field.value.value }}</p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'text'">
@@ -122,7 +105,7 @@
             </ng-container>
 
             <ng-container *ngIf="field.input === 'textarea'">
-              <p [innerHTML]="field.value.value" data-qa="longTextValue"></p>
+              <p [innerHTML]="field.value.value"></p>
             </ng-container>
 
             <ng-container *ngIf="field.input === 'checkbox'">
@@ -178,14 +161,19 @@
         </ng-container>
       </ng-container>
     </ng-container>
+
+    <app-post-metadata *ngIf="post.id" [post]="post"></app-post-metadata>
   </ng-container>
 </div>
-<ng-container *ngIf="isManagePosts">
-  <app-post-conversation
-    *ngIf="post && post.source === 'SMS'"
-    [post]="post"
-  ></app-post-conversation>
-</ng-container>
+
 <ng-template #spinner>
   <app-spinner *ngIf="isPostLoading" class="spinner"></app-spinner>
+  <p
+    *ngIf="!isManagePosts && !isPostLoading && !postNotFound"
+    class="cant-see-post"
+    [innerHTML]="'notify.post.can_t_view_this_post' | translate"
+  ></p>
+  <ng-container *ngIf="postNotFound && !isPostLoading">
+    <app-post-not-found></app-post-not-found>
+  </ng-container>
 </ng-template>

@@ -57,28 +57,20 @@ export class LocationSelectionComponent implements ControlValueAccessor {
       label: 'global_filter.option_1',
     },
     {
-      value: 2,
+      value: 10,
       label: 'global_filter.option_2',
     },
     {
-      value: 5,
+      value: 50,
       label: 'global_filter.option_3',
     },
     {
-      value: 10,
+      value: 100,
       label: 'global_filter.option_4',
     },
     {
-      value: 50,
-      label: 'global_filter.option_5',
-    },
-    {
-      value: 100,
-      label: 'global_filter.option_6',
-    },
-    {
       value: 500,
-      label: 'global_filter.option_7',
+      label: 'global_filter.option_5',
     },
   ];
 

@@ -1,5 +1,5 @@
 <app-main-layout
-  title="Mî publicaçionê"
+  [title]="fieldAppMessages('post_page_title')"
   (back)="back()"
   [isSearch]="true"
   (search)="searchPosts($event)"
@@ -9,7 +9,7 @@
     fill="clear"
     class="edit-button"
     (buttonClick)="editPosts()"
-    color="custom"
+    [color]="!isEditMode ? 'custom' : 'primary'"
   >
     <app-icon *ngIf="!isEditMode" name="edit" slot="icon-only"></app-icon>
     <ng-container *ngIf="isEditMode">Exo</ng-container>
@@ -39,7 +39,7 @@
     [permissions]="permissions"
     [isProfile]="true"
     (postChanged)="getMyPosts()"
-    (postDeleted)="handlePostsDeleted($event)"
+    (postDeleted)="back()"
     footer
   >
   </app-post-controls>
@@ -48,7 +48,7 @@
 <ng-template #emptyBox>
   <div class="empty-box">
     <ion-text color="medium" class="empty ion-text-center" *ngIf="!posts.length && !isPostsLoading">
-      ¡No ç'encuentra ninguna publicaçión!
+      {{fieldAppMessages('posts_page_posts_not_found_text')}}
     </ion-text>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>
   </div>

@@ -109,12 +109,14 @@ export class CreateFieldModalComponent implements OnInit {
               array.push({
                 id: category.id,
                 name: category.tag,
-                children: category.children.map((cat: CategoryInterface) => {
-                  return {
-                    id: cat.id,
-                    name: cat.tag,
-                  };
-                }),
+                children: res?.results
+                  ?.filter((cat: CategoryInterface) => cat.parent_id === category.id)
+                  .map((cat: CategoryInterface) => {
+                    return {
+                      id: cat.id,
+                      name: cat.tag,
+                    };
+                  }),
               });
             }
           }
@@ -254,21 +256,9 @@ export class CreateFieldModalComponent implements OnInit {
 
   public addOption() {
     if (!this.selectedFieldType.options) this.selectedFieldType.options = [];
+    this.selectedFieldType.options.push('');
     this.checkForEmptyOptions();
-    if (this.selectedFieldType.options.includes('Other')) {
-      this.selectedFieldType.options.splice(this.selectedFieldType.options.length - 1, 0, '');
-      this.fieldOptions.splice(this.fieldOptions.length - 1, 0, { value: '', error: '' });
-    } else {
-      this.selectedFieldType.options.push('');
-      this.fieldOptions.push({ value: '', error: '' });
-    }
-  }
-
-  public addOther() {
-    if (!this.selectedFieldType.options) this.selectedFieldType.options = [];
-    if (this.selectedFieldType.options.includes('Other')) return;
-    this.selectedFieldType.options.push('Other');
-    this.fieldOptions.push({ value: 'Other', error: '' });
+    this.fieldOptions.push({ value: '', error: '' });
   }
 
   private setTempSelectedFieldType() {

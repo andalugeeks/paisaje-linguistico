@@ -65,11 +65,14 @@ export class PollingService implements OnDestroy {
         takeUntil(this.stopImportPolling),
       )
       .subscribe((result) => {
-        result.forEach((job: any) => {
-          if (job.result.status === 'SUCCESS' || job.result.status === 'FAILED') {
-            this.importFinished.next(job.result);
+        result.forEach((job: ExportJobInterface) => {
+          if (job.status === 'SUCCESS') {
+            this.notificationService.showError('JOB SUCCESS SUCCESS');
+            this.importFinished.next(job);
+          } else if (job.status === 'FAILED') {
+            this.notificationService.showError('JOB FAILED');
           } else {
-            nextQueries.push(this.dataImportService.getById(job.result.id));
+            nextQueries.push(this.dataImportService.getById(job.id));
           }
         });
         if (nextQueries.length) {

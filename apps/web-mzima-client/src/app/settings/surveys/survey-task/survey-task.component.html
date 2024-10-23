@@ -214,11 +214,7 @@
       <ng-container *ngIf="survey">
         <div class="form-row">
           <div class="toggle">
-            <mat-slide-toggle
-              [data-qa]="'toggle-posts-require-review'"
-              [(ngModel)]="survey.require_approval"
-              name="accept-survey"
-            >
+            <mat-slide-toggle [(ngModel)]="survey.require_approval" name="accept-survey">
               {{ 'survey.require_review' | translate }}
             </mat-slide-toggle>
             <p *ngIf="survey.require_approval" class="toggle__description">
@@ -226,11 +222,7 @@
             </p>
           </div>
           <div class="toggle">
-            <mat-slide-toggle
-              [data-qa]="'toggle-hide-author'"
-              [(ngModel)]="survey.hide_author"
-              name="import-to-survey"
-            >
+            <mat-slide-toggle [(ngModel)]="survey.hide_author" name="import-to-survey">
               {{ 'survey.hide_author_information' | translate }}
             </mat-slide-toggle>
             <p *ngIf="survey.hide_author" class="toggle__description">
@@ -238,11 +230,7 @@
             </p>
           </div>
           <div class="toggle" *ngIf="anonymiseReportersEnabled">
-            <mat-slide-toggle
-              [data-qa]="'toggle-hide-location'"
-              [(ngModel)]="survey.hide_location"
-              name="import-to-survey"
-            >
+            <mat-slide-toggle [(ngModel)]="survey.hide_location" name="import-to-survey">
               {{ 'survey.hide_location_information' | translate }}
             </mat-slide-toggle>
             <p
@@ -253,11 +241,7 @@
             ></p>
           </div>
           <div class="toggle" *ngIf="anonymiseReportersEnabled">
-            <mat-slide-toggle
-              [data-qa]="'toggle-hide-time'"
-              [(ngModel)]="survey.hide_time"
-              name="import-to-survey"
-            >
+            <mat-slide-toggle [(ngModel)]="survey.hide_time" name="import-to-survey">
               {{ 'survey.hide_time_information' | translate }}
             </mat-slide-toggle>
             <p *ngIf="survey.hide_time" class="toggle__description">

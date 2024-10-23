@@ -1,27 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { STORAGE_KEYS } from '@constants';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { EMPTY, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import {
   GeoJsonFilter,
   MediaService,
   PostContent,
+  postHelpers,
   PostResult,
   PostsService,
-  SurveyItem,
   SurveysService,
-  generalHelpers,
-  postHelpers,
 } from '@mzima-client/sdk';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   AlertService,
   DatabaseService,
@@ -30,23 +22,11 @@ import {
   ToastService,
 } from '@services';
 import { FormValidator, preparingVideoUrl } from '@validators';
-import {
-  BehaviorSubject,
-  EMPTY,
-  Observable,
-  from,
-  lastValueFrom,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { PostEditForm, UploadFileProgressHelper, prepareRelationConfig } from '../helpers';
+import { PostEditForm, prepareRelationConfig, UploadFileHelper } from '../helpers';
 
-import { dateHelper, objectHelpers } from '@helpers';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
-import { TranslateService } from '@ngx-translate/core';
+import { objectHelpers, dateHelper, fieldAppMessages } from '@helpers';
 
 dayjs.extend(timezone);
 
@@ -55,12 +35,12 @@ dayjs.extend(timezone);
   selector: 'app-post-edit',
   templateUrl: 'post-edit.page.html',
   styleUrls: ['post-edit.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PostEditPage {
   @Input() public postInput: any;
   @Output() cancel = new EventEmitter();
   @Output() updated = new EventEmitter();
+  public fieldAppMessages = fieldAppMessages;
   public date: string;
   public color: string;
   public form: FormGroup;
@@ -70,7 +50,6 @@ export class PostEditPage {
   private relationConfigSource: any;
   private relationConfigKey: string;
   private isSearching = false;
-  public isSubmitting: 'no' | 'yes' | 'complete' = 'no';
   public relatedPosts: PostResult[];
   public relationSearch: string;
   public selectedRelatedPost: any;
@@ -88,12 +67,11 @@ export class PostEditPage {
   public formValidator = new FormValidator();
 
   public filters: any;
-  public surveyList: SurveyItem[] = [];
+  public surveyList: any[] = [];
   public surveyListOptions: any;
   public selectedSurveyId: number | null;
   public selectedSurvey: any;
   private fileToUpload: any;
-  public uploadProgress$: BehaviorSubject<number>[] = [];
   private checkedList: any[] = [];
   public isConnection = true;
   public connectionInfo = '';
@@ -116,7 +94,6 @@ export class PostEditPage {
     private dataBaseService: DatabaseService,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private translateService: TranslateService,
   ) {
     this.route.queryParams.subscribe({
       next: (queryParams) => {
@@ -135,7 +112,7 @@ export class PostEditPage {
 
     if (this.post) {
       this.selectedSurveyId = this.post.form_id!;
-      this.loadForm(this.selectedSurveyId, this.post.post_content);
+      this.loadForm(this.post.post_content);
     }
 
     this.transformSurveys();
@@ -198,9 +175,7 @@ export class PostEditPage {
 
   private setConnectionStatus(status: boolean) {
     this.isConnection = status;
-    this.connectionInfo = status
-      ? ''
-      : 'Çe perdió la conêççión, la informaçión çe guardará en la baçe datô';
+    this.connectionInfo = status ? '' : fieldAppMessages('post_edit_page_connection_lost_status');
   }
 
   async getSurveys(): Promise<any[]> {
@@ -213,18 +188,8 @@ export class PostEditPage {
             limit: 0,
           })
           .toPromise();
-
-        const filteredSurveys = response.results.filter((survey: any) => {
-          return (
-            survey.everyone_can_create ||
-            survey.can_create.includes(
-              localStorage.getItem(`${generalHelpers.CONST.LOCAL_STORAGE_PREFIX}role`),
-            )
-          );
-        });
-
         await this.dataBaseService.set(STORAGE_KEYS.SURVEYS, response.results);
-        return filteredSurveys;
+        return response.results;
       } catch (err) {
         console.log(err);
         return this.loadSurveyFormLocalDB();
@@ -275,8 +240,7 @@ export class PostEditPage {
       : new PostEditForm(this.formBuilder).addFormControl(value, field);
   }
 
-  loadForm(surveyId?: any, updateContent?: PostContent[]) {
-    if (surveyId) this.selectedSurveyId = surveyId;
+  loadForm(updateContent?: PostContent[]) {
     if (!this.selectedSurveyId) return;
     this.clearData();
 
@@ -297,6 +261,8 @@ export class PostEditPage {
             case 'description':
               this.description = field.default;
               break;
+            case 'location':
+              break;
             case 'relation':
               const { relationConfigForm, relationConfigSource, relationConfigKey } =
                 prepareRelationConfig(field, this.filters);
@@ -304,12 +270,33 @@ export class PostEditPage {
               this.relationConfigSource = relationConfigSource;
               this.relationConfigKey = relationConfigKey;
               break;
-            case 'media':
-              this.uploadProgress$[field.id] = new BehaviorSubject<number>(0);
-              break;
           }
 
           if (field.key) {
+            // field.label = field.key;
+            switch (field.key) {
+              case '5b4b6286-8eac-4473-b57d-783bb2d8d860':
+                field.label = fieldAppMessages('post_edit_page_form_post_create_photo_title');
+                field.instructions = fieldAppMessages(
+                  'post_edit_page_form_post_create_photo_instructions',
+                );
+                break;
+              case '9e556d50-0d86-4641-a192-a68fce0a4569':
+                field.label = fieldAppMessages(
+                  'post_edit_page_form_post_create_transcription_title',
+                );
+                field.instructions = fieldAppMessages(
+                  'post_edit_page_form_post_create_transcription_instructions',
+                );
+                break;
+              case '706ee9b5-a187-4937-b5f9-7d6b0bf7d044':
+                field.label = fieldAppMessages('post_edit_page_form_post_create_description_title');
+                field.instructions = fieldAppMessages(
+                  'post_edit_page_form_post_create_description_instructions',
+                );
+                break;
+            }
+
             const value = this.getDefaultValues(field);
             field.value = value;
             fields[field.key] = this.createField(field, value);
@@ -318,9 +305,9 @@ export class PostEditPage {
     }
 
     this.taskForm = this.formBuilder.group(postHelpers.createTaskFormControls(this.tasks));
+
     this.form = new FormGroup(fields);
     this.initialFormData = this.form.value;
-    this.handleOtherOptions();
 
     if (updateContent) {
       this.tasks = postHelpers.markCompletedTasks(this.tasks, this.post);
@@ -339,40 +326,6 @@ export class PostEditPage {
       this.updateForm(updateContent);
     }
   }
-  private handleOtherOptions() {
-    for (const task of this.selectedSurvey?.tasks ?? []) {
-      task.fields.map((field: any) => {
-        if (
-          (field.input === 'radio' || field.input === 'checkbox') &&
-          field.options.includes('Other')
-        ) {
-          this.form.addControl(`other${field.key}`, new FormControl());
-        }
-      });
-    }
-  }
-
-  public hasEmptyOther(key: string) {
-    const emptyOther =
-      this.form.get(key)?.value?.includes('Other') &&
-      !this.form.get('other' + key)?.value &&
-      this.form.get('other' + key)?.touched;
-    this.form.controls[key].setErrors({ emptyOther });
-    if (!emptyOther) this.form.controls[key].updateValueAndValidity();
-    return emptyOther;
-  }
-
-  public changeOtherOptions(key: string, type: string) {
-    if (type === 'checkbox') {
-      const values = this.form.controls[key].value || [];
-      if (!values.includes('Other')) {
-        values.push('Other');
-        this.form.patchValue({ [key]: values });
-      }
-    } else {
-      this.updateFormControl(key, 'Other');
-    }
-  }
 
   public changeLocation(data: any, formKey: string) {
     const { location, error } = data;
@@ -388,27 +341,14 @@ export class PostEditPage {
     this.updateFormControl(key, dateHelper.setDate(event.detail.value, type));
   }
 
-  private async loadSurveyFormLocalDB(): Promise<any[]> {
-    try {
-      const surveysFromDB: any[] = await this.dataBaseService.get(STORAGE_KEYS.SURVEYS);
-      const filteredSurveys = surveysFromDB.filter((survey) => {
-        return (
-          survey.everyone_can_create ||
-          survey.can_create.includes(
-            localStorage.getItem(`${generalHelpers.CONST.LOCAL_STORAGE_PREFIX}role`),
-          )
-        );
-      });
-
-      return filteredSurveys;
-    } catch (error: any) {
-      throw new Error(`Error loading surveys from local database: ${error.message}`);
-    }
+  private async loadSurveyFormLocalDB() {
+    return this.dataBaseService.get(STORAGE_KEYS.SURVEYS);
   }
 
   private updateForm(updateValues: any[]) {
     type InputHandlerType =
       | 'tags'
+      | 'checkbox'
       | 'location'
       | 'date'
       | 'datetime'
@@ -419,14 +359,12 @@ export class PostEditPage {
       | 'textarea'
       | 'relation'
       | 'number';
-
-    type InputHandlersOptionsType = 'radio' | 'checkbox';
-
     type TypeHandlerType = 'title' | 'description';
 
     const inputHandlers: Partial<{ [key in InputHandlerType]: (key: string, value: any) => void }> =
       {
         tags: this.handleTags.bind(this),
+        checkbox: this.handleCheckbox.bind(this),
         location: this.handleLocation.bind(this),
         date: this.handleDate.bind(this),
         datetime: this.handleDateTime.bind(this),
@@ -434,28 +372,20 @@ export class PostEditPage {
         relation: this.handleRelation.bind(this),
       };
 
-    const inputHandlersOptions: {
-      [key in InputHandlersOptionsType]: (key: string, value: any, options: any) => void;
-    } = {
-      radio: this.handleRadio.bind(this),
-      checkbox: this.handleCheckbox.bind(this),
-    };
-
     const typeHandlers: { [key in TypeHandlerType]: (key: string) => void } = {
       title: this.handleTitle.bind(this),
       description: this.handleDescription.bind(this),
     };
 
     for (const { fields } of updateValues) {
-      for (const { type, input, key, value, options } of fields) {
+      for (const { type, input, key, value } of fields) {
         this.updateFormControl(key, value);
         if (inputHandlers[input as InputHandlerType]) {
           inputHandlers[input as InputHandlerType]!(key, value);
-        } else if (inputHandlersOptions[input as InputHandlersOptionsType]) {
-          inputHandlersOptions[input as InputHandlersOptionsType](key, value, options);
         } else {
           this.handleDefault.bind(this)(key, value);
         }
+
         if (typeHandlers[type as TypeHandlerType]) {
           typeHandlers[type as TypeHandlerType](key);
         }
@@ -507,27 +437,8 @@ export class PostEditPage {
     });
   }
 
-  private handleRadio(key: string, value: any, options: any) {
-    if (options.indexOf(value?.value) < 0 && options.includes('Other')) {
-      this.updateFormControl(key, 'Other');
-      this.updateFormControl(`other${key}`, value?.value);
-    } else {
-      this.updateFormControl(key, value?.value);
-      this.updateFormControl(`other${key}`, '');
-    }
-  }
-
-  private handleCheckbox(key: string, value: any, options: any) {
-    let data = value?.value;
-    if (data?.length && options.includes('Other')) {
-      for (const val of data) {
-        if (options.indexOf(val) < 0) {
-          this.updateFormControl(`other${key}`, val);
-          data = data.filter((oldVal: any) => oldVal !== val);
-          data.push('Other');
-        }
-      }
-    }
+  private handleCheckbox(key: string, value: any) {
+    const data = value?.value;
     this.updateFormControl(key, data);
   }
 
@@ -590,85 +501,41 @@ export class PostEditPage {
 
     for (const task of this.tasks) {
       task.fields = await Promise.all(
-        task.fields.map(
-          async (field: {
-            key: string | number;
-            input: string;
-            type: string;
-            options: Array<string>;
-          }) => {
-            const fieldValue: any = this.form.value[field.key];
-            let value: any = { value: fieldValue };
-            if (field.type === 'title') this.title = fieldValue;
-            if (field.type === 'description') this.description = fieldValue;
+        task.fields.map(async (field: { key: string | number; input: string; type: string }) => {
+          const fieldValue: any = this.form.value[field.key];
+          let value: any = { value: fieldValue };
 
-            if (fieldHandlers.hasOwnProperty(field.input)) {
-              value = fieldHandlers[field.input as keyof typeof fieldHandlers](fieldValue);
-            } else if (field.input === 'upload') {
-              if (this.form.value[field.key]?.upload && this.form.value[field.key]?.photo) {
-                this.fileToUpload = {
-                  ...this.form.value[field.key]?.photo,
-                  caption: this.form.value[field.key]?.caption,
-                  upload: this.form.value[field.key]?.upload,
-                };
-              } else if (this.form.value[field.key]?.delete && this.form.value[field.key]?.id) {
-                this.fileToUpload = {
-                  fileId: this.form.value[field.key]?.id,
-                  delete: this.form.value[field.key]?.delete,
-                };
-              } else {
-                value.value = this.form.value[field.key]?.id || null;
-              }
-            } else if (field.input === 'checkbox') {
-              if (
-                fieldValue &&
-                field.options.includes('Other') &&
-                this.form.value[field.key].includes('Other')
-              ) {
-                // Removing "Other"
+          if (field.type === 'title') this.title = fieldValue;
+          if (field.type === 'description') this.description = fieldValue;
 
-                value.value = value.value.filter((opt: any) => opt !== 'Other');
-                // Adding input-value
-                value.value.push(this.form.value[`other${field.key}`]);
-              } else {
-                value.value = this.form.value[field.key] || null;
-              }
-            } else if (field.input === 'radio') {
-              if (field.options.includes('Other')) {
-                value.value =
-                  this.form.value[field.key] === 'Other'
-                    ? this.form.value[`other${field.key}`]
-                    : this.form.value[field.key];
-              } else {
-                value.value = this.form.value[field.key] || null;
-              }
+          if (fieldHandlers.hasOwnProperty(field.input)) {
+            value = fieldHandlers[field.input as keyof typeof fieldHandlers](fieldValue);
+          } else if (field.input === 'upload') {
+            if (this.form.value[field.key]?.upload && this.form.value[field.key]?.photo) {
+              this.fileToUpload = {
+                ...this.form.value[field.key]?.photo,
+                caption: this.form.value[field.key]?.caption,
+                upload: this.form.value[field.key]?.upload,
+              };
+            } else if (this.form.value[field.key]?.delete && this.form.value[field.key]?.id) {
+              this.fileToUpload = {
+                fileId: this.form.value[field.key]?.id,
+                delete: this.form.value[field.key]?.delete,
+              };
             } else {
-              value.value = this.form.value[field.key] || null;
+              value.value = this.form.value[field.key]?.id || null;
             }
+          } else {
+            value.value = this.form.value[field.key] || null;
+          }
 
-            return {
-              ...field,
-              value,
-            };
-          },
-        ),
+          return {
+            ...field,
+            value,
+          };
+        }),
       );
     }
-  }
-
-  public backNavigation(): void {
-    this.clearData();
-    this.router.navigate([
-      this.queryParams['profile']
-        ? 'profile/posts'
-        : this.isConnection && this.postId
-        ? this.postId
-        : '/',
-    ]);
-  }
-
-  public cancelPost(): void {
-    this.backNavigation();
   }
 
   /**
@@ -676,8 +543,8 @@ export class PostEditPage {
    */
   public async submitPost(): Promise<void> {
     if (this.form.disabled) return;
+    // this.form.disable();
 
-    this.isSubmitting = 'yes';
     try {
       await this.preparationData();
     } catch (error: any) {
@@ -712,15 +579,17 @@ export class PostEditPage {
 
     await this.offlineStore(postData);
 
+    // TODO: Remove after testing
+    console.log('postData', postData);
+
     if (this.isConnection) {
       await this.uploadPost();
     } else {
       await this.postComplete(
-        'Graçiâ por contribuîh. Çe embiará la publicaçión cuando la conêççión çe aya rêttableçío.',
+        fieldAppMessages('post_edit_page_connection_lost_post_complete_message'),
       );
       this.backNavigation();
     }
-    this.isSubmitting = 'complete';
   }
 
   /**
@@ -738,54 +607,26 @@ export class PostEditPage {
    */
   async uploadPost() {
     const pendingPosts: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_POST_KEY);
-    console.log('uploadPosts > pendingPosts', pendingPosts);
-    const promises: Promise<any>[] = [];
     for (let postData of pendingPosts) {
-      for (const field of postData.post_content[0].fields) {
-        if (field.type === 'media') {
-          if (field?.file?.delete) {
-            postData = await this.deleteFile(postData, field.file);
-          } else if (field.value.value && typeof field.value.value !== 'number') {
-            const photo = {
-              data: field.value.value.photo.data,
-              name: field.value.value.photo.name,
-              caption: field.value.value.caption,
-              path: field.value.value.photo.path,
-            };
-            const fieldUpload = new UploadFileProgressHelper(this.mediaService).uploadFileField(
-              field,
-              photo,
-              (progress) =>
-                setTimeout(() => {
-                  this.uploadProgress$[field.id].next(progress);
-                }),
-            );
-            promises.push(fieldUpload);
-          }
-        }
+      if (postData?.file?.upload) {
+        postData = await new UploadFileHelper(this.mediaService).uploadFile(
+          postData,
+          postData.file,
+        );
       }
 
       if (postData?.file?.delete) {
         postData = await this.deleteFile(postData, postData.file);
       }
-      delete postData.file;
 
-      await Promise.all(promises).then((results) => {
-        results.forEach((result) => {
-          for (const [index, field] of postData.post_content[0].fields.entries()) {
-            if (field.id === result.id) postData.post_content[0].fields[index] = result;
-          }
-        });
-        if (this.postId) {
-          this.updatePost(this.postId, postData);
-        } else {
-          if (!this.atLeastOneFieldHasValidationError) {
-            this.createPost(postData);
-          }
+      if (this.postId) {
+        this.updatePost(this.postId, postData);
+      } else {
+        if (!this.atLeastOneFieldHasValidationError) {
+          this.createPost(postData);
         }
-      });
+      }
     }
-
     await this.dataBaseService.set(STORAGE_KEYS.PENDING_POST_KEY, []);
   }
 
@@ -832,9 +673,7 @@ export class PostEditPage {
         }
       },
       complete: async () => {
-        await this.postComplete(
-          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamente en la plataforma una bêh çea rebiçá.',
-        );
+        await this.postComplete(fieldAppMessages('post_edit_page_create_post_complete_message'));
         this.backNavigation();
       },
     });
@@ -842,7 +681,7 @@ export class PostEditPage {
 
   async postComplete(message: string) {
     await this.alertService.presentAlert({
-      header: '¡Perfêtto!',
+      header: fieldAppMessages('post_edit_page_post_complete_default_header'),
       message,
       buttons: [
         {
@@ -859,9 +698,8 @@ export class PostEditPage {
     }
     if (!objectHelpers.objectsCompare(this.initialFormData, this.form.value)) {
       const result = await this.alertService.presentAlert({
-        header: '¡Perfêtto!',
-        message:
-          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamenete en la plataforma una bêh çea rebiçá.',
+        header: fieldAppMessages('post_edit_page_post_complete_default_header'),
+        message: fieldAppMessages('post_edit_page_create_post_complete_message'),
       });
       if (result.role !== 'confirm') return;
     }
@@ -875,6 +713,17 @@ export class PostEditPage {
     } else {
       this.cancel.emit();
     }
+  }
+
+  public backNavigation(): void {
+    this.clearData();
+    this.router.navigate([
+      this.queryParams['profile']
+        ? 'profile/posts'
+        : this.isConnection && this.postId
+        ? this.postId
+        : '/',
+    ]);
   }
 
   public preventSubmitIncaseTheresNoBackendValidation() {
@@ -1014,8 +863,7 @@ export class PostEditPage {
       const index = this.checkedList.indexOf(item);
       if (index >= 0) {
         this.checkedList.splice(index, 1);
-        const newValue = this.checkedList.length ? this.checkedList : null;
-        this.form.patchValue({ [fieldKey]: newValue });
+        this.form.patchValue({ [fieldKey]: this.checkedList });
       }
     }
   }

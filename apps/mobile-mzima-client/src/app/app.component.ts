@@ -4,13 +4,7 @@ import { STORAGE_KEYS } from '@constants';
 import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { CollectionsService, MediaService, PostsService, SurveysService } from '@mzima-client/sdk';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import {
-  DatabaseService,
-  NetworkService,
-  ListenerService,
-  ToastService,
-  LanguageService,
-} from '@services';
+import { DatabaseService, NetworkService, ListenerService, ToastService } from '@services';
 import {
   Subject,
   concatMap,
@@ -25,8 +19,7 @@ import {
 import { BaseComponent } from './base.component';
 import { UploadFileHelper } from './post/helpers';
 import { Location } from '@angular/common';
-import { LanguageInterface } from '@mzima-client/sdk';
-import { TranslateService } from '@ngx-translate/core';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -36,8 +29,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent extends BaseComponent {
   private toastMessage$ = new Subject<string>();
-  public languages: LanguageInterface[];
-  public selectedLanguage$: any;
+  // public fieldAppMessages = fieldAppMessages; <No es necesario porque está en BaseComponent>
 
   constructor(
     override router: Router,
@@ -52,12 +44,9 @@ export class AppComponent extends BaseComponent {
     private collectionsService: CollectionsService,
     private surveysService: SurveysService,
     private listenerService: ListenerService,
-    private languageService: LanguageService,
-    private translateService: TranslateService,
-
     @Optional() override routerOutlet?: IonRouterOutlet,
   ) {
-    super(router, platform, toastService, alertCtrl, networkService, location, routerOutlet);
+    super(router, platform, toastService, alertCtrl, networkService, routerOutlet, location);
     this.initToastMessageListener();
     this.initNetworkListener();
     this.listenerService.changeDeploymentListener();
@@ -73,20 +62,8 @@ export class AppComponent extends BaseComponent {
   private loadInitialData() {
     this.getSurveys(false).subscribe();
     this.getCollections(false).subscribe();
-    this.loadLanguageInformation();
   }
 
-  public loadLanguageInformation() {
-    this.selectedLanguage$ = this.languageService.selectedLanguage$.pipe(untilDestroyed(this));
-    this.languageService.languages$
-      .pipe(untilDestroyed(this))
-      .subscribe((langs: LanguageInterface[]) => {
-        const initialLanguage = this.languageService.initialLanguage;
-        this.languages = langs.sort((lang: LanguageInterface) => {
-          return lang.code == initialLanguage ? -1 : 0;
-        });
-      });
-  }
   private initNetworkListener() {
     this.networkService.networkStatus$
       .pipe(
@@ -123,7 +100,8 @@ export class AppComponent extends BaseComponent {
     return this.collectionsService.getCollections(params).pipe(
       tap(async (response) => {
         await this.dataBaseService.set(STORAGE_KEYS.COLLECTIONS, response);
-        if (isToast) this.toastMessage$.next('Colêççionê âttualiçâh');
+        if (isToast)
+          this.toastMessage$.next(fieldAppMessages('app_component_get_collections_text'));
       }),
     );
   }
@@ -138,42 +116,33 @@ export class AppComponent extends BaseComponent {
       .pipe(
         tap(async (response) => {
           await this.dataBaseService.set(STORAGE_KEYS.SURVEYS, response.results);
-          if (isToast) this.toastMessage$.next('Datô de la Encuêtta Âttualiçaô');
+          if (isToast) this.toastMessage$.next(fieldAppMessages('app_component_get_surveys_text'));
         }),
       );
   }
 
   async checkPendingPosts(): Promise<boolean> {
     const posts: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_POST_KEY);
-    if (posts?.length) this.toastMessage$.next('Publicaçionê pendientê encontrâh');
+    if (posts?.length)
+      this.toastMessage$.next(fieldAppMessages('app_component_check_pending_posts_text'));
     return !!posts?.length;
   }
 
   async uploadPendingPosts() {
     const posts: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_POST_KEY);
-    if (posts) {
-      this.toastMessage$.next(
-        this.translateService.instant('app.info.posts_uploading', {
-          num_posts: posts.length.toString(),
-        }),
-      );
-      for (let post of posts) {
-        if (post?.file?.upload)
-          post = await new UploadFileHelper(this.mediaService).uploadFile(post, post.file);
-        await firstValueFrom(this.postsService.post(post));
-      }
-      this.toastMessage$.next(
-        this.translateService.instant('app.info.posts_uploaded', {
-          num_posts: posts.length.toString(),
-        }),
-      );
+    for (let post of posts) {
+      if (post?.file?.upload)
+        post = await new UploadFileHelper(this.mediaService).uploadFile(post, post.file);
+      await firstValueFrom(this.postsService.post(post));
     }
+    this.toastMessage$.next(fieldAppMessages('app_component_upload_pending_posts_text'));
     await this.dataBaseService.set(STORAGE_KEYS.PENDING_POST_KEY, []);
   }
 
   async checkPendingCollections(): Promise<boolean> {
     const coll: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_COLLECTIONS);
-    if (coll?.length) this.toastMessage$.next('Âttualiçando la colêççión de publicaçionê...');
+    if (coll?.length)
+      this.toastMessage$.next(fieldAppMessages('app_component_check_pending_collections_text'));
     return !!coll?.length;
   }
 
@@ -190,7 +159,7 @@ export class AppComponent extends BaseComponent {
     });
     forkJoin(observables).subscribe({
       next: async () => {
-        this.toastMessage$.next('Toâ lâ colêççionê pendientê fueron âttualiçâh');
+        this.toastMessage$.next(fieldAppMessages('app_component_upload_pending_collections_text'));
         await this.dataBaseService.set(STORAGE_KEYS.PENDING_COLLECTIONS, []);
       },
       error: ({ error }) => {

@@ -4,11 +4,10 @@ import { LocationSelectComponent } from './location-select.component';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '@shared';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [LocationSelectComponent],
-  imports: [CommonModule, IonicModule, SharedModule, FormsModule, TranslateModule],
+  imports: [CommonModule, IonicModule, SharedModule, FormsModule],
   exports: [LocationSelectComponent],
 })
 export class LocationSelectModule {}

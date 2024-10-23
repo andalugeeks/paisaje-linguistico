@@ -25,32 +25,60 @@
     </div>
     <div class="form-row__wrapper">
       <div class="form-row">
-        <span class="latlong">{{ location.lat }}, {{ location.lng }}</span>
+        <app-form-control
+          [(ngModel)]="location.lat"
+          label="Latitude"
+          [required]="required"
+          [readonly]="true"
+        >
+          <ng-container end>
+            <ng-container *ngIf="location.lat">
+              <app-icon name="close" class="icon-close" (click)="clearLocationField()"></app-icon>
+            </ng-container>
+          </ng-container>
+        </app-form-control>
+        <p *ngIf="emptyFieldLat" class="location-error">Latitú bacía</p>
+      </div>
+
+      <div class="form-row">
+        <app-form-control
+          [(ngModel)]="location.lng"
+          label="Longitude"
+          [required]="required"
+          [readonly]="true"
+        >
+          <ng-container end>
+            <ng-container *ngIf="location.lng">
+              <app-icon name="close" class="icon-close" (click)="clearLocationField()"></app-icon>
+            </ng-container>
+          </ng-container>
+        </app-form-control>
+        <p *ngIf="emptyFieldLng" class="location-error">Lohitú bacía</p>
       </div>
     </div>
-
-    <span class="instructions">
-      Puedê açêh click en la çona der mapa ande quierâ colocâh er marcadôh.
-    </span>
-
-    <div class="map-wrapper" *ngIf="mapReady">
-      <div
-        leaflet
-        class="map"
-        [leafletLayers]="mapLayers"
-        [leafletOptions]="leafletOptions"
-        [leafletFitBounds]="mapFitToBounds"
-        (leafletMapReady)="onMapReady($event)"
-        [leafletFitBoundsOptions]="fitBoundsOptions"
-      ></div>
-      <button
-        *ngIf="nativeApp"
-        type="button"
-        class="btn-current-location"
-        (click)="getCurrentLocation()"
-      >
-        <app-icon class="btn-current-location_icon" name="current-location"></app-icon>
-      </button>
-    </div>
   </div>
+</div>
+
+<span class="instructions">
+  Puedes hacer click en la zona del mapa donde quieras colocar el marcador.
+</span>
+
+<div class="map-wrapper" *ngIf="mapReady">
+  <div
+    leaflet
+    class="map"
+    [leafletLayers]="mapLayers"
+    [leafletOptions]="leafletOptions"
+    [leafletFitBounds]="mapFitToBounds"
+    (leafletMapReady)="onMapReady($event)"
+    [leafletFitBoundsOptions]="fitBoundsOptions"
+  ></div>
+  <button
+    *ngIf="nativeApp"
+    type="button"
+    class="btn-current-location"
+    (click)="getCurrentLocation()"
+  >
+    <app-icon class="btn-current-location_icon" name="current-location"></app-icon>
+  </button>
 </div>

@@ -15,7 +15,6 @@ export class CategoriesComponent {
   public categories: CategoryInterface[];
   selectedCategories: CategoryInterface[] = [];
   isShowActions = false;
-  openedParents: [number?] = [];
 
   constructor(
     private categoriesService: CategoriesService,
@@ -34,28 +33,12 @@ export class CategoriesComponent {
     });
   }
 
-  public displayChildren(id: number) {
-    if (this.isShowActions) {
-      return true;
-    } else {
-      return this.openedParents.includes(id);
-    }
-  }
-
-  public toggleChildren(id: number) {
-    const index = this.openedParents.indexOf(id);
-    if (index > -1) {
-      this.openedParents.splice(index, 1);
-    } else {
-      this.openedParents.push(id);
-    }
-  }
-
   public async deleteCategories() {
-    const messages = this.confirmationMessages();
     const confirmed = await this.confirmModalService.open({
-      title: messages.title,
-      description: messages.description,
+      title: this.translate.instant('notify.category.bulk_destroy_confirm', {
+        count: this.selectedCategories.length,
+      }),
+      description: this.translate.instant('notify.category.bulk_destroy_confirm_desc'),
       confirmButtonText: this.translate.instant('app.yes_delete'),
       cancelButtonText: this.translate.instant('app.no_go_back'),
     });
@@ -65,26 +48,12 @@ export class CategoriesComponent {
         complete: () => {
           this.getCategories();
           this.selectedCategories = [];
-          this.notificationService.showError(messages.toast);
+          this.notificationService.showError(
+            this.translate.instant('bulk_destroy_success_countless'),
+          );
         },
       },
     );
-  }
-
-  public confirmationMessages(): { title: string; description: string; toast: string } {
-    const isBulk = this.selectedCategories.length > 1;
-    const count = this.selectedCategories.length;
-    return {
-      title: this.getMessage('destroy_confirm', isBulk, count),
-      description: this.getMessage('destroy_confirm_desc', isBulk, count),
-      toast: this.getMessage('destroy_success', isBulk, count),
-    };
-  }
-
-  private getMessage(baseKey: string, isBulk: boolean = false, count?: number): string {
-    const prefix = isBulk ? 'bulk_' : '';
-    const countProperty = count !== undefined ? { count: count } : {};
-    return this.translate.instant(`notify.category.${prefix}${baseKey}`, countProperty);
   }
 
   public showActions(event: boolean) {
@@ -99,17 +68,9 @@ export class CategoriesComponent {
     } else {
       this.selectedCategories = this.selectedCategories.filter((sC) => sC.id !== cat.id);
     }
-    if (cat.children.length) {
-      cat.children.forEach((child) => {
-        if (i < 0) {
-          const c = this.selectedCategories.findIndex((sC) => sC.id === child.id);
-          if (c < 0) {
-            this.selectedCategories.push(child);
-          }
-        } else {
-          this.selectedCategories = this.selectedCategories.filter((sC) => sC.id !== child.id);
-        }
-      });
-    }
+  }
+
+  public getChildCategories(id: number): CategoryInterface[] {
+    return this.categories.filter((category) => category.parent_id === id);
   }
 }

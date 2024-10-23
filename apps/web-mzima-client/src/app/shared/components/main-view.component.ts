@@ -21,6 +21,7 @@ export abstract class MainViewComponent {
     limit: 500,
     offset: 0,
   };
+  filters;
   public user: UserInterface;
   public isDesktop: boolean = false;
 
@@ -33,10 +34,9 @@ export abstract class MainViewComponent {
     protected sessionService: SessionService,
     protected breakpointService: BreakpointService,
   ) {
-    const cachedFilter = localStorage.getItem(
-      this.sessionService.getLocalStorageNameMapper('filters'),
+    this.filters = JSON.parse(
+      localStorage.getItem(this.sessionService.getLocalStorageNameMapper('filters'))!,
     );
-    this.params = cachedFilter ? JSON.parse(cachedFilter) : this.params;
   }
 
   abstract loadData(): void;
@@ -46,7 +46,7 @@ export abstract class MainViewComponent {
       this.collectionId = this.route.snapshot.paramMap.get('id')!;
       this.params.set = this.collectionId;
       this.postsService.applyFilters({
-        ...this.normalizeFilter(this.params),
+        ...this.normalizeFilter(this.filters),
         set: this.collectionId,
       });
       this.searchId = '';
@@ -65,24 +65,28 @@ export abstract class MainViewComponent {
       } else {
         this.searchId = '';
         this.postsService.applyFilters({
-          ...this.normalizeFilter(this.params),
+          ...this.normalizeFilter(this.filters),
           set: [],
         });
       }
     }
   }
 
-  private normalizeFilter(values: GeoJsonFilter): GeoJsonFilter {
+  private normalizeFilter(values: any) {
     if (!values) return {};
 
     const filters = {
       ...values,
-      'form[]': values['form[]'],
-      'source[]': values['source[]'],
-      'status[]': values['status[]'],
-      'tags[]': values['tags[]'],
+      'form[]': values.form,
+      'source[]': values.source,
+      'status[]': values.status,
+      'tags[]': values.tags,
     };
 
+    delete filters.form;
+    delete filters.source;
+    delete filters.status;
+    delete filters.tags;
     return filters;
   }
 
