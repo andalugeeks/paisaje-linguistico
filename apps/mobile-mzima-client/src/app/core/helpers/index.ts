@@ -1,6 +1,9 @@
 export * as regexHelper from './regex';
 export { checkBackendURL } from './environment';
 export { fieldErrorMessages } from './field-error-messages';
+export { fieldAppMessages } from './field-app-messages';
+export { GlobalService } from './app.globalvars';
+export { LocalStorageManager } from './local-storage-manager';
 export * from './deployment-avatar-placeholder';
 export * from './util';
 export * as mapHelper from './map';
