@@ -1,5 +1,7 @@
 <ion-content class="page ion-padding-vertical" [fullscreen]="true">
-  <ion-title class="page-title ion-text-center ion-margin-bottom">¡Te damô la biembenía"</ion-title>
+  <ion-title class="page-title ion-text-center ion-margin-bottom"
+    >{{ fieldAppMessages('login_signup_pages_welcome_text') }}</ion-title
+  >
   <div class="main ion-padding-horizontal">
     <app-deployment-info (deploymentClick)="chooseDeployment()"></app-deployment-info>
     <form class="form" novalidate [formGroup]="form" (ngSubmit)="signUp()">
@@ -9,8 +11,8 @@
             label="Nombre"
             [required]="true"
             formControlName="name"
-            placeholder="Mete tu nombre"
-            hint="Er nombre q'introdûccâ çe môttrará como informaçión del uçuario"
+            [placeholder]="fieldAppMessages('signup_form_name_placeholder')"
+            [hint]="fieldAppMessages('signup_form_name_hint')"
             [errors]="fieldErrorMessages(form.controls['name'], 'name')"
           >
           </app-form-control>
@@ -19,19 +21,19 @@
             label="Email"
             [required]="true"
             formControlName="email"
-            placeholder="Mete tu correo elêttrónico"
+            [placeholder]="fieldAppMessages('signup_form_email_placeholder')"
             [errors]="fieldErrorMessages(form.controls['email'], 'email')"
           >
           </app-form-control>
           <app-form-control
             type="password"
-            label="Contraçeña"
+            [label]="fieldAppMessages('signup_form_password_label')"
             [required]="true"
             [togglePassword]="true"
             formControlName="password"
-            placeholder="Mete contraçeña"
+            [placeholder]="fieldAppMessages('signup_form_password_placeholder')"
             [errors]="fieldErrorMessages(form.controls['password'], 'password')"
-            [hint]="!form.controls['password'].value?.length ? 'La contraçeña debe tenêh como mínimo 8 carâtterê, una letra minúccula, una mayúccula, un número y un çímbolo.' : undefined"
+            [hint]="!form.controls['password'].value?.length ? fieldAppMessages('signup_form_password_hint') : undefined"
           >
             <app-password-strength
               additional
@@ -43,11 +45,14 @@
         </div>
         <div class="agreement">
           <app-checkbox formControlName="agreement">
-            Êtta aplicaçión a çío deçarroyá çobre Ushahidi Platform. Pa continuâh debê êttâh
-            d'acuerdo con çu
-            <a (click)="openLink($event, 'Privacy Policy')">Política de Pribaçiá</a>
-            y çû <br />
-            <a (click)="openLink($event, 'Privacy Policy')">Términô y Condiçionê</a>.
+            {{ fieldAppMessages('signup_page_privacy_policy_first_part') }}
+            <a (click)="openLink($event, 'Privacy Policy')"
+              >{{ fieldAppMessages('signup_page_privacy_policy_second_part') }}</a
+            >
+            {{ fieldAppMessages('signup_page_privacy_policy_third_part') }}<br />
+            <a (click)="openLink($event, 'Privacy Policy')"
+              >{{ fieldAppMessages('signup_page_privacy_policy_fourth_part') }}</a
+            >.
           </app-checkbox>
         </div>
         <ion-text *ngIf="signupError?.length" class="form-error ion-text-center" color="danger">
@@ -60,10 +65,10 @@
           type="submit"
           [disabled]="form.invalid || form.disabled || !form.controls['agreement'].value"
         >
-          Rehîttrarçe
+          {{ fieldAppMessages('signup_page_register_button_tag') }}
         </app-button>
         <app-button class="ion-margin-top" fill="clear" color="medium" routerLink="/">
-          Çartarçe êtto por aora
+          {{ fieldAppMessages('signup_page_skip_button_tag') }}
         </app-button>
       </div>
     </form>

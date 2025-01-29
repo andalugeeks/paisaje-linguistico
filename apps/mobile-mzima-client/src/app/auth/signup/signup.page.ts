@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { fieldErrorMessages, regexHelper } from '@helpers';
+import { fieldErrorMessages, fieldAppMessages, regexHelper } from '@helpers';
 import { generalHelpers } from '@mzima-client/sdk';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService, DeploymentService, SessionService } from '@services';
@@ -28,6 +28,7 @@ export class SignupPage {
     agreement: [false, [Validators.required]],
   });
   public signupError: string;
+  public fieldAppMessages = fieldAppMessages;
   public fieldErrorMessages = fieldErrorMessages;
 
   constructor(
@@ -67,8 +68,9 @@ export class SignupPage {
       error: ({ error }) => {
         this.form.enable();
 
-        if (error.errors[1].message === 'êtte correo elêttrónico ya êttá en uço') {
-          this.signupError = error.errors[1].message;
+        if (error.errors[1].message === 'email ya está en uso') {
+          // this.signupError = error.errors[1].message;
+          this.signupError = fieldAppMessages('signup_page_email_exist_error_message');
           this.checkExistEmailError(true);
           setTimeout(() => {
             this.checkExistEmailError(false);
@@ -92,7 +94,7 @@ export class SignupPage {
   public openLink(event: Event, link: string): void {
     event.preventDefault();
     event.stopPropagation();
-    window.open(link);
+    console.log('open: ', link);
   }
 
   public chooseDeployment(): void {

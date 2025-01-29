@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-activity',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['activity.page.scss'],
 })
 export class ActivityPage {
+  public fieldAppMessages = fieldAppMessages;
   constructor(private location: Location) {}
 
   public back(): void {

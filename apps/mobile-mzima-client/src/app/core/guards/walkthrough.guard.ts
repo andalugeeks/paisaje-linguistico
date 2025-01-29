@@ -16,7 +16,8 @@ export class WalkthroughGuard implements CanActivate {
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     const isWalkthrough = this.storageService.getStorage(STORAGE_KEYS.INTRO_DONE);
     if (!isWalkthrough) {
-      this.router.navigate(['/walkthrough']);
+      this.router.navigate(['/walkthrough-select-spelling-proposal']);
+      // this.router.navigate(['/walkthrough']);
       return false;
     } else {
       return true;
