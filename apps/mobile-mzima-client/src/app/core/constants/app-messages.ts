@@ -236,7 +236,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Sobre nosotr@s',
   },
   profile_page_about_ushahidi_menu_title: {
-    pao: "Informazión arreô d'Ushahidi",
+    pao: "Informazión arreô'e l'Ushahidi",
     nota: `Informasión arreó'el Ushahidi`,
     epa: 'Información çobre Ushahidi',
     cas: 'Información sobre Ushahidi',

@@ -1,25 +1,23 @@
 <ion-item
-  class="list-item"
+  class="generic-menu-item"
   button
   lines="none"
   (click)="handleClick()"
   [disabled]="menuItem.disabled"
 >
-  <app-icon class="list-item__icon" slot="start" [name]="menuItem.icon"></app-icon>
+  <app-icon class="generic-menu-item__icon" slot="start" [name]="menuItem.icon"></app-icon>
   <div>
-    <!-- <strong class="list-item__title">{{ menuItem.label }}</strong> -->
-    <strong class="profile-menu-item__title">{{
+    <strong class="generic-menu-item__title">{{
       menuItem.label[LocalStorageManager.getStoredSpellingProposalId()]
     }}</strong>
-    <ion-text color="medium" class="list-item__info">
-      <!-- {{ menuItem.description }} -->
+    <ion-text color="medium" class="generic-menu-item__info">
       {{ menuItem.description[LocalStorageManager.getStoredSpellingProposalId()] }}
     </ion-text>
   </div>
   <app-icon
     *ngIf="!menuItem.hideDetails"
     slot="end"
-    class="list-item__detail-icon"
+    class="generic-menu-item__detail-icon"
     name="arrow-right"
   ></app-icon>
 </ion-item>
