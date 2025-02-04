@@ -2,7 +2,7 @@ import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs from 'dayjs';
 import { DateRangeFormat } from '@models';
-import { dateHelper } from '@helpers';
+import { dateHelper, fieldAppMessages, LocalStorageManager } from '@helpers';
 
 @Component({
   selector: 'app-date-select',
@@ -18,33 +18,94 @@ import { dateHelper } from '@helpers';
 })
 export class DateSelectComponent implements ControlValueAccessor {
   @Input() public disabled = false;
+  public fieldAppMessages = fieldAppMessages;
+  public LocalStorageManager = LocalStorageManager;
   public dateOption: any = 'custom';
   public selectOptions = [
     {
       value: 'week',
-      label: 'Úrtima çemana',
+      // label: 'Úrtima çemana',
+      label: {
+        pao: 'Úrtima semana',
+        nota: 'Úrtima hemana',
+        epa: 'Úrtima çemana',
+        cas: 'Última semana',
+      },
     },
     {
       value: 'month',
-      label: 'Úrtimo mêh',
+      // label: 'Úrtimo mêh',
+      label: {
+        pao: 'Úrtimo meh',
+        nota: 'Úrtimo meh',
+        epa: 'Úrtimo mêh',
+        cas: 'Último mes',
+      },
     },
     {
       value: '3_month',
-      label: 'Úrtimô 3 meçê',
+      // label: 'Úrtimô 3 meçê',
+      label: {
+        pao: 'Úrtimoh 3 meseh',
+        nota: 'Úrtimoh treh mezeh',
+        epa: 'Úrtimô 3 meçê',
+        cas: 'Últimos 3 meses',
+      },
     },
     {
       value: '6_month',
-      label: 'Úrtimô 6 meçê',
+      // label: 'Úrtimô 6 meçê',
+      label: {
+        pao: 'Úrtimoh 6 meseh',
+        nota: 'Úrtimoh zaih mezeh',
+        epa: 'Úrtimô 6 meçê',
+        cas: 'Últimos 6 meses',
+      },
     },
     {
       value: 'year',
-      label: 'Úrtimo año',
+      // label: 'Úrtimo año',
+      label: {
+        pao: 'Úrtimo año',
+        nota: 'Úrtimo año',
+        epa: 'Úrtimo año',
+        cas: 'Último año',
+      },
     },
     {
       value: null,
-      label: 'Çiempre',
+      // label: 'Çiempre',
+      label: {
+        pao: 'Siempre',
+        nota: 'Ziempre',
+        epa: 'Çiempre',
+        cas: 'Siempre',
+      },
     },
   ];
+
+  // Función propia para facilitar las traducciones.
+  public generateSelectOptions(): any {
+    const res = [];
+
+    for (let i = 0; i < this.selectOptions?.length; i++) {
+      res.push({
+        value: this.selectOptions[i].value,
+        label:
+          this.selectOptions[i].label[
+            LocalStorageManager.getStoredSpellingProposalId() == 'pao'
+              ? 'pao'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
+              ? 'nota'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
+              ? 'epa'
+              : 'cas'
+          ],
+      });
+    }
+
+    return res;
+  }
 
   value: DateRangeFormat | null = {
     from: null,

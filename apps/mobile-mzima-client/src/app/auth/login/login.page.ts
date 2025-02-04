@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { regexHelper } from '@helpers';
 import { AlertService, AuthService, DeploymentService, SessionService } from '@services';
-import { fieldErrorMessages } from '@helpers';
+import { fieldErrorMessages, fieldAppMessages } from '@helpers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -23,6 +23,7 @@ export class LoginPage {
   public isForgotPasswordModalOpen = false;
   public loginError: string;
   public forgotPasswordError: string;
+  public fieldAppMessages = fieldAppMessages;
   public fieldErrorMessages = fieldErrorMessages;
   public isPrivate = true;
   public adminEmail = '';
@@ -71,9 +72,8 @@ export class LoginPage {
     this.authService.resetPassword({ email }).subscribe({
       next: async () => {
         await this.alertService.presentAlert({
-          header: 'Mira en tu correo',
-          message:
-            "T'emo mandao un enlaçe de rêttableçimiento de contraçeña ar correo elêttrónico. Exa'r bîttaço y çige lâ indicaçionê.",
+          header: fieldAppMessages('login_page_forgot_password_alert_header'),
+          message: fieldAppMessages('login_page_forgot_password_alert_message'),
         });
         this.router.navigate(['auth/login']);
         this.forgotPasswordForm.reset();
