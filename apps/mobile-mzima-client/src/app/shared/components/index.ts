@@ -22,4 +22,3 @@ export * from './choose-deployment/choose-deployment.component';
 export * from './choose-collection/choose-collection.component';
 export * from './collection-item/collection-item.component';
 export * from './post-controls/post-controls.component';
-export * from './generic-menu-item/generic-menu-item.component';

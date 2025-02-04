@@ -33,12 +33,7 @@
       <span>Back</span>
     </div>
     <p class="feed-header--title" *ngIf="!isPostsLoading">
-      {{ totalPosts }}
-      {{
-        totalPosts > 1
-          ? fieldAppMessages('feed_view_uncompleted_total_posts_pl')
-          : fieldAppMessages('feed_view_uncompleted_total_posts_sing')
-      }}
+      {{ totalPosts }} {{ totalPosts > 1 ? 'publicaçionê' : 'publicaçión' }} {{ ' - ' + collectionName }}
     </p>
   </div>
 
@@ -69,10 +64,10 @@
   <div class="empty-box" [ngClass]="{ 'empty-box--loading': isPostsLoading }">
     <ng-container *ngIf="!posts.length && !isPostsLoading">
       <ion-text color="medium" class="empty ion-text-center">
-        {{ fieldAppMessages('feed_view_empty_box_text') }}
+        No ay publicaçión ninguna. Añade una publicaçión.
       </ion-text>
       <app-button class="create-post-btn" (buttonClick)="createPost()" iconName="plus">
-        {{ fieldAppMessages('feed_view_empty_box_button_tag') }}
+        Añadîh una publicaçión
       </app-button>
     </ng-container>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>

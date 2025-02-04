@@ -8,7 +8,6 @@ import { FeedViewComponent } from './components/feed-view/feed-view.component';
 import { DraggableLayoutComponent } from './components/draggable-layout/draggable-layout.component';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { untilDestroyed } from '@ngneat/until-destroy';
-import { fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-map',
@@ -19,7 +18,6 @@ export class MapPage extends MainViewComponent implements OnDestroy {
   @ViewChild('layout') public layout: DraggableLayoutComponent;
   @ViewChild('map') public map: MapViewComponent;
   @ViewChild('feed') public feed: FeedViewComponent;
-  public fieldAppMessages = fieldAppMessages;
   public mode: number | 'fullscreen';
   public isConnection = true;
   private destroy$: Subject<void> = new Subject<void>();
@@ -94,17 +92,15 @@ export class MapPage extends MainViewComponent implements OnDestroy {
 
   async clearStorage() {
     const result = await this.alertService.presentAlert({
-      header: fieldAppMessages('map_page_clear_storage_alert_header'),
-      message: `${fieldAppMessages('map_page_clear_storage_alert_message_first_part')} 
-        ${this.map.savedOfflineTiles} 
-        ${fieldAppMessages('map_page_clear_storage_alert_message_second_part')}`,
+      header: `Mapa Offline`,
+      message: `El armaçenamiento der mobî contiene ${this.map.savedOfflineTiles} mapâ guardaô. ¿Quiêh limpiâh el armaçenamiento?`,
       buttons: [
         {
-          text: fieldAppMessages('map_page_clear_storage_alert_cancel_button_text'),
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('map_page_clear_storage_alert_confirm_button_text'),
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'primary',
         },

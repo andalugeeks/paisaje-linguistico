@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@ang
 import { FilterControl, FilterControlOption } from '@models';
 import { CategoriesService, CategoryInterface, SavedsearchesService } from '@mzima-client/sdk';
 import { AlertService, NetworkService, SessionService, ToastService } from '@services';
-import { searchFormHelper, fieldAppMessages, LocalStorageManager } from '@helpers';
+import { searchFormHelper } from '@helpers';
 import _ from 'lodash';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs from 'dayjs';
@@ -34,7 +34,6 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
   @Output() filterAdd = new EventEmitter();
   @Output() filterEdit = new EventEmitter<FilterControlOption>();
   @Output() filterDelete = new EventEmitter<{ id: string | number }>();
-  public fieldAppMessages = fieldAppMessages;
   public type: FilterType;
   public options: FilterControlOption[] = [];
   public isOptionsLoading = true;
@@ -152,11 +151,7 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
           value: filter.id,
           label: filter.name,
           checked: filter.id === this.filter.value,
-          info: `${fieldAppMessages(
-            'filter_component_get_saved_filters_info_first_part',
-          )} ${this.getObjectKeysCount(filter.filter)} ${fieldAppMessages(
-            'filter_component_get_saved_filters_info_second_part',
-          )}`,
+          info: `Firtrô aplicaô: ${this.getObjectKeysCount(filter.filter)} de 24`,
         }));
         this.isOptionsLoading = false;
       },
@@ -189,30 +184,12 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
     if (isLoggedIn) {
       this.options = searchFormHelper.statuses.map((status) => ({
         value: status.value,
-        label:
-          status.name[
-            LocalStorageManager.getStoredSpellingProposalId() == 'pao'
-              ? 'pao'
-              : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
-              ? 'nota'
-              : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
-              ? 'epa'
-              : 'cas'
-          ],
+        label: status.name,
       }));
     } else {
       this.options = searchFormHelper.loggedOutStatuses.map((status) => ({
         value: status.value,
-        label:
-          status.name[
-            LocalStorageManager.getStoredSpellingProposalId() == 'pao'
-              ? 'pao'
-              : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
-              ? 'nota'
-              : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
-              ? 'epa'
-              : 'cas'
-          ],
+        label: status.name,
       }));
     }
 
@@ -262,15 +239,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
   public async deleteOption(option: FilterControlOption): Promise<void> {
     if (this.filter.name === 'saved-filters' && option.value) {
       const result = await this.alertService.presentAlert({
-        header: fieldAppMessages('filter_component_delete_option_header'),
-        message: fieldAppMessages('filter_component_delete_option_message'),
+        header: '¿Çeguro que quierê eliminâh lô firtrô guardaô?',
+        message: 'Êtto çînnifica que no borberâh a bêh tû firtrô guardaô en la lîtta. ',
         buttons: [
           {
-            text: fieldAppMessages('filter_component_delete_option_cancel'),
+            text: 'Cançelâh',
             role: 'cancel',
           },
           {
-            text: fieldAppMessages('filter_component_delete_option_confirm'),
+            text: 'Eliminâh',
             role: 'confirm',
             cssClass: 'danger',
           },
@@ -338,16 +315,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearSelectedSubcategories(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `${fieldAppMessages('filter_component_clear_filter_header')} 
-        ${this.selectedCategory?.label}?`,
-      message: fieldAppMessages('filter_component_clear_filter_message'),
+      header: `Limpiâh er firtro ${this.selectedCategory?.label} ?`,
+      message: 'Êtte firtro çerá limpiao',
       buttons: [
         {
-          text: fieldAppMessages('filter_component_clear_filter_cancel'),
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('filter_component_clear_filter_confirm'),
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -375,15 +351,15 @@ export class FilterComponent implements ControlValueAccessor, OnInit {
 
   public async clearFilter(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: `${fieldAppMessages('filter_component_clear_filter_header')} ${this.filter.label}?`,
-      message: fieldAppMessages('filter_component_clear_filter_message'),
+      header: `Limpiâh er firtro ${this.filter.label} ?`,
+      message: 'Êtte firtro çerá limpiao',
       buttons: [
         {
-          text: fieldAppMessages('filter_component_clear_filter_cancel'),
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('filter_component_clear_filter_confirm'),
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },

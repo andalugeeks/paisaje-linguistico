@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { STORAGE_KEYS, profileMenu } from '@constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { fieldAppMessages } from '@helpers';
 import {
   AlertService,
   AuthService,
@@ -25,12 +24,10 @@ interface SupportItem {
 })
 export class ProfilePage {
   public profileMenu: profileMenu.ProfileMenuItem[] = profileMenu.profileMenu;
-  public aboutUsMenu = profileMenu.aboutUsMenu;
   public profileInformationMenu = profileMenu.profileInformationMenu;
   public isSupportModalOpen = false;
   public isSupportModalSearchView = false;
   public supportSearchQuery = '';
-  public fieldAppMessages = fieldAppMessages;
   public supportItems: SupportItem[] = [];
   public filteredSupportItems: SupportItem[] = this.supportItems;
 
@@ -76,15 +73,16 @@ export class ProfilePage {
 
   private async logout(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: fieldAppMessages('profile_page_logout_alert_header'),
-      message: fieldAppMessages('profile_page_logout_alert_message'),
+      header: 'Cerrâh Çeçión',
+      message:
+        '¿Êttâh çeguro que deçea çerrâh la çeçión de la aplicaçión? Êtta âççión finaliçará tu çeçión âttuâh y deberá borbêh a iniçiâh çeçión pa âççedêh a çu cuenta.',
       buttons: [
         {
-          text: fieldAppMessages('profile_page_logout_cancel_button_text'),
+          text: 'Cançelar',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('profile_page_logout_confirm_button_text'),
+          text: 'Cerrâh Çeçión',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -102,15 +100,16 @@ export class ProfilePage {
 
   private async clearPosts(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: fieldAppMessages('profile_page_clear_posts_alert_header'),
-      message: fieldAppMessages('profile_page_clear_posts_alert_message'),
+      header: 'Borrâh Publicaçionê Pendientê?',
+      message:
+        '¿Êttâh çeguro que quiêh borrâh lô mençahê pendientê? Êtta âççión no çe pué deçaçêh y borrará permanentemente tôh lô mençahê pendientê der çîttema.',
       buttons: [
         {
-          text: fieldAppMessages('profile_page_clear_posts_cancel_button_text'),
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('profile_page_clear_posts_confirm_button_text'),
+          text: 'Borrâh',
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -125,15 +124,16 @@ export class ProfilePage {
 
   private async resetAppData(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: fieldAppMessages('profile_page_reset_app_data_alert_header'),
-      message: fieldAppMessages('profile_page_reset_app_data_alert_message'),
+      header: '¿Limpiâh datô de la App?',
+      message:
+        '¿Êttâh çeguro que quiêh borrâh lô datô de la App?Êtta âççión borrará toa la informaçión armaçená en caxé. Ten en cuenta que tamién çe çerrará tu çeçión y çe borrará de tu dîppoçitibo cuarquier dato armaçenao locarmente, incluíô lô ahûttê y lâ preferençiâ. Êtta âççión no çe pué deçaçêh.',
       buttons: [
         {
-          text: fieldAppMessages('profile_page_reset_app_data_cancel_button_text'),
+          text: 'Cançelâh',
           role: 'cancel',
         },
         {
-          text: fieldAppMessages('profile_page_reset_app_data_confirm_button_text'),
+          text: 'Limpiâh',
           role: 'confirm',
           cssClass: 'danger',
         },

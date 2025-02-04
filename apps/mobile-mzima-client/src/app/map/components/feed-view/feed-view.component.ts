@@ -15,7 +15,6 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { DatabaseService, EnvService, SessionService } from '@services';
 import { lastValueFrom, Subject } from 'rxjs';
 import { MainViewComponent } from '../main-view.component';
-import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +26,6 @@ export class FeedViewComponent extends MainViewComponent {
   @Input() public atTop = false;
   @Input() public atBottom = false;
 
-  public fieldAppMessages = fieldAppMessages;
   public posts: PostResult[] = [];
   public isPostsLoading = true;
   public totalPosts = 0;
@@ -42,27 +40,27 @@ export class FeedViewComponent extends MainViewComponent {
   public collectionName: string;
   public sortingOptions = [
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_creation_date_newest_first'),
+      label: 'Por fexa de creaçión (Nuebô primero)',
       value: 'created?desc',
     },
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_creation_date_oldest_first'),
+      label: 'Por fexa de creaçión (Antiguô primero)',
       value: 'created?asc',
     },
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_posting_date_newest_first'),
+      label: 'Por fexa de publicaçión (Nuebô primero)',
       value: 'post_date?desc',
     },
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_posting_date_oldest_first'),
+      label: 'Por fexa de publicaçión (Antiguô primero)',
       value: 'post_date?asc',
     },
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_updating_date_newest_first'),
+      label: 'Por fexa de âttualiçaçión (Nuebô primero)',
       value: 'updated?desc',
     },
     {
-      label: fieldAppMessages('feed_view_components_sorting_options_updating_date_oldest_first'),
+      label: 'Por fexa de âttualiçaçión (Antiguô primero)',
       value: 'updated?asc',
     },
   ];

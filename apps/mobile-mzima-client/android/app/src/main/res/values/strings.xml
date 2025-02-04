@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Paisaje Andaluz</string>
-    <string name="title_activity_main">Paisaje Andaluz</string>
+    <string name="app_name">Paisaje Andalûh</string>
+    <string name="title_activity_main">Paisaje Andalûh</string>
     <string name="package_name">es.andaluh.paisaje</string>
     <string name="custom_url_scheme">es.andaluh.paisaje</string>
 </resources>
