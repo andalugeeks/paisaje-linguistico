@@ -375,6 +375,20 @@ export const appMessages: AppMessageMapping = {
     epa: 'Lohitú',
     cas: 'longitud',
   },
+  // *** LOCATION SELECT COMPONENT ***
+  location_select_component_instructions: {
+    pao: `Pueh jazê click en la zona'er mapa ande quieah colocâ'r marcaô.`,
+    nota: `Pueh hazè click en la zona'er mapa ande kierah kolokà er markaó.`,
+    epa: 'Puedê açêh click en la çona der mapa ande quierâ colocâh er marcadôh.',
+    cas: 'Puedes hacer click en la zona del mapa donde quieras colocar el marcador.',
+  },
+  // *** OFFLINE NOTIFICATION COMPONENT ***
+  offline_notification_component_instructions: {
+    pao: `Ehte contenío no'htá ihponible pa sê bisualizao`,
+    nota: `Ehte kontenío no ehtá dihponible pa zè bizualizao`,
+    epa: 'Êtte contenío no êttá dîpponible pa çêh biçualiçao',
+    cas: 'Este contenido no está disponible para ser visualizado',
+  },
   // *** INFORMATION PAGE ***
   information_page_title: {
     pao: 'Informazión der Perfî',
@@ -711,6 +725,12 @@ export const appMessages: AppMessageMapping = {
     epa: 'Ôtteniendo info...',
     cas: 'Obteniendo info...',
   },
+  post_edit_page_survey_list_title: {
+    pao: 'Elije aquí primero',
+    nota: 'Elihe ahkí primero',
+    epa: 'Elihe aquí primero',
+    cas: 'Elije aquí primero',
+  },
   post_edit_page_task_show_when_published: {
     pao: "Ehta tarea será bisible'n cuantito que la publicazión s'aiga aproabo.",
     nota: `Ehta tarea ba zè bizible en kuantito z'arga aprobao la publikahión.`,
@@ -735,11 +755,23 @@ export const appMessages: AppMessageMapping = {
     epa: 'Çelêççionâh tó',
     cas: 'Coleccionar todo',
   },
-  post_edit_page_form_control_tip: {
+  post_edit_page_relation_form_control_tip: {
     pao: "Ten en cuenta que lah entráh a lah que se refiere tien qu'êhtâ publicáh, lah publicazioneh qu'ehtén en rebisión no apaezerán en loh resurtaoh'e la búhquea.",
     nota: `Éxale kuenta de ke lah entráh referíah tienen k'ehtà publikáh; lah publikazioneh k’ehtén ehkurkándoze no ze ban a aparezè en loh rezurtaoh de la buhkia.`,
     epa: "Ten en cuenta que lâ entrâh a lâ que çe refiere deben êttâh publicâh, lâ publicaçionê q'êttén baho rebiçión no apareçerán en lô reçurtaô de búqquea.",
     cas: 'Ten en cuenta que las entradas a las que se refiere deben estar publicadas, las publicaciones que estén bajo revisión no aparecerán en los resultados de búsqueda.',
+  },
+  post_edit_page_relation_form_control_button_search_connection: {
+    pao: 'Búhquea de publicazión',
+    nota: 'Búhkea de publikazión',
+    epa: 'Búqqueda de publicaçión',
+    cas: 'Búsqueda de publicación',
+  },
+  post_edit_page_relation_form_control_button_search_no_connection: {
+    pao: `La búhquea no'htá ihponible`,
+    nota: `La búhkea no ehtá dihponible`,
+    epa: `La búqqueda no êttá dîpponible`,
+    cas: `La búsqueda no está disponible`,
   },
   post_edit_page_field_error_required_text: {
     pao: 'eh un campo obligatorio *',
@@ -818,6 +850,30 @@ export const appMessages: AppMessageMapping = {
     nota: `Añide otroh detayeh k'enkarten arreó'el afoto u zu kontenío`,
     epa: '¿?',
     cas: 'Añade cualquier otro detalle sobre la foto o su contenido',
+  },
+  post_edit_page_form_post_create_localization_title: {
+    pao: 'Localizazión',
+    nota: 'Lokalizazión',
+    epa: 'Localiçaçión',
+    cas: 'Localización',
+  },
+  post_edit_page_form_post_create_sort_of_sign_title: {
+    pao: `Tipo'e letrero [en cahteyano]`,
+    nota: `Tipo'e letrero [en kahteyano]`,
+    epa: `Tipo de letrero [en câtteyano]`,
+    cas: `Tipo de letrero`,
+  },
+  post_edit_page_form_post_create_sort_of_content_title: {
+    pao: `Tipo'e contenío [en cahteyano]`,
+    nota: `Tipo'e kontenío [en kahteyano]`,
+    epa: `Tipo de contenío [en câtteyano]`,
+    cas: `Tipo de contenido`,
+  },
+  post_edit_page_form_post_create_sort_of_content_instructions: {
+    pao: `¿Sobre qué trata'r contenío'el letrero?`,
+    nota: `¿Zobre ké trata er contenío del letrero?`,
+    epa: `¿Çobre qué trata er contenío del letrero?`,
+    cas: `¿Sobre qué trata el contenido del letrero?`,
   },
   post_edit_page_connection_lost_status: {
     pao: "S'a perdío la conesión, la informazión se guardará'n la base'e datoh",
@@ -1413,6 +1469,12 @@ export const appMessages: AppMessageMapping = {
     nota: 'To lah lokalisasioneh',
     epa: 'Toâh lâ localiçaçionê',
     cas: 'Todas las localizaciones',
+  },
+  filter_form_component_update_filter_selected_text_status: {
+    pao: 'denguno',
+    nota: 'ninguno',
+    epa: 'ninguno',
+    cas: 'ninguno',
   },
   filter_form_component_update_filter_selected_text_saved_filters: {
     pao: 'denguno',

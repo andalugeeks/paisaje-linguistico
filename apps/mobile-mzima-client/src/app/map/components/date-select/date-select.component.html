@@ -1,8 +1,8 @@
 <div class="select-holder ion-padding-horizontal">
   <app-select
-    label="Elihe Fexâ"
+    [label]="fieldAppMessages('date_select_component_label')"
     [(ngModel)]="dateOption"
-    [options]="selectOptions"
+    [options]="generateSelectOptions()"
     (ngModelChange)="setCalendar()"
   >
     <ng-container start>

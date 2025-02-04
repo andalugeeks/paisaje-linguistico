@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { LatLon, MapConfigInterface } from '@models';
 import { Map, MapOptions, marker, tileLayer } from 'leaflet';
 import { SessionService } from '@services';
-import { mapHelper } from '@helpers';
+import { mapHelper, fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-location-control',
@@ -11,6 +11,7 @@ import { mapHelper } from '@helpers';
 })
 export class LocationControlComponent implements OnInit, AfterViewInit {
   @Input() public location: LatLon;
+  public fieldAppMessages = fieldAppMessages;
   public type = 'default';
   public map: Map;
   public mapConfig: MapConfigInterface;
