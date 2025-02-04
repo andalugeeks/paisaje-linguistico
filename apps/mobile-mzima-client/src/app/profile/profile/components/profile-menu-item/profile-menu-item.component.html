@@ -7,9 +7,13 @@
 >
   <app-icon class="list-item__icon" slot="start" [name]="menuItem.icon"></app-icon>
   <div>
-    <strong class="list-item__title">{{ menuItem.label }}</strong>
+    <!-- <strong class="list-item__title">{{ menuItem.label }}</strong> -->
+    <strong class="profile-menu-item__title">{{
+      menuItem.label[LocalStorageManager.getStoredSpellingProposalId()]
+    }}</strong>
     <ion-text color="medium" class="list-item__info">
-      {{ menuItem.description }}
+      <!-- {{ menuItem.description }} -->
+      {{ menuItem.description[LocalStorageManager.getStoredSpellingProposalId()] }}
     </ion-text>
   </div>
   <app-icon

@@ -10,7 +10,7 @@
           (click)="addClickHandle()"
         >
           <app-icon class="button-add__icon" name="add" slot="start"></app-icon>
-          Añadîh nuebô ahûttê de firtrao
+          {{ fieldAppMessages('filter_component_add_new_settings') }}
         </ion-item>
         <ion-radio-group
           *ngIf="options?.length; else emptyBox"
@@ -18,8 +18,10 @@
           (ionChange)="radioChangeHandle($event)"
         >
           <app-radio [value]="null">
-            Tôh lô firtrô
-            <ion-text class="info" color="medium">Firtrô aplicaô: Tôh</ion-text>
+            {{ fieldAppMessages('filter_component_radio_a') }}
+            <ion-text class="info" color="medium">{{
+              fieldAppMessages('filter_component_radio_b')
+            }}</ion-text>
           </app-radio>
           <app-radio
             *ngFor="let option of options"
@@ -74,7 +76,9 @@
               <div>
                 {{ option.label }}
                 <span class="multiselect-option__info">
-                  Elehiô {{ getCheckedSubcategoriesLength(option.options) }} de
+                  {{ fieldAppMessages('filter_component_multiselect_option_info_first_part') }}
+                  {{ getCheckedSubcategoriesLength(option.options) }}
+                  {{ fieldAppMessages('filter_component_multiselect_option_info_second_part') }}
                   {{ option.options?.length }}
                 </span>
               </div>
@@ -104,7 +108,7 @@
   <ion-toolbar class="footer__toolbar">
     <div class="btn-panel">
       <app-button expand="inline" [disabled]="isPristine" (buttonClick)="applyFilter()">
-        Aplicâh
+        {{ fieldAppMessages('filter_component_apply_button_label') }}
       </app-button>
       <app-button
         clear-btn
@@ -115,7 +119,7 @@
         (buttonClick)="clearFilter()"
         *ngIf="filter.name !== 'saved-filters'"
       >
-        Limpiâh
+        {{ fieldAppMessages('filter_component_clear_button_label') }}
       </app-button>
     </div>
   </ion-toolbar>
@@ -149,7 +153,7 @@
   [title]="selectedCategory?.label?.toString() ?? ''"
 >
   <ion-text color="medium" class="subcategories-modal__total-posts" header-end>
-    Publicaçionê encontrâh:
+    {{ fieldAppMessages('filter_component_subcategories_modal_total_posts_header') }}
     <strong class="subcategories-modal__total-posts__count">{{ totalPosts }}</strong>
   </ion-text>
   <div class="subcategories-modal__filters">
@@ -169,7 +173,7 @@
       [disabled]="isSubcategoriesPristine"
       (buttonClick)="applySelectedSubcategories()"
     >
-      Aplicâh
+      {{ fieldAppMessages('filter_component_apply_button_label') }}
     </app-button>
     <app-button
       fill="outline"
@@ -178,7 +182,7 @@
       class="subcategories-modal__button"
       (buttonClick)="clearSelectedSubcategories()"
     >
-      Limpiâh
+      {{ fieldAppMessages('filter_component_clear_button_label') }}
     </app-button>
   </div>
 </app-modal>

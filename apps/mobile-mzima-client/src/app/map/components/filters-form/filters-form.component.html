@@ -7,7 +7,7 @@
   <div class="search-form__form-control-container ion-padding-horizontal">
     <app-form-control
       #formControl
-      placeholder="Bûccâh"
+      [placeholder]="fieldAppMessages('search_filter_form_search_placeholder')"
       formControlName="postsQuery"
       [rounded]="!isResultsVisible"
       [clearable]="isResultsVisible"
@@ -49,17 +49,21 @@
     <div class="search-form-results__empty" *ngIf="!posts.length; else postsList">
       <ng-container *ngIf="!isPostsLoading; else spinner">
         <ion-text color="medium" *ngIf="!form.controls['postsQuery'].value?.length">
-          Comiença a êccribîh pa bûccâh publicaçionê
+          {{ fieldAppMessages('search_filter_form_empty_results_text') }}
         </ion-text>
         <ion-text color="medium" *ngIf="form.controls['postsQuery'].value?.length">
-          Lo çentimô, no ç'encontraron publicaçionê <br />
-          baçâh en tû criteriô de búqquea.
+          {{ fieldAppMessages('search_filter_form_no_results_found_text_first_part') }} <br />
+          {{ fieldAppMessages('search_filter_form_no_results_found_text_second_part') }}
         </ion-text>
       </ng-container>
     </div>
 
     <ng-template #postsList>
-      <ion-text class="total" color="medium">Encontrâh {{ foundPosts }} publicaçionê</ion-text>
+      <ion-text class="total" color="medium"
+        >{{ fieldAppMessages('search_filter_form_num_results_found_text_first_part') }}
+        {{ foundPosts }}
+        {{ fieldAppMessages('search_filter_form_num_results_found_text_second_part') }}</ion-text
+      >
       <app-post-item
         [routerLink]="[post.id.toString()]"
         *ngFor="let post of posts"
@@ -89,7 +93,7 @@
 >
   <div class="filters-modal__header" header-end>
     <ion-text color="medium" class="filters-modal__total-posts">
-      Publicaçionê encontrâh:
+      {{ fieldAppMessages('search_filter_form_modal_header') }}
       <strong class="filters-modal__total-posts__count" *ngIf="!isTotalLoading; else spinner">
         {{ totalPosts }}
       </strong>
@@ -110,7 +114,7 @@
   <div class="filters-modal__footer" footer>
     <ng-container *ngIf="!isAddSavedFiltersMode; else SavedFiltersModeButtons">
       <app-button (buttonClick)="modalCloseHandle()" class="filters-modal__button" expand="inline">
-        Aplicâh
+        {{ fieldAppMessages('search_filter_form_modal_apply_button_text') }}
       </app-button>
       <app-button
         fill="outline"
@@ -119,12 +123,12 @@
         class="filters-modal__button"
         (buttonClick)="handleClearFilters()"
       >
-        Limpiâh
+        {{ fieldAppMessages('search_filter_form_modal_clear_button_text') }}
       </app-button>
     </ng-container>
     <ng-template #SavedFiltersModeButtons>
       <app-button (buttonClick)="saveSavedFilters()" class="filters-modal__button" expand="inline">
-        Guardâh
+        {{ fieldAppMessages('search_filter_form_modal_save_button_text') }}
       </app-button>
       <app-button
         fill="outline"
@@ -133,7 +137,7 @@
         class="filters-modal__button"
         (buttonClick)="cancelAddSavedFiltersMode()"
       >
-        Cançelâh
+        {{ fieldAppMessages('search_filter_form_modal_cancel_button_text') }}
       </app-button>
     </ng-template>
   </div>

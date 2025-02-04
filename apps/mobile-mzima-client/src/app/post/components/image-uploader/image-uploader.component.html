@@ -19,11 +19,11 @@
       >
         <ng-container *ngIf="!photo; else changeButton">
           <app-icon class="icon" name="plus"></app-icon>
-          Añadîh afoto
+          {{ fieldAppMessages('image_loader_photo_button_tag') }}
         </ng-container>
         <ng-template #changeButton>
           <app-icon class="icon" name="edit"></app-icon>
-          Reemplaçâh imahen
+          {{ fieldAppMessages('image_loader_change_button_tag') }}
         </ng-template>
       </app-button>
 
@@ -37,7 +37,9 @@
         <app-icon slot="icon-only" name="delete"></app-icon>
       </app-button>
     </div>
-    <p class="error-msg" *ngIf="requiredError">Çe neçeçita Imahen</p>
+    <p class="error-msg" *ngIf="requiredError">
+      {{ fieldAppMessages('image_loader_image_required_error') }}
+    </p>
   </div>
 
   <div class="form-row" *ngIf="hasCaption">
@@ -48,7 +50,7 @@
       [disabled]="!!id"
     ></app-form-control>
     <p *ngIf="captionControl?.hasError('specialCharacters')">
-      Êtte campo contiene carâtterê êppeçialê
+      {{ fieldAppMessages('image_loader_special_characters_error') }}
     </p>
   </div>
 </div>

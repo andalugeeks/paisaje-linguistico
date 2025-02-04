@@ -20,6 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { cloneDeep } from 'lodash';
 import { CollectionsModalComponent } from '../../../shared/components';
 import { Router } from '@angular/router';
+import { fieldAppMessages, LocalStorageManager } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -41,6 +42,8 @@ export class PostItemComponent implements OnInit {
   public isMediaLoading: boolean;
   public actionSheetButtons?: ActionSheetButton[] = getPostItemActions();
   public isConnection = true;
+  public fieldAppMessages = fieldAppMessages;
+  public LocalStorageManager = LocalStorageManager;
 
   constructor(
     private networkService: NetworkService,
@@ -118,7 +121,7 @@ export class PostItemComponent implements OnInit {
           url: `https://${this.deploymentService.getDeployment()!.fqdn}/feed/${
             this.post.id
           }/view?mode=ID`,
-          dialogTitle: 'Compartîh Publicaçión',
+          dialogTitle: fieldAppMessages('post_items_components_dialog_title'),
         }),
       [PostItemActionType.EDIT]: () => this.editPost(),
       [PostItemActionType.ADD_TO_COLLECTION]: () => this.addToCollection(),
@@ -149,11 +152,17 @@ export class PostItemComponent implements OnInit {
         this.post.sets = collections;
         this.postUpdated.emit({ post: this.post });
         this.toastService.presentToast({
-          header: 'Corrêtto',
-          message: `La publicaçión “${this.post.title}” fue ${
+          header: fieldAppMessages('post_items_components_add_to_collection_header'),
+          message: `${fieldAppMessages(
+            'post_items_components_add_to_collection_message_part_1',
+          )} “${this.post.title}” ${fieldAppMessages(
+            'post_items_components_add_to_collection_message_part_2',
+          )} ${
             collections?.length
-              ? `añadía a ${collections.length} colêççionê`
-              : 'retirá de tó lâ colêççionê'
+              ? `${fieldAppMessages('post_items_components_add_to_collection_message_part_3_a')} ${
+                  collections.length
+                } ${fieldAppMessages('post_items_components_add_to_collection_message_part_4_a')}`
+              : fieldAppMessages('post_items_components_add_to_collection_message_part_3_b')
           }.`,
           buttons: [],
         });
@@ -176,15 +185,15 @@ export class PostItemComponent implements OnInit {
 
   private async deletePost(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: 'Êttâh çeguro que quiêh eliminâh la publicaçión?',
-      message: 'Êtta âççión no çe pué deçaçêh. Gâtta cuidao!',
+      header: fieldAppMessages('post_items_components_delete_post_header'),
+      message: fieldAppMessages('post_items_components_delete_post_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('post_items_components_delete_post_cancel'),
           role: 'cancel',
         },
         {
-          text: 'Eliminâh',
+          text: fieldAppMessages('post_items_components_delete_post_remove'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -197,7 +206,7 @@ export class PostItemComponent implements OnInit {
         next: () => {
           this.postDeleted.emit({ post });
           this.toastService.presentToast({
-            message: 'La publicaçión ça elimiao con éççito',
+            message: fieldAppMessages('post_items_components_post_deleted_message'),
           });
         },
       });
@@ -207,7 +216,7 @@ export class PostItemComponent implements OnInit {
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       mode: 'ios',
-      header: 'Âççionê pa la publicaçión',
+      header: fieldAppMessages('post_items_components_present_action_sheet_message'),
       buttons: this.actionSheetButtons!,
     });
     actionSheet.onWillDismiss().then((event) => {

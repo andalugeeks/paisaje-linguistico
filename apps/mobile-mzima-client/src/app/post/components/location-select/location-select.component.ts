@@ -28,7 +28,7 @@ import {
 } from 'leaflet';
 import Geocoder from 'leaflet-control-geocoder';
 import { debounceTime, Subject } from 'rxjs';
-import { mapHelper } from '@helpers';
+import { mapHelper, fieldAppMessages } from '@helpers';
 import { Platform } from '@ionic/angular';
 
 export interface MapViewInterface {
@@ -65,6 +65,7 @@ export class LocationSelectComponent implements OnInit {
   @Input() public type = 'default';
   @Input() public isEditPost: boolean = false;
   @Output() locationChange = new EventEmitter();
+  public fieldAppMessages = fieldAppMessages;
   public emptyFieldLat = false;
   public emptyFieldLng = false;
   private map: Map;
