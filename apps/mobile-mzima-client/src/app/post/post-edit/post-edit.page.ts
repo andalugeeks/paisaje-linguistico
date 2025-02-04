@@ -43,7 +43,7 @@ import {
 } from 'rxjs';
 import { PostEditForm, UploadFileProgressHelper, prepareRelationConfig } from '../helpers';
 
-import { dateHelper, objectHelpers, fieldAppMessages } from '@helpers';
+import { dateHelper, objectHelpers } from '@helpers';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import { TranslateService } from '@ngx-translate/core';
@@ -61,7 +61,6 @@ export class PostEditPage {
   @Input() public postInput: any;
   @Output() cancel = new EventEmitter();
   @Output() updated = new EventEmitter();
-  public fieldAppMessages = fieldAppMessages;
   public date: string;
   public color: string;
   public form: FormGroup;
@@ -199,7 +198,9 @@ export class PostEditPage {
 
   private setConnectionStatus(status: boolean) {
     this.isConnection = status;
-    this.connectionInfo = status ? '' : fieldAppMessages('post_edit_page_connection_lost_status');
+    this.connectionInfo = status
+      ? ''
+      : 'Çe perdió la conêççión, la informaçión çe guardará en la baçe datô';
   }
 
   async getSurveys(): Promise<any[]> {
@@ -309,55 +310,6 @@ export class PostEditPage {
           }
 
           if (field.key) {
-            switch (field.key) {
-              // Título
-              case '5b4b6286-8eac-4473-b57d-783bb2d8d860':
-                field.label = fieldAppMessages('post_edit_page_form_post_create_photo_title');
-                field.instructions = fieldAppMessages(
-                  'post_edit_page_form_post_create_photo_instructions',
-                );
-                break;
-              // Transcripción
-              case '9e556d50-0d86-4641-a192-a68fce0a4569':
-                field.label = fieldAppMessages(
-                  'post_edit_page_form_post_create_transcription_title',
-                );
-                field.instructions = fieldAppMessages(
-                  'post_edit_page_form_post_create_transcription_instructions',
-                );
-                break;
-              // Descripción
-              case '706ee9b5-a187-4937-b5f9-7d6b0bf7d044':
-                field.label = fieldAppMessages('post_edit_page_form_post_create_description_title');
-                field.instructions = fieldAppMessages(
-                  'post_edit_page_form_post_create_description_instructions',
-                );
-                break;
-              // Localización
-              case 'location_default':
-                field.label = fieldAppMessages(
-                  'post_edit_page_form_post_create_localization_title',
-                );
-                break;
-              // Tipo de letrero
-              case '8bb3bf4d-2258-4109-9095-65d4b9f72ad7':
-                field.label = fieldAppMessages(
-                  'post_edit_page_form_post_create_sort_of_sign_title',
-                );
-                break;
-              // Tipo de discurso
-              case 'f0d6e149-95de-4df5-b4a9-22dfe3db6485':
-                field.label = fieldAppMessages(
-                  'post_edit_page_form_post_create_sort_of_content_title',
-                );
-                field.instructions = fieldAppMessages(
-                  'post_edit_page_form_post_create_sort_of_content_instructions',
-                );
-                break;
-            }
-            // Con este truco podemos averiguar los 'key' de cada campo para poder gestionar su traducción.
-            // field.label = field.key;
-
             const value = this.getDefaultValues(field);
             field.value = value;
             fields[field.key] = this.createField(field, value);
@@ -764,7 +716,7 @@ export class PostEditPage {
       await this.uploadPost();
     } else {
       await this.postComplete(
-        fieldAppMessages('post_edit_page_connection_lost_post_complete_message'),
+        'Graçiâ por contribuîh. Çe embiará la publicaçión cuando la conêççión çe aya rêttableçío.',
       );
       this.backNavigation();
     }
@@ -880,7 +832,9 @@ export class PostEditPage {
         }
       },
       complete: async () => {
-        await this.postComplete(fieldAppMessages('post_edit_page_create_post_complete_message'));
+        await this.postComplete(
+          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamente en la plataforma una bêh çea rebiçá.',
+        );
         this.backNavigation();
       },
     });
@@ -888,7 +842,7 @@ export class PostEditPage {
 
   async postComplete(message: string) {
     await this.alertService.presentAlert({
-      header: fieldAppMessages('post_edit_page_post_complete_default_header'),
+      header: '¡Perfêtto!',
       message,
       buttons: [
         {
@@ -905,8 +859,9 @@ export class PostEditPage {
     }
     if (!objectHelpers.objectsCompare(this.initialFormData, this.form.value)) {
       const result = await this.alertService.presentAlert({
-        header: fieldAppMessages('post_edit_page_post_complete_default_header'),
-        message: fieldAppMessages('post_edit_page_create_post_complete_message'),
+        header: '¡Perfêtto!',
+        message:
+          'Graçiâ por contribuîh. La publicaçión çerá rebiçá por el equipo de Admins y podrâh bêl-lo públicamenete en la plataforma una bêh çea rebiçá.',
       });
       if (result.role !== 'confirm') return;
     }

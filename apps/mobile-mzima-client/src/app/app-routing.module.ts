@@ -51,20 +51,6 @@ const routes: Routes = [
       import('./privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyPageModule),
   },
   {
-    path: 'select-spelling-proposal',
-    loadChildren: () =>
-      import('./select-spelling-proposal/select-spelling-proposal.module').then(
-        (m) => m.SelectSpellingProposalPageModule,
-      ),
-  },
-  {
-    path: 'walkthrough-select-spelling-proposal',
-    loadChildren: () =>
-      import(
-        './walkthrough-select-spelling-proposal/walkthrough-select-spelling-proposal.module'
-      ).then((m) => m.WalkthroughSelectSpellingProposalPageModule),
-  },
-  {
     path: 'activity',
     loadChildren: () => import('./activity/activity.module').then((m) => m.ActivityPageModule),
     canActivate: [NotPrivateDeploymentGuard],

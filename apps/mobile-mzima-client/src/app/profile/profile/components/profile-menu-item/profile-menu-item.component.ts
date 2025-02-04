@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { profileMenu } from '@constants';
-import { LocalStorageManager } from '@helpers';
 
 @Component({
   selector: 'app-profile-menu-item',
@@ -11,7 +10,6 @@ import { LocalStorageManager } from '@helpers';
 export class ProfileMenuItemComponent {
   @Input() menuItem: profileMenu.ProfileMenuItem;
   @Output() action = new EventEmitter<profileMenu.ProfileMenuActions>();
-  public LocalStorageManager = LocalStorageManager;
 
   constructor(private router: Router) {}
 

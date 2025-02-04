@@ -3,7 +3,6 @@ import { Platform } from '@ionic/angular';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionService, NetworkService, ToastService } from '@services';
-import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -14,7 +13,6 @@ import { fieldAppMessages } from '@helpers';
 export class AuthPage {
   public isKeyboardOpen = false;
   public isSignupActive = false;
-  public fieldAppMessages = fieldAppMessages;
 
   constructor(
     private platform: Platform,

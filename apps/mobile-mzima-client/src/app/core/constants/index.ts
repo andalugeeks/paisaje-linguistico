@@ -1,10 +1,7 @@
 export { formErrorMessages } from './form-error-messages';
-export { appMessages } from './app-messages';
 export { navigationMenu } from './navigation-menu';
 export { deploymentAvatarColors } from './deployment-avatar-colors';
 export * as profileMenu from './profile-menu';
-export * as aboutUsMenu from './about-us-menu';
-export * as genericMenu from './generic-menu';
 export * from './walkthrough';
 export * from './storage-key';
 export * from './post-item-actions';

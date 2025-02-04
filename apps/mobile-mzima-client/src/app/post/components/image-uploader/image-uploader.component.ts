@@ -6,7 +6,6 @@ import { Capacitor } from '@capacitor/core';
 import { Directory, FileInfo, Filesystem } from '@capacitor/filesystem';
 import { AlphanumericValidator } from '@validators';
 import { ConvertImage } from '../../helpers';
-import { fieldAppMessages } from '@helpers';
 
 const IMAGE_DIR = 'ush-images';
 
@@ -36,7 +35,6 @@ export class ImageUploaderComponent implements ControlValueAccessor {
   @Input() public requiredError?: boolean;
   @Input() public isConnection: boolean;
 
-  public fieldAppMessages = fieldAppMessages;
   fileName: string;
   captionControl = new FormControl('', AlphanumericValidator());
   id?: number;

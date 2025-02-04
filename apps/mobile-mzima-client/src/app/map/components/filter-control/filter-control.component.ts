@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilterControl } from '@models';
-import { fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-filter-control',
@@ -11,7 +10,6 @@ export class FilterControlComponent {
   @Input() public filter: FilterControl;
   @Input() public disabled = false;
   @Output() filterClick = new EventEmitter();
-  public fieldAppMessages = fieldAppMessages;
 
   public handleClick(event: Event): void {
     if (!this.disabled) {

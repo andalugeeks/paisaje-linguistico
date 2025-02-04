@@ -1,38 +1,19 @@
-// <ARCHIVO_CON_TRADUCCIONES>
 import _ from 'lodash';
 
 export const statuses = [
   {
     value: 'published',
-    // name: 'Publicado',
-    name: {
-      pao: 'Publicao',
-      nota: 'Publikao',
-      epa: 'Publicao',
-      cas: 'Publicado',
-    },
+    name: 'Publicado',
     icon: 'globe',
   },
   {
     value: 'draft',
-    // name: 'Revisando',
-    name: {
-      pao: 'Rebisando',
-      nota: 'Rebizando',
-      epa: 'Rebisando',
-      cas: 'Revisando',
-    },
+    name: 'Revisando',
     icon: 'document',
   },
   {
     value: 'archived',
-    // name: 'Archivado',
-    name: {
-      pao: 'Arxibao',
-      nota: 'Arxibao',
-      epa: 'Arxibao',
-      cas: 'Archivado',
-    },
+    name: 'Archivado',
     icon: 'box',
   },
 ];
