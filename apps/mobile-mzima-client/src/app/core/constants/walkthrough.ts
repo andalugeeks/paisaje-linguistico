@@ -46,7 +46,7 @@ export const WalkthroughSlider = [
     /* description:
       'Puedê çubîh grafitî, pero preferimô rótulô publiçitariô, piçarrâ en barê y cartâ de êttableçimientô.', */
     description: {
-      pao: `Pueh subî grafitih, pero preferimoh rótuloh publizitarioh, pizarrah en bareh i cartah d'ehtablezimientoh.`,
+      pao: `Pueh subî grafitih o pintáh, pero preferimoh rótuloh publizitarioh, pizarrah en bareh i cartah d'ehtablezimientoh.`,
       nota: `Pueh subìh grafitih, anke preferimoh rétuloh publizitarioh, pizarrah en tabehnah i kartah d'ehtablezimientoh.`,
       epa: 'Puedê çubîh grafitî, pero preferimô rótulô publiçitariô, piçarrâ en barê y cartâ de êttableçimientô.',
       cas: 'Puedes subir grafitis, pero preferimos rótulos publicitarios, pizarras en bares y cartas de establecimientos.',
@@ -64,7 +64,7 @@ export const WalkthroughSlider = [
     /* description:
       'Êtte proyêtto pretende arrecohêh la realiá de la caye. No fomentamô la proliferaçión de grafitî o pintâh.', */
     description: {
-      pao: "Ehte proyehto pretende arrecojê la realìá'e la caye. No fomentamoh el uso de grafitih o pintáh.",
+      pao: "Ehte proyehto pretende arrecojê la realìá'e la caye. No fomentamoh la proliferazión de grafitih o pintáh.",
       nota: `Ehte proyehto perkura d'arrekohè la realiá de la kaye. No engreímoh a la proliferazión de grafitih u pintáh.`,
       epa: 'Êtte proyêtto pretende arrecohêh la realiá de la caye. No fomentamô la proliferaçión de grafitî o pintâh.',
       cas: 'Este proyecto pretende recoger la realidad de la calle. No fomentamos la proliferación de grafitis o pintadas.',

@@ -1,4 +1,8 @@
-<app-main-layout class="main" title="Informaçión der Perfîh" (back)="back()">
+<app-main-layout
+  class="main"
+  title="{{fieldAppMessages('information_page_title')}}"
+  (back)="back()"
+>
   <app-profile-photo
     class="avatar"
     [photo]="userPhoto"
@@ -10,19 +14,19 @@
   <!-- (photoChanged)="handlePhotoChange($event)" -->
   <!-- Sample" -->
 
-  <ion-title class="title">Nombre de Perfîh</ion-title>
+  <ion-title class="title">{{fieldAppMessages('information_page_name_title')}}</ion-title>
   <form class="information-form" novalidate [formGroup]="form" (ngSubmit)="updateUserInformation()">
     <app-form-control
-      label="Nombre a môttrâh"
+      [label]="fieldAppMessages('information_page_form_name_label')"
       [required]="true"
       formControlName="realname"
-      placeholder="Introduçe tu nombre"
+      [placeholder]="fieldAppMessages('information_page_form_name_placeholder')"
       [errors]="fieldErrorMessages(form.controls['realname'], 'display_name')"
     >
     </app-form-control>
     <app-select label="Role" [options]="roleOptions" formControlName="role"> </app-select>
   </form>
-  <ion-title class="title">Ahûttê der Perfîh</ion-title>
+  <ion-title class="title">{{fieldAppMessages('information_page_settings_title')}}</ion-title>
   <div class="profile-settings-menu">
     <ion-item
       (click)="toggleChangeEmailModal(true)"
@@ -32,7 +36,7 @@
     >
       <app-icon class="profile-settings-item__icon" name="email" slot="start"></app-icon>
       <div class="profile-settings-item__inner">
-        Cambiâh Email
+        {{fieldAppMessages('information_page_set_email_tag')}}
         <ion-text class="profile-settings-item__value" color="primary" *ngIf="userEmail">
           <span class="ellipsis">{{ userEmail[0] }}</span>{{ userEmail[1] }}
         </ion-text>
@@ -46,7 +50,9 @@
       lines="none"
     >
       <app-icon class="profile-settings-item__icon" name="lock" slot="start"></app-icon>
-      <div class="profile-settings-item__inner">Cambiâh Contraçeña</div>
+      <div class="profile-settings-item__inner">
+        {{fieldAppMessages('information_page_set_password_tag')}}
+      </div>
       <app-icon class="profile-settings-item__details" name="arrow-right" slot="end"></app-icon>
     </ion-item>
   </div>
@@ -61,10 +67,10 @@
           [disabled]="form.disabled || (form.invalid && !isPhotoChanged) || (!form.dirty && !isPhotoChanged)"
           (buttonClick)="updateUserInformation()"
         >
-          Guardâh cambiô
+          {{fieldAppMessages('information_page_default_save_changes_button_tag')}}
         </app-button>
         <app-button color="medium" fill="outline" expand="inline" (buttonClick)="back()">
-          Cançelâh
+          {{fieldAppMessages('information_page_default_cancel_button_tag')}}
         </app-button>
       </ion-buttons>
     </ion-toolbar>
@@ -73,37 +79,39 @@
 
 <app-modal
   [isOpen]="isChangeEmailModalOpen"
-  title="Cambiâh de Email"
+  [title]="fieldAppMessages('information_page_change_email_modal_title')"
   (modalClose)="toggleChangeEmailModal(false)"
 >
   <form novalidate class="modal-form" [formGroup]="changeEmailForm" (ngSubmit)="updateUserEmail()">
     <div>
       <app-form-control
         type="email"
-        label="Correo Elêttrónico actual"
+        [label]="fieldAppMessages('information_page_change_email_modal_current_form_label')"
         [required]="true"
         formControlName="currentEmail"
-        placeholder="Mete tu Correo Elêttrónico âttuâh"
-        [errors]="changeEmailForm.get('currentEmail')?.touched && changeEmailForm.hasError('notSameAsCurrent') ? ['Er correo elêttrónico introduçío no coinçide con el correo âttuâh. Ar fabôh de comprobâh que êttâh metiendo er corrêtto.'] : undefined"
+        [placeholder]="fieldAppMessages('information_page_change_email_modal_current_form_placeholder')"
+        [errors]="changeEmailForm.hasError('notSameAsCurrent') 
+          ? [fieldAppMessages('information_page_change_email_modal_current_form_error')] : undefined"
       >
       </app-form-control>
       <app-form-control
         type="email"
-        label="Nuebo Correo Elêttrónico"
+        [label]="fieldAppMessages('information_page_change_email_modal_new_form_label')"
         [required]="true"
         class="no-offset"
         formControlName="newEmail"
-        placeholder="Mete er nuebo Correo Elêttrónico"
+        [placeholder]="fieldAppMessages('information_page_change_email_modal_new_form_placeholder')"
         [errors]="fieldErrorMessages(changeEmailForm.controls['newEmail'], 'email')"
       >
       </app-form-control>
       <app-form-control
         type="email"
-        label="Repite er nuebo Correo Elêttrónico"
+        [label]="fieldAppMessages('information_page_change_email_modal_repeat_new_form_label')"
         [required]="true"
         formControlName="repeatEmail"
-        placeholder="Repite er nuebo Correo Elêttrónico"
-        [errors]="changeEmailForm.hasError('notSame') ? ['No coinçiden'] : undefined"
+        [placeholder]="fieldAppMessages('information_page_change_email_modal_repeat_new_form_placeholder')"
+        [errors]="changeEmailForm.hasError('notSame') 
+          ? [fieldAppMessages('information_page_change_email_modal_repeat_new_form_error')] : undefined"
       >
       </app-form-control>
     </div>
@@ -115,10 +123,10 @@
             type="submit"
             [disabled]="changeEmailForm.invalid || changeEmailForm.disabled"
           >
-            Guardâh cambiô
+            {{fieldAppMessages('information_page_default_save_changes_button_tag')}}
           </app-button>
           <app-button fill="outline" color="medium" (buttonClick)="toggleChangeEmailModal(false)">
-            Cançelâh
+            {{fieldAppMessages('information_page_default_cancel_button_tag')}}
           </app-button>
         </ion-buttons>
       </ion-toolbar>
@@ -128,7 +136,7 @@
 
 <app-modal
   [isOpen]="isChangePasswordModalOpen"
-  title="Cambiâh contraçeña"
+  [title]="fieldAppMessages('information_page_change_password_modal_title')"
   (modalClose)="toggleChangePasswordModal(false)"
 >
   <form
@@ -150,13 +158,14 @@
       </app-form-control> -->
       <app-form-control
         type="password"
-        label="Nueba contraçeña"
+        [label]="fieldAppMessages('information_page_change_password_modal_new_form_label')"
         [required]="true"
         class="no-offset"
         formControlName="newPassword"
-        placeholder="Mete nueba contraçeña"
+        [placeholder]="fieldAppMessages('information_page_change_password_modal_new_form_placeholder')"
         [errors]="fieldErrorMessages(changePasswordForm.controls['newPassword'], 'newPassword')"
-        [hint]="!changePasswordForm.controls['newPassword'].value?.length ? 'La contraçeña debe tenêh ar menô 8 carâtterê, una letra minúccula, una mayúccula, un número y un çímbolo.' : undefined"
+        [hint]="!changePasswordForm.controls['newPassword'].value?.length 
+          ? fieldAppMessages('information_page_change_password_modal_new_form_hint') : undefined"
       >
         <app-password-strength
           additional
@@ -167,11 +176,12 @@
       </app-form-control>
       <app-form-control
         type="password"
-        label="Repetîh nueba contraçeña"
+        [label]="fieldAppMessages('information_page_change_password_modal_repeat_new_form_label')"
         [required]="true"
         formControlName="repeatPassword"
-        placeholder="Repetîh nueba contraçeña"
-        [errors]="changePasswordForm.hasError('notSame') ? ['Lâ contraçeñâ no coinçiden'] : undefined"
+        [placeholder]="fieldAppMessages('information_page_change_password_modal_repeat_new_form_placeholder')"
+        [errors]="changePasswordForm.hasError('notSame') 
+          ? [fieldAppMessages('information_page_change_password_modal_repeat_new_form_error')] : undefined"
       >
       </app-form-control>
     </div>
@@ -183,14 +193,14 @@
             type="submit"
             [disabled]="changePasswordForm.invalid || changePasswordForm.disabled"
           >
-            Guardâh cambiô
+            {{fieldAppMessages('information_page_default_save_changes_button_tag')}}
           </app-button>
           <app-button
             fill="outline"
             color="medium"
             (buttonClick)="toggleChangePasswordModal(false)"
           >
-            Cançelâh
+            {{fieldAppMessages('information_page_default_cancel_button_tag')}}
           </app-button>
         </ion-buttons>
       </ion-toolbar>

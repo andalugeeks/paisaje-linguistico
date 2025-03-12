@@ -43,7 +43,12 @@
   </div>
 
   <div class="total-posts" *ngIf="!isPostsLoading && !isCollection">
-    {{ totalPosts }} {{ totalPosts > 1 ? 'posts' : 'post' }}
+    {{ totalPosts }}
+    {{
+      totalPosts > 1
+        ? fieldAppMessages('feed_view_uncompleted_total_posts_pl')
+        : fieldAppMessages('feed_view_uncompleted_total_posts_sing')
+    }}
   </div>
 
   <ng-container *ngIf="posts.length; else emptyBox">

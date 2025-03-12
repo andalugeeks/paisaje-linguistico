@@ -40,13 +40,13 @@ export const profileMenu: ProfileMenuItem[] = [
     label: {
       pao: 'Propuehta ortográfica',
       nota: 'Propuehta ortográfika',
-      epa: '¿?',
+      epa: 'Propuêtta ortográfica',
       cas: 'Propuesta ortográfica',
     },
     description: {
       pao: "Elije la propuehta ortográfica andaluza que s'usará'n l'app. Tamién ehtá ihponible la lengua cahteyana.",
       nota: 'Ehkohe la matríh ortográfika andaluza ke ze ba manehà en la app. Tambié ehtá dihponible la lengua kahteyana',
-      epa: '¿?',
+      epa: 'Elihe la propuêtta ortográfica andaluça que çe uçará en la âpp. También êttá dîpponible la lengua câtteyana.',
       cas: 'Elige la propuesta ortográfica andaluza que se usará en la app. También está disponible la lengua castellana.',
     },
     icon: 'sources',
@@ -114,7 +114,7 @@ export const profileMenu: ProfileMenuItem[] = [
   },
   {
     label: {
-      pao: 'Arzedê o Rejihtrarse',
+      pao: 'Azzedê o Rejihtrarse',
       nota: 'Ahsedè u Rehihtrarse',
       epa: 'Aççedêh o Rehîttrarçe',
       cas: 'Acceder o Registrarse',
@@ -132,13 +132,13 @@ export const aboutUsMenu: ProfileMenuItem[] = [
     label: {
       pao: 'Asoziazión ZEA',
       nota: 'Asosiasión ZEA',
-      epa: '¿?',
+      epa: 'Açoçiaçión ÇEA',
       cas: 'Asociación ZEA',
     },
     description: {
       pao: "Informazión arreô'e la ZEA i su labô n'el ehtudio'e l'andalú.",
       nota: `Informasión arreó'e la ZEA i su briega en el ehtudio'el andalú.`,
-      epa: '¿?',
+      epa: 'Informaçión açerca de la ÇEA y çu labôh en el êttudio del andalûh.',
       cas: 'Información acerca de la ZEA y su labor en el estudio del andaluz.',
     },
     icon: 'info-rounded',
@@ -149,13 +149,13 @@ export const aboutUsMenu: ProfileMenuItem[] = [
     label: {
       pao: 'Proyehto PAO',
       nota: 'Proyehto PAO',
-      epa: '¿?',
+      epa: 'Proyêtto PAO',
       cas: 'Proyecto PAO',
     },
     description: {
       pao: "Informazión arreô'er Proyehto PAO i la propuehta PAO-Unificá.",
       nota: `Informasión arreó'er Proyehto PAO i la propuehta PAO-Unifiká.`,
-      epa: '¿?',
+      epa: 'Informaçión açerca der Proyêtto PAO y la propuêtta PAO-Unificá.',
       cas: 'Información acerca del Proyecto PAO y la propuesta PAO-Unificada.',
     },
     icon: 'info-rounded',
@@ -166,13 +166,13 @@ export const aboutUsMenu: ProfileMenuItem[] = [
     label: {
       pao: 'NOTA-Porrah',
       nota: 'NOTA-Porrah',
-      epa: '¿?',
+      epa: 'NOTA-Porrah',
       cas: 'NOTA-Porrah',
     },
     description: {
       pao: "Informazión arreô'e la propuehta ortográfica NOTA-Porrah.",
       nota: `Informasión arreó'e la propuehta ortográfika NOTA-Porrah.`,
-      epa: '¿?',
+      epa: 'Informaçión açerca de la propuêtta ortográfica NOTA-Porra.',
       cas: 'Información acerca de la propuesta ortográfica NOTA-Porrah.',
     },
     icon: 'info-rounded',
@@ -183,13 +183,13 @@ export const aboutUsMenu: ProfileMenuItem[] = [
     label: {
       pao: 'AndaluGeeks',
       nota: 'AndaluGeeks',
-      epa: '¿?',
+      epa: 'AndaluGeeks',
       cas: 'AndaluGeeks',
     },
     description: {
       pao: "Informazión arreô'er colehtibo AndaluGeeks i la propuehta EPA.",
       nota: `Informasión arreó'er kolehtibo AndaluGeeks i la propuehta EPA.`,
-      epa: '¿?',
+      epa: 'Informaçión açerca der colêttibo AndaluGeeks y la propuêtta EPA.',
       cas: 'Información acerca del colectivo AndaluGeeks y la propuesta EPA.',
     },
     icon: 'info-rounded',
@@ -209,10 +209,10 @@ export const profileInformationMenu: ProfileMenuItem[] = [
   // },
   {
     label: {
-      pao: 'Términoh i Condizioneh',
-      nota: 'Términoh i Kondizioneh',
-      epa: 'Términô y Condiçionê',
-      cas: 'Términos y condiciones',
+      pao: 'Términoh i Condizioneh [en ingléh]',
+      nota: 'Términoh i Kondizioneh [en ingléh]',
+      epa: 'Términô y Condiçionê [en inglê]',
+      cas: 'Términos y condiciones [en inglés]',
     },
     description: {},
     icon: 'info-rounded',
@@ -220,10 +220,10 @@ export const profileInformationMenu: ProfileMenuItem[] = [
   },
   {
     label: {
-      pao: "Política'e Pribazìá",
-      nota: `Polítika'e Pribasiá`,
-      epa: 'Política de Pribaçiá',
-      cas: 'Política de Privacidad',
+      pao: "Política'e Pribazìá [en ingléh]",
+      nota: `Polítika'e Pribasiá [en ingléh]`,
+      epa: 'Política de Pribaçiá [en inglê]',
+      cas: 'Política de Privacidad [en inglés]',
     },
     description: {},
     icon: 'info-shield',

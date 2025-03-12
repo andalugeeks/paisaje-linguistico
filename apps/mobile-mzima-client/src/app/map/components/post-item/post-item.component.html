@@ -13,6 +13,7 @@
         {{ (post.user?.realname ?? post.contact?.contact ?? post.author_realname) || 'Anonymous' }}
       </ion-card-title>
       <ion-card-subtitle class="post__date">
+        <!-- Aquí se podría meter un conversor de formato de fecha de inglés a andaluz/castellano -->
         {{ post.post_date | date : 'mediumDate' }}
       </ion-card-subtitle>
     </div>

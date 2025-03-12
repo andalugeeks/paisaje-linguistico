@@ -20,14 +20,14 @@ export const aboutUsMenu: AboutUsMenuItem[] = [
   {
     label: {
       pao: 'Proyehto PAO',
-      nota: '¿?',
-      epa: '¿?',
+      nota: 'Proyehto PAO',
+      epa: 'Proyêtto PAO',
       cas: 'Proyecto PAO',
     },
     description: {
-      pao: "Encuentra mah informazión arreô'e la propuehta PAO-Unificá i er Proyehto PAO.",
-      nota: '¿?',
-      epa: '¿?',
+      pao: `Encuentra mah informazión arreô'e la propuehta PAO-Unificá i er Proyehto PAO.`,
+      nota: `Enkuentra mah informazión arreó'e la propuehta PAO-Unifiká i er Proyehto PAO.`,
+      epa: `Encuentra mâh informaçión açerca de la propuêtta PAO-Unificá y er Proyêtto PAO.`,
       cas: 'Encuentra más información acerca de la propuesta PAO-Unificada y el Proyecto PAO.',
     },
     icon: 'user',

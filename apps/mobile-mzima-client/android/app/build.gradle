@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "es.andaluh.paisaje"
+    namespace "org.zea.andalu.paisaje"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "es.andaluh.paisaje"
+        applicationId "org.zea.andalu.paisaje"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 4

@@ -9,6 +9,7 @@ import { UsersService } from 'libs/sdk/src/lib/services';
 import { UserInterface } from '@mzima-client/sdk';
 import { STORAGE_KEYS } from '@constants';
 import { filter } from 'rxjs/operators';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +24,7 @@ export class ProfilePhotoComponent {
   // @Output() uploadCompleted = new EventEmitter<void>();
   @Output() photoChanged = new EventEmitter<boolean>();
   @Output() photoSelected = new EventEmitter<{ key: string }>();
+  public fieldAppMessages = fieldAppMessages;
   uploadingInProgress = false;
   uploadingSpinner = false;
   hasUploadedPhoto = false;
@@ -86,8 +88,8 @@ export class ProfilePhotoComponent {
       const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
       if (!validFileTypes.includes(file.type)) {
         this.alertService.presentAlert({
-          header: 'Wrong type of file',
-          message: 'Please select a valid image file',
+          header: fieldAppMessages('profile_photo_component_select_photo_alert_header'),
+          message: fieldAppMessages('profile_photo_component_select_photo_alert_message'),
         });
         return;
       }
@@ -120,15 +122,15 @@ export class ProfilePhotoComponent {
 
   public async deletePhotoHandle(): Promise<void> {
     const result = await this.alertService.presentAlert({
-      header: '¿Çeguro que quiêh borrâh la foto de perfîh? ',
-      message: 'Çi la borrâ no tendrâh foto de perfîh.',
+      header: fieldAppMessages('profile_photo_component_delete_photo_alert_header'),
+      message: fieldAppMessages('profile_photo_component_delete_photo_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages('profile_photo_component_delete_photo_alert_cancel_text'),
           role: 'cancel',
         },
         {
-          text: 'Borrâh',
+          text: fieldAppMessages('profile_photo_component_delete_photo_alert_confirm_text'),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -175,8 +177,10 @@ export class ProfilePhotoComponent {
           }
         });
       this.toastService.presentToast({
-        header: 'Successfully Deleting',
-        message: 'You successfully deleted the profile photo',
+        header: fieldAppMessages('profile_photo_component_delete_photo_successfully_toast_header'),
+        message: fieldAppMessages(
+          'profile_photo_component_delete_photo_successfully_toast_message',
+        ),
         duration: 3000,
         position: 'bottom',
       });

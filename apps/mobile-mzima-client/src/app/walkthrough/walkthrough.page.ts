@@ -27,7 +27,10 @@ export class WalkthroughPage {
     private router: Router,
     private storageService: StorageService,
     private deploymentService: DeploymentService,
-  ) {}
+  ) {
+    // Añadido para que cada slider coja su traducción.
+    this.sliderData = this.getWalkthroughSliderData();
+  }
 
   public slideNext() {
     this.swiperEl?.nativeElement.swiper.slideNext();

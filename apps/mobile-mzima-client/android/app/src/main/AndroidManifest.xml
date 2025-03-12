@@ -12,7 +12,7 @@
         <activity
             android:usesCleartextTraffic="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:name="es.andaluh.paisaje.MainActivity"
+            android:name="org.zea.andalu.paisaje.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"

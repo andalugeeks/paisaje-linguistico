@@ -21,14 +21,14 @@ export const aboutUsMenu: GenericMenuItem[] = [
   {
     label: {
       pao: 'Asoziazión ZEA',
-      nota: '¿?',
-      epa: '¿?',
+      nota: 'Azoziazión ZEA',
+      epa: 'Açoçiaçión ZEA',
       cas: 'Asociación ZEA',
     },
     description: {
-      pao: "Encuentra mah informazión arreô'e l'asoziazión ZEA i la labô que yeba a cabo n'el ehtudio'e l'andalú.",
-      nota: '¿?',
-      epa: '¿?',
+      pao: `Encuentra mah informazión arreô'e l'asoziazión ZEA i la labô que yeba a cabo n'el ehtudio'e l'andalú.`,
+      nota: `Enkuentra mah informazión arreó'e l'azoziazión ZEA i la labó ke yeba a kabo en el ehtudio'el andalú.`,
+      epa: 'Encuentra mâh informaçión açerca de la açoçiaçión ZEA y la labôh que deçempeña en el êttudio del andalûh.',
       cas: 'Encuentra más información acerca de la asociación ZEA y la labor que desempeña en el estudio del andaluz.',
     },
     icon: 'info-rounded',
@@ -38,14 +38,14 @@ export const aboutUsMenu: GenericMenuItem[] = [
   {
     label: {
       pao: 'Proyehto PAO',
-      nota: '¿?',
-      epa: '¿?',
+      nota: 'Proyehto PAO',
+      epa: 'Proyêtto PAO',
       cas: 'Proyecto PAO',
     },
     description: {
-      pao: "Encuentra mah informazión arreô'er Proyehto PAO i la propuehta PAO-Unificá.",
-      nota: '¿?',
-      epa: '¿?',
+      pao: `Encuentra mah informazión arreô'er Proyehto PAO i la propuehta PAO-Unificá.`,
+      nota: `Enkuentra mah informazión arreó'er Proyehto PAO i la propuehta PAO-Unifiká.`,
+      epa: 'Encuentra mâh informaçión açerca der Proyêtto PAO y la propuêtta PAO-Unificá.',
       cas: 'Encuentra más información acerca del Proyecto PAO y la propuesta PAO-Unificada.',
     },
     icon: 'info-rounded',
@@ -55,14 +55,14 @@ export const aboutUsMenu: GenericMenuItem[] = [
   {
     label: {
       pao: 'NOTA-Porrah',
-      nota: '¿?',
-      epa: '¿?',
+      nota: 'NOTA-Porrah',
+      epa: 'NOTA-Porrah',
       cas: 'NOTA-Porrah',
     },
     description: {
-      pao: "Encuentra mah informazión arreô'e la propuehta NOTA-Porrah.",
-      nota: '¿?',
-      epa: '¿?',
+      pao: `Encuentra mah informazión arreô'e la propuehta NOTA-Porrah.`,
+      nota: `Enkuentra mah informazión arreó'e la propuehta NOTA-Porrah.`,
+      epa: 'Encuentra mâh informaçión açerca de la propuêtta NOTA-Porra.',
       cas: 'Encuentra más información acerca de la propuesta NOTA-Porrah.',
     },
     icon: 'info-rounded',
@@ -72,14 +72,14 @@ export const aboutUsMenu: GenericMenuItem[] = [
   {
     label: {
       pao: 'AndaluGeeks',
-      nota: '¿?',
-      epa: '¿?',
+      nota: 'AndaluGeeks',
+      epa: 'AndaluGeeks',
       cas: 'AndaluGeeks',
     },
     description: {
-      pao: "Encuentra mah informazión arreô'er colehtibo AndaluGeeks i la propuehta EPA.",
-      nota: '¿?',
-      epa: '¿?',
+      pao: `Encuentra mah informazión arreô'er colehtibo AndaluGeeks i la propuehta EPA.`,
+      nota: `Enkuentra mah informazión arreó'er kolehtibo AndaluGeeks i la propuehta EPA.`,
+      epa: 'Encuentra mâh informaçión açerca der colêttibo AndaluHeeks y la propuêtta EPA.',
       cas: 'Encuentra más información acerca del colectivo AndaluGeeks y la propuesta EPA.',
     },
     icon: 'info-rounded',

@@ -176,7 +176,7 @@ export class PostItemComponent implements OnInit {
       this.post = res.result;
       this.postUpdated.emit({ post: this.post });
       this.toastService.presentToast({
-        header: postStatusChangedHeader[status],
+        header: postStatusChangedHeader[status][LocalStorageManager.getStoredSpellingProposalId()],
         message: postStatusChangedMessage(status, this.post.title),
         buttons: [],
       });
