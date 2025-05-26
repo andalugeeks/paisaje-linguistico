@@ -821,6 +821,9 @@ export class PostEditPage {
 
   /** Create post */
   private createPost(postData: any) {
+    // Paisaje Linguístico Andalûh FIX. Ushahidi V5 API requires post_content fields to be an array of values
+    const oldvalue = postData.post_content[0].fields[0].value.value;
+    postData.post_content[0].fields[0].value.value = [oldvalue];
     this.postsService.post(postData).subscribe({
       error: ({ error }) => {
         this.form.enable();
