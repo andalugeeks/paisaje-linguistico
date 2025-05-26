@@ -11,7 +11,15 @@
     "
   >
     <ng-container *ngFor="let field of post_content.fields | sortByField : 'priority' : 'asc'">
-      <div class="post__group" *ngIf="field.value?.id">
+      <!-- Paisaje Lingüístico Andalûh FIX -->
+      <div
+        class="post__group"
+        *ngIf="
+          (field.value && field.value.id) ||
+          (field.value && field.value.length === 1 && field.value[0]?.id)
+        "
+      >
+        <!-- / Paisaje Lingüístico Andalûh FIX -->
         <ng-container *ngIf="field.type !== 'title' && field.type !== 'description'">
           <h4>{{ field.label }}</h4>
         </ng-container>
@@ -62,14 +70,13 @@
 
         <ng-container *ngIf="field.input === 'upload'">
           <ng-container *ngIf="isConnection; else noConnection">
-            <div class="post__media">
-              <ion-img
-                class="post__media"
-                [src]="field.value.mediaSrc | prependUrl : backendUrl"
-              ></ion-img>
-              <span class="post__media__caption">
-                {{ field.value.mediaCaption }}
-              </span>
+            <!-- Paisaje Lingüístico Andalûh FIX -->
+            <div class="post__images__item" *ngFor="let mediaFile of field.value">
+              <img *ngIf="mediaFile.value" [src]="mediaFile.url" [alt]="field.title" />
+              <span *ngIf="mediaFile.caption?.length" class="post__images__item__caption">{{
+                mediaFile.caption
+              }}</span>
+              <!-- / Paisaje Lingüístico Andalûh FIX -->
             </div>
             <!--          <ng-template #spinner>-->
             <!--            <app-spinner class="post__media__loader"></app-spinner>-->

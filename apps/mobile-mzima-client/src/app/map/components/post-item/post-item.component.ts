@@ -91,14 +91,18 @@ export class PostItemComponent implements OnInit {
     }
   }
 
+  // Paisaje Lingüístico FIX
   private getMedia() {
     this.mediaId = this.post.post_content
       ?.flatMap((c) => c.fields)
-      .find((f) => f.input === 'upload')?.value?.value;
+      .find((f) => f.input === 'upload')?.value[0]?.value;
 
-    this.mediaUrl = this.post.post_content
-      ?.flatMap((c) => c.fields)
-      .find((f) => f.input === 'upload')?.value?.mediaSrc;
+    this.mediaService.getById(this.post.post_media.value.value).subscribe({
+      next: (media) => {
+        this.media = media.result;
+        this.mediaUrl = this.media.original_file_url;
+      },
+    });
   }
 
   private async checkNetwork() {
