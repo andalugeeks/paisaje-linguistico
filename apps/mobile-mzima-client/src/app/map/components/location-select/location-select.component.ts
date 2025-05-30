@@ -4,6 +4,7 @@ import { SearchService } from '@services';
 import { Subject, debounceTime } from 'rxjs';
 import { LocationItem, LocationSelectValue } from '@models';
 import { SearchResponse } from '@mzima-client/sdk';
+import { fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-location-select',
@@ -24,6 +25,7 @@ export class LocationSelectComponent implements ControlValueAccessor {
   onChange: any = () => {};
   onTouched: any = () => {};
 
+  public fieldAppMessages = fieldAppMessages;
   public query = '';
   public results: LocationItem[] = [];
   public selectedLocation?: LocationItem | null;

@@ -4,6 +4,7 @@ import { IonicSlides } from '@ionic/angular';
 
 import { STORAGE_KEYS, WalkthroughSlider } from '@constants';
 import { DeploymentService, StorageService } from '@services';
+import { LocalStorageManager, fieldAppMessages } from '@helpers';
 
 import { register } from 'swiper/element/bundle';
 
@@ -16,6 +17,7 @@ register();
 })
 export class WalkthroughPage {
   @ViewChild('swiperContainer') swiperEl: ElementRef | undefined;
+  public fieldAppMessages = fieldAppMessages;
   public swiperModules = [IonicSlides];
   public sliderData = WalkthroughSlider;
   public isLastSlide = false;
@@ -25,7 +27,10 @@ export class WalkthroughPage {
     private router: Router,
     private storageService: StorageService,
     private deploymentService: DeploymentService,
-  ) {}
+  ) {
+    // Añadido para que cada slider coja su traducción.
+    this.sliderData = this.getWalkthroughSliderData();
+  }
 
   public slideNext() {
     this.swiperEl?.nativeElement.swiper.slideNext();
@@ -41,5 +46,38 @@ export class WalkthroughPage {
     this.deploymentService.isDeployment()
       ? this.router.navigate(['/'])
       : this.router.navigate(['/deployment']);
+  }
+
+  // Añadido para el sistema de traducción.
+  public getWalkthroughSliderData(): any {
+    const res = [];
+
+    for (let i = 0; i < WalkthroughSlider?.length; i++) {
+      res.push({
+        img: WalkthroughSlider[i].img,
+        title:
+          WalkthroughSlider[i].title[
+            LocalStorageManager.getStoredSpellingProposalId() == 'pao'
+              ? 'pao'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
+              ? 'nota'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
+              ? 'epa'
+              : 'cas'
+          ],
+        description:
+          WalkthroughSlider[i].description[
+            LocalStorageManager.getStoredSpellingProposalId() == 'pao'
+              ? 'pao'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
+              ? 'nota'
+              : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
+              ? 'epa'
+              : 'cas'
+          ],
+      });
+    }
+
+    return res;
   }
 }

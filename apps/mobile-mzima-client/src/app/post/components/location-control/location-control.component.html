@@ -1,5 +1,7 @@
 <div class="location-select">
-  <ion-label class="location-select__title">Çe neçeçita localiçaçión</ion-label>
+  <ion-label class="location-select__title">{{
+    fieldAppMessages('location_control_component_title')
+  }}</ion-label>
   <div class="location-select__map">
     <div
       leaflet
@@ -15,14 +17,14 @@
     <ion-row>
       <ion-col>
         <app-form-control
-          label="Latitú"
+          [label]="fieldAppMessages('location_control_component_form_control_latitude_label')"
           [value]="location.lat.toString()"
           [readonly]="true"
         ></app-form-control>
       </ion-col>
       <ion-col>
         <app-form-control
-          label="Lohitú"
+          [label]="fieldAppMessages('location_control_component_form_control_longitude_label')"
           [value]="location.lon.toString()"
           [readonly]="true"
         ></app-form-control>

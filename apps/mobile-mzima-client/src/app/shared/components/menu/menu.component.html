@@ -9,6 +9,16 @@
     [ngClass]="{ 'button--active': isButtonActive(item) }"
   >
     <app-icon class="button__icon" [name]="item.icon"></app-icon>
-    {{ item.label }}
+    {{
+      item.label[
+        LocalStorageManager.getStoredSpellingProposalId() == 'pao'
+          ? 'pao'
+          : LocalStorageManager.getStoredSpellingProposalId() == 'nota'
+          ? 'nota'
+          : LocalStorageManager.getStoredSpellingProposalId() == 'epa'
+          ? 'epa'
+          : 'cas'
+      ]
+    }}
   </app-button>
 </div>

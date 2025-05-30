@@ -1,4 +1,4 @@
-package es.andaluh.paisaje;
+package org.zea.andalu.paisaje;
 
 import com.getcapacitor.BridgeActivity;
 
