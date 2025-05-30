@@ -20,13 +20,13 @@ export const appMessages: AppMessageMapping = {
     cas: '¡Te damos la bienvenida!',
   },
   login_page_login_to_private_deployment_title: {
-    pao: 'Arzedê ar dehpligue pribao',
+    pao: 'Azzedê ar dehpligue pribao',
     nota: 'Ahsedè ar dehpliege pribao',
     epa: 'Âççedêh ar dêppliege pribao',
     cas: 'Acceder al despligue privado',
   },
   login_page_login_to_private_deployment_head_info: {
-    pao: "Ja'r fabô d'introùzî tu usario i contraseña p'arzedê ar dehpligue. O contahtâ a l'Admin",
+    pao: "Ja'r fabô d'introùzî tu usario i contraseña p'azzedê ar dehpligue. O contahtâ a l'Admin",
     nota: `Hah'r fabó d'introdusì tu usuario i kontraseña p'ahsedè ar dehpliege. U kontahta al Admin`,
     epa: "Ar fabôh d'introduçîh tu uçuario y contraçeña pa âççedêh ar dêppliege. O contâtta al Admin",
     cas: 'Por favor, introduce tu usuario y contraseña para acceder al despliegue. O contacta al Admin',
@@ -58,14 +58,14 @@ export const appMessages: AppMessageMapping = {
     cas: 'Registrarse',
   },
   auth_page_access_tab_button_tag: {
-    pao: 'Arzedê',
+    pao: 'Azzedê',
     nota: 'Ahzedè',
     epa: ' ççedêh',
     cas: 'Acceder',
   },
   // *** PANTALLA DE LOGIN ***
   login_page_access_button_tag: {
-    pao: 'Arzedê',
+    pao: 'Azzedê',
     nota: 'Ahzedè',
     epa: ' ççedêh',
     cas: 'Acceder',
@@ -102,7 +102,7 @@ export const appMessages: AppMessageMapping = {
     cas: '¿Te olvidaste de la contraseña?',
   },
   login_page_forgot_password_modal_content: {
-    pao: "¡No te procupeh! Introúze tu correo elertrónico i rezibiráh un correo'e la plataforma Ushahidi con un enganxe pa rehtauralla.",
+    pao: "¡No te procupeh! Mete tu correo elertrónico i rezibiráh un correo'e la plataforma Ushahidi con un enganxe pa rehtauralla.",
     nota: '¡No te prokupeh! Mete tu email i rezibiráh un korreo de la plataforma Ushahidi kon un enganxe pa reponel-la.',
     epa: '¡No te preocupê! Mete tu correo elêttrónico y reçibirâh un correo de la plataforma Ushahidi con un enlaçe pa rêttableçêl-la.',
     cas: '¡No te preocupes! Introduce tu correo electrónico y recibirás un correo de la plataforma Ushahidi con un enlace para reestablecerla.',
@@ -121,7 +121,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Esta aplicación ha sido desarrollada sobre Ushahidi Platform. Para continuar, debes estar de acuerdo con su ',
   },
   signup_page_privacy_policy_second_part: {
-    pao: "Política'e Pribazìá ",
+    pao: "Política'e Pribazìá",
     nota: `Polítika'e Pribasiá`,
     epa: 'Política de Pribaçiá ',
     cas: 'Política de Privacidad ',
@@ -152,21 +152,22 @@ export const appMessages: AppMessageMapping = {
     cas: 'Saltarse esto por ahora',
   },
   signup_form_name_hint: {
-    pao: "Er nombre introuzío se mohtrará como informazión de l'usuario",
+    pao: "Er nombre que metah se mohtrará como informazión de l'usuario",
     nota: `Er nombre remetío s'apareserá komo informasión del usuario`,
     epa: "Er nombre q'introdûccâ çe môttrará como informaçión del uçuario",
     cas: 'El nombre introducido se mostrará como información del usuario',
   },
   signup_form_name_placeholder: {
-    pao: 'Introúze tu nombre',
+    pao: 'Mete tu nombre',
     nota: 'Mete tu nombre',
     epa: 'Mete tu nombre',
     cas: 'Introduce tu nombre',
   },
   signup_form_email_placeholder: {
-    pao: 'Introúze tu correo elertrónico',
+    pao: 'Mete tu correo elertrónico',
     nota: 'Mete tu korreo elehtróniko',
     epa: 'Mete tu correo elêttrónico',
+    cas: 'Introduce tu correo electrónico',
   },
   signup_form_password_label: {
     pao: 'Contraseña',
@@ -175,7 +176,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Contraseña',
   },
   signup_form_password_placeholder: {
-    pao: 'Introúze tu contraseña',
+    pao: 'Mete tu contraseña',
     nota: 'Mete tu kontrazeña',
     epa: 'Mete contraçeña',
     cas: 'Introduce tu contraseña',
@@ -232,11 +233,11 @@ export const appMessages: AppMessageMapping = {
   profile_page_about_us_menu_title: {
     pao: 'Sobre mosotrah/oh',
     nota: 'Zobre nohotr@h',
-    epa: '¿?',
+    epa: 'Çobre noçotr@s',
     cas: 'Sobre nosotr@s',
   },
   profile_page_about_ushahidi_menu_title: {
-    pao: "Informazión arreô d'Ushahidi",
+    pao: "Informazión arreô'e l'Ushahidi",
     nota: `Informasión arreó'el Ushahidi`,
     epa: 'Información çobre Ushahidi',
     cas: 'Información sobre Ushahidi',
@@ -260,7 +261,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Cerrar Sesión',
   },
   profile_page_logout_alert_message: {
-    pao: "¿Ehtáh sigura/o de que deseah zerrâ la sesión en l'aplicazión? Ehta azión arrematará tu sesión ahtuâ i deberáh de gorbê a iniziâ sesión p'arzedê a tu cuenta.",
+    pao: "¿Ehtáh sigura/o de que deseah zerrâ la sesión en l'aplicazión? Ehta azión arrematará tu sesión ahtuâ i deberáh de gorbê a iniziâ sesión p'azzedê a tu cuenta.",
     nota: `¿Ehtáh zigur@ de ke'hkiereh zerrà la zezión en l'aplikazión? Ehta ahzión ba rematà tu zezión ahtuá i bah tenè ke gorbè a inizià zezión p'ahzedè a tu kuenta.`,
     epa: '¿Êttâh çeguro que deçea çerrâh la çeçión de la aplicaçión? Êtta âççión finaliçará tu çeçión âttuâh y deberá borbêh a iniçiâh çeçión pa âççedêh a çu cuenta.',
     cas: '¿Estás seguro de que deseas cerrar la sesión en la aplicación? Esta acción finalizará tu sesión actual y deberás volver a iniciar sesión para acceder a tu cuenta.',
@@ -356,6 +357,13 @@ export const appMessages: AppMessageMapping = {
     epa: 'Limpiâh',
     cas: 'Limpiar',
   },
+  // *** LOCATION SELECT COMPONENT ***
+  location_select_component_title: {
+    pao: `Mete la Poblazión o Direzión`,
+    nota: `Mete la Poblazión o Direzión`,
+    epa: `Mete Poblaçión o Dirêççión`,
+    cas: `Introduce Población o Dirección`,
+  },
   // *** LOCATION CONTROL COMPONENT ***
   location_control_component_title: {
     pao: 'Se nezesita localizazión',
@@ -374,6 +382,20 @@ export const appMessages: AppMessageMapping = {
     nota: 'Lohitú',
     epa: 'Lohitú',
     cas: 'longitud',
+  },
+  // *** LOCATION SELECT COMPONENT ***
+  location_select_component_instructions: {
+    pao: `Pueh jazê click en la zona'er mapa ande quieah colocâ'r marcaô.`,
+    nota: `Pueh hazè click en la zona'er mapa ande kierah kolokà er markaó.`,
+    epa: 'Puedê açêh click en la çona der mapa ande quierâ colocâh er marcadôh.',
+    cas: 'Puedes hacer click en la zona del mapa donde quieras colocar el marcador.',
+  },
+  // *** OFFLINE NOTIFICATION COMPONENT ***
+  offline_notification_component_instructions: {
+    pao: `Ehte contenío no'htá ihponible pa sê bisualizao`,
+    nota: `Ehte kontenío no ehtá dihponible pa zè bizualizao`,
+    epa: 'Êtte contenío no êttá dîpponible pa çêh biçualiçao',
+    cas: 'Este contenido no está disponible para ser visualizado',
   },
   // *** INFORMATION PAGE ***
   information_page_title: {
@@ -395,7 +417,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Nombre a mostrar',
   },
   information_page_form_name_placeholder: {
-    pao: 'Introúze tu nombre',
+    pao: 'Mete tu nombre',
     nota: 'Mete tu nombre',
     epa: 'Introduçe tu nombre',
     cas: 'Introduce tu nombre',
@@ -443,13 +465,13 @@ export const appMessages: AppMessageMapping = {
     cas: 'Correo Electrónico actual',
   },
   information_page_change_email_modal_current_form_placeholder: {
-    pao: 'Introúze tu Correo Elertrónico ahtuâ',
+    pao: 'Mete tu Correo Elertrónico ahtuâ',
     nota: 'Mete tu Korreo Elehtróniko ahtuá',
     epa: 'Mete tu Correo Elêttrónico âttuâh',
     cas: 'Introduce tu Correo Electrónico actual',
   },
   information_page_change_email_modal_current_form_error: {
-    pao: "Er correo elertrónico introúzío no coinzide con er correo ahtuâ. Ja'r fabô'e comprobâ qu'ehtáh introùziendo'r correhto.",
+    pao: "Er correo elertrónico qu'ah metío no coinzide con er correo ahtuâ. Ja'r fabô'e comprobâ qu'ehtáh metiendo'r correhto.",
     nota: `Er korreo elehtróniko introduzío no kuinzide kon er korreo ahtuá. Hah'r fabó de komprobàh k'ehtáh metiendo er korrehto.`,
     epa: 'Er correo elêttrónico introduçío no coinçide con el correo âttuâh. Ar fabôh de comprobâh que êttâh metiendo er corrêtto.',
     cas: 'El correo electrónico introducido no coincide con el correo actual. Por favor, comprueba que estás introduciendo el correcto.',
@@ -461,7 +483,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Nuevo Correo Electrónico',
   },
   information_page_change_email_modal_new_form_placeholder: {
-    pao: 'Introúze un nuebo Correo Elertrónico',
+    pao: 'Mete un nuebo Correo Elertrónico',
     nota: 'Mete un nuebo Korreo Elehtróniko',
     epa: 'Mete er nuebo Correo Elêttrónico',
     cas: 'Introduce un nuevo Correo Electrónico',
@@ -473,7 +495,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Repite el nuevo Correo Electrónico',
   },
   information_page_change_email_modal_repeat_new_form_placeholder: {
-    pao: 'Introúze un nuebo Correo Elertrónico',
+    pao: 'Mete un nuebo Correo Elertrónico',
     nota: 'Mete un nuebo Korreo Elehtróniko',
     epa: 'Mete er nuebo Correo Elêttrónico',
     cas: 'Introduce un nuevo Correo Electrónico',
@@ -497,7 +519,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Nueva contraseña',
   },
   information_page_change_password_modal_new_form_placeholder: {
-    pao: 'Introúze una nueba contraseña',
+    pao: 'Mete una nueba contraseña',
     nota: 'Mete nueba kontraseña',
     epa: 'Mete nueba contraçeña',
     cas: 'Introduce una nueva contraseña',
@@ -526,10 +548,28 @@ export const appMessages: AppMessageMapping = {
     epa: 'Lâ contraçeñâ no coinçiden',
     cas: 'Las contraseñas no coinciden',
   },
+  information_page_upload_profile_photo_failed_toast_message: {
+    pao: `Fayo a l'añedî el afoto'e perfî. Inténtalo otra beh.`,
+    nota: `Fayo a l'añidî el afoto'e perfì. Inténtalo otra beh.`,
+    epa: `Fayó al añadîh afoto de perfîh. Prueba de nuebo.`,
+    cas: 'Fallo al añadir la foto de pefil. Inténtalo nuevamente.',
+  },
+  information_page_upload_profile_photo_succeed_toast_message: {
+    pao: `El afoto'e perfî a sío ahtualizao correhtamente.`,
+    nota: `El afoto'e perfì a zío ahtualizao korrehtamente.`,
+    epa: `Afoto de perfîh corrêttamente âttualiçao.`,
+    cas: 'Foto de perfil actualizada correctamente.',
+  },
+  information_page_upload_image_failed_toast_message: {
+    pao: `No se púo cargâ la imajen. Inténtalo otra beh.`,
+    nota: `No se púo kargà la imahen. Inténtalo otra beh.`,
+    epa: `No çe pudo cargâh la imahen. Inténtalo otra bêh.`,
+    cas: 'No se pudo cargar la imagen. Inténtalo nuevamente.',
+  },
   information_page_update_profile_toast_message: {
-    pao: "La informazión de tu perfî s'ahtualizao con ésito",
+    pao: `La informazión de tu perfî s'ahtualizao con ésito`,
     nota: `La informasión de tu perfí s'a ahtualisao kon ésito`,
-    epa: 'La informaçión de tu perfîh ça âttualiçao con éççito',
+    epa: `La informaçión de tu perfîh ça âttualiçao con éççito`,
     cas: 'La información de tu perfil se ha actualizado con éxito',
   },
   // *** ACTIVIDAD ***
@@ -541,6 +581,12 @@ export const appMessages: AppMessageMapping = {
   },
   // *** ELEGIR DESPLIEGUE ***
   choose_deployment_title: {
+    pao: `Dehpliegue`,
+    nota: 'Dehpliege',
+    epa: 'Dêppliege',
+    cas: 'Despliegue',
+  },
+  choose_deployment_list_title: {
     pao: "Elije un dehpliegue'e la lihta",
     nota: 'Ehkohe un dehpliege de la lihta',
     epa: 'Elihe un dêppliege de la lîtta',
@@ -711,6 +757,12 @@ export const appMessages: AppMessageMapping = {
     epa: 'Ôtteniendo info...',
     cas: 'Obteniendo info...',
   },
+  post_edit_page_survey_list_title: {
+    pao: 'Elije aquí primero',
+    nota: 'Elihe ahkí primero',
+    epa: 'Elihe aquí primero',
+    cas: 'Elije aquí primero',
+  },
   post_edit_page_task_show_when_published: {
     pao: "Ehta tarea será bisible'n cuantito que la publicazión s'aiga aproabo.",
     nota: `Ehta tarea ba zè bizible en kuantito z'arga aprobao la publikahión.`,
@@ -735,11 +787,23 @@ export const appMessages: AppMessageMapping = {
     epa: 'Çelêççionâh tó',
     cas: 'Coleccionar todo',
   },
-  post_edit_page_form_control_tip: {
+  post_edit_page_relation_form_control_tip: {
     pao: "Ten en cuenta que lah entráh a lah que se refiere tien qu'êhtâ publicáh, lah publicazioneh qu'ehtén en rebisión no apaezerán en loh resurtaoh'e la búhquea.",
     nota: `Éxale kuenta de ke lah entráh referíah tienen k'ehtà publikáh; lah publikazioneh k’ehtén ehkurkándoze no ze ban a aparezè en loh rezurtaoh de la buhkia.`,
     epa: "Ten en cuenta que lâ entrâh a lâ que çe refiere deben êttâh publicâh, lâ publicaçionê q'êttén baho rebiçión no apareçerán en lô reçurtaô de búqquea.",
     cas: 'Ten en cuenta que las entradas a las que se refiere deben estar publicadas, las publicaciones que estén bajo revisión no aparecerán en los resultados de búsqueda.',
+  },
+  post_edit_page_relation_form_control_button_search_connection: {
+    pao: 'Búhquea de publicazión',
+    nota: 'Búhkea de publikazión',
+    epa: 'Búqqueda de publicaçión',
+    cas: 'Búsqueda de publicación',
+  },
+  post_edit_page_relation_form_control_button_search_no_connection: {
+    pao: `La búhquea no'htá ihponible`,
+    nota: `La búhkea no ehtá dihponible`,
+    epa: `La búqqueda no êttá dîpponible`,
+    cas: `La búsqueda no está disponible`,
   },
   post_edit_page_field_error_required_text: {
     pao: 'eh un campo obligatorio *',
@@ -786,38 +850,62 @@ export const appMessages: AppMessageMapping = {
   post_edit_page_form_post_create_photo_title: {
     pao: 'Afoto',
     nota: 'Afoto',
-    epa: '¿?',
+    epa: 'Afoto',
     cas: 'Foto',
   },
   post_edit_page_form_post_create_photo_instructions: {
     pao: "Jah el afoto cola cámara n'orizontâ",
     nota: 'Hah el afoto kon la kámara en orizontá',
-    epa: '¿?',
+    epa: 'Âh la foto con la cámara en oriçontâh',
     cas: 'Haz la foto con la cámara en horizontal',
   },
   post_edit_page_form_post_create_transcription_title: {
     pao: 'Trahcrizión',
     nota: 'Trahkrisión',
-    epa: '¿?',
+    epa: 'Trâccrîççión',
     cas: 'Transcripción',
   },
   post_edit_page_form_post_create_transcription_instructions: {
     pao: "Ehcribe aquí lo que ponga n'el afoto",
     nota: 'Ehkríbete ahkí lo ke ponga en el afoto',
-    epa: '¿?',
+    epa: 'Êccribe aquí lo que ponga en el afoto',
     cas: 'Escribe aquí lo que ponga en la foto',
   },
   post_edit_page_form_post_create_description_title: {
     pao: 'Dehcrizión',
     nota: 'Dehkrisión',
-    epa: '¿?',
+    epa: 'Dêccrîççión',
     cas: 'Descripción',
   },
   post_edit_page_form_post_create_description_instructions: {
     pao: "Añide cuarquier otro detaye a tento'e l'afoto o su contenío",
     nota: `Añide otroh detayeh k'enkarten arreó'el afoto u zu kontenío`,
-    epa: '¿?',
+    epa: 'Añade cuarquiêh otro detaye çobre la foto o çu contenío',
     cas: 'Añade cualquier otro detalle sobre la foto o su contenido',
+  },
+  post_edit_page_form_post_create_localization_title: {
+    pao: 'Localizazión',
+    nota: 'Lokalizazión',
+    epa: 'Localiçaçión',
+    cas: 'Localización',
+  },
+  post_edit_page_form_post_create_sort_of_sign_title: {
+    pao: `Tipo'e letrero [en cahteyano]`,
+    nota: `Tipo'e letrero [en kahteyano]`,
+    epa: `Tipo de letrero [en câtteyano]`,
+    cas: `Tipo de letrero`,
+  },
+  post_edit_page_form_post_create_sort_of_content_title: {
+    pao: `Tipo'e contenío [en cahteyano]`,
+    nota: `Tipo'e kontenío [en kahteyano]`,
+    epa: `Tipo de contenío [en câtteyano]`,
+    cas: `Tipo de contenido`,
+  },
+  post_edit_page_form_post_create_sort_of_content_instructions: {
+    pao: `¿Sobre qué trata'r contenío'el letrero?`,
+    nota: `¿Zobre ké trata er kontenío der letrero?`,
+    epa: `¿Çobre qué trata er contenío del letrero?`,
+    cas: `¿Sobre qué trata el contenido del letrero?`,
   },
   post_edit_page_connection_lost_status: {
     pao: "S'a perdío la conesión, la informazión se guardará'n la base'e datoh",
@@ -1165,7 +1253,7 @@ export const appMessages: AppMessageMapping = {
   select_spelling_proposal_page_abous_us_title: {
     pao: 'Quiéneh semoh',
     nota: '¿Kién zemoh?',
-    epa: '¿?',
+    epa: '¿Quiénê çomô?',
     cas: 'Sobre nosotr@s',
   },
   // *** WALKTHROUGH PAGE ***
@@ -1321,7 +1409,7 @@ export const appMessages: AppMessageMapping = {
   filter_form_component_surveys_label: {
     pao: 'Encuehtah',
     nota: 'Enkuehtah',
-    epa: '¿?',
+    epa: 'Encuêttâ',
     cas: 'Encuestas',
   },
   filter_form_component_surveys_no_selected_label: {
@@ -1414,6 +1502,12 @@ export const appMessages: AppMessageMapping = {
     epa: 'Toâh lâ localiçaçionê',
     cas: 'Todas las localizaciones',
   },
+  filter_form_component_update_filter_selected_text_status: {
+    pao: 'denguno',
+    nota: 'ninguno',
+    epa: 'ninguno',
+    cas: 'ninguno',
+  },
   filter_form_component_update_filter_selected_text_saved_filters: {
     pao: 'denguno',
     nota: 'ninguno',
@@ -1465,8 +1559,8 @@ export const appMessages: AppMessageMapping = {
   // *** FILTER CONTROL COMPONENT ***
   filter_control_component_info: {
     pao: 'Firtroh selezionaoh:',
-    nota: 'Firtroh selehzionaoh',
-    epa: '¿?',
+    nota: 'Firtroh selehzionaoh:',
+    epa: 'Firtrô çelêççionáô:',
     cas: 'Filtros seleccionados:',
   },
   // *** DATE SELECT COMPONENT ***
@@ -1550,7 +1644,7 @@ export const appMessages: AppMessageMapping = {
     cas: 'Nombre de la colección',
   },
   choose_collection_component_add_collection_modal_general_info_form_control_name_placeholder: {
-    pao: 'Introúze un nombre pa la colezión',
+    pao: 'Mete un nombre pa la colezión',
     nota: 'Pol-le un nombre a la kolezión',
     epa: 'Introduçe un nombre pa la colêççión',
     cas: 'Introduce un nombre para la colección',
@@ -1563,7 +1657,7 @@ export const appMessages: AppMessageMapping = {
   },
   choose_collection_component_add_collection_modal_general_info_form_control_description_placeholder:
     {
-      pao: 'Introúze la dehcrizión',
+      pao: 'Mete la dehcrizión',
       nota: 'Pon la dehkrisión',
       epa: 'Mete Dêccrîççión',
       cas: 'Introduce la descripción',
@@ -1695,6 +1789,18 @@ export const appMessages: AppMessageMapping = {
     cas: 'La colección se ha borrado con éxito.',
   },
   // *** PROFILE PHOTO COMPONENT ***
+  profile_photo_component_select_photo_alert_header: {
+    pao: `Tipo d'arxibo incorrehto`,
+    nota: `Tipo d'arxibo inkorrehto`,
+    epa: `Tipo d'arxibo incorrêtto`,
+    cas: 'Tipo de archivo incorrecto',
+  },
+  profile_photo_component_select_photo_alert_message: {
+    pao: `Seleziona un arxibo d'imajen bálido`,
+    nota: `Zeleziona un arxibo d'imahen bálido`,
+    epa: `Çeleçiona un arxibo d'imahen bálido`,
+    cas: 'Selecciona un archivo de imagen válido',
+  },
   profile_photo_component_delete_photo_alert_header: {
     pao: "¿Siguro que quieh borrâ l'afoto'e perfî?",
     nota: `¿De zeguro ke'hkiereh borrà el afoto'e perfí?`,
@@ -1718,6 +1824,30 @@ export const appMessages: AppMessageMapping = {
     nota: 'Borrà',
     epa: 'Borrâh',
     cas: 'Borrar',
+  },
+  profile_photo_component_delete_photo_successfully_toast_header: {
+    pao: `Borrao con ésito`,
+    nota: `Borrao kon ézito`,
+    epa: `Borrá con êççito`,
+    cas: 'Borrado con éxito',
+  },
+  profile_photo_component_delete_photo_successfully_toast_message: {
+    pao: `S'a borrao con ésito l'afoto de perfî`,
+    nota: `Z'a borrao kon ézito l'afoto de perfì`,
+    epa: `Ça borrao con êççito la foto de perfîh`,
+    cas: 'Se ha borrao con éxito la foto de perfil',
+  },
+  profile_photo_component_select_photo_button_text: {
+    pao: `Ehcojê nuebo afoto`,
+    nota: `Ehkohè nuebo afoto`,
+    epa: `Ponêh nuebo afoto`,
+    cas: 'Elegir nueva foto',
+  },
+  profile_photo_component_delete_photo_button_text: {
+    pao: `Borrâ afoto`,
+    nota: `Borrà afoto`,
+    epa: `Borrâh afoto`,
+    cas: 'Borrar foto',
   },
   // *** APP COMPONENT ***
   app_component_get_collections_text: {
@@ -1857,9 +1987,63 @@ export const appMessages: AppMessageMapping = {
     epa: 'Borrâh',
     cas: 'Borrar',
   },
+  choose_deployment_components_deployment_logout_alert_header: {
+    pao: `¿Zerrâ sesión en er dehpliegue ahtuâ?`,
+    nota: `¿Zerrà zezión en er dehpliege ahtuá?`,
+    epa: `¿Çerrâh çeçión en er dêppliege âttuâh?`,
+    cas: `¿Cerrar sesión en el despliegue actual?`,
+  },
+  choose_deployment_components_deployment_logout_alert_message: {
+    pao: `Ar cambiâ de dehpliegue, se zerrará la sesión de su dehpliegue ahtuâ i eh posible que deba d'iniziâ sesión otra beh.`,
+    nota: `Ar kambià de dehpliege, ze zerrará la zezión de zu dehpliege ahtuá i eh posible ke deba d'inizià zezión otra beh.`,
+    epa: `Ar cambiâh de dêppliege, se çerrará la çeçión de çu dêppliege âttuâh i êh posible que deba de iniçiâh çeçión otra bêh.`,
+    cas: `Al cambiar de dehpliegue, se cerrará la sesión de su despliegue actual y es posible que deba iniciar sesión nuevamente.`,
+  },
+  choose_deployment_components_deployment_logout_alert_cancel_button_text: {
+    pao: `Canzelâ`,
+    nota: 'Kanselà',
+    epa: 'Cançelâh',
+    cas: 'Cancelar',
+  },
+  choose_deployment_components_deployment_logout_alert_confirm_button_text: {
+    pao: `Confirmâ`,
+    nota: 'Konfirmà',
+    epa: 'Confirmâh',
+    cas: 'Confirmar',
+  },
+  post_controls_component_add_deployment_header_option_a: {
+    pao: ' dehpliegueh añedíoh con ésito!',
+    nota: ` dehpliegeh añidíoh con éhzito!`,
+    epa: ' dêppliegê añadíô con êççito!',
+    cas: ' despliegues añadidos satisfactoriamente!',
+  },
+  post_controls_component_add_deployment_header_option_b: {
+    pao: '¡1 dehpliegue añedío con ésito!',
+    nota: `¡1 dehpliege añidío con éhzito!`,
+    epa: '¡1 dêppliege añadío con êççito!',
+    cas: '¡1 despliegue añadido satisfactoriamente!',
+  },
+  post_controls_component_add_deployment_message_option_a: {
+    pao: 'Ara pueh bê ehtoh dehpliegueh i añedilleh publicazioneh.',
+    nota: `Aora pueh bè ehtoh dehpliegeh i añidil-leh publikazioneh.`,
+    epa: 'Aora puêh bêh êttô dêppliegê i añadil-lê publicaçionê.',
+    cas: 'Ahora puedes ver estos despliegues y añadirles publicaciones.',
+  },
+  post_controls_component_add_deployment_message_option_b: {
+    pao: 'Ara pueh bê ehte dehpliegue i añedille publicazioneh.',
+    nota: `Aora pueh bè ehte dehpliege i añidil-le publikazioneh.`,
+    epa: 'Aora puêh bêh êtte dêppliege i añadil-le publicaçionê.',
+    cas: 'Ahora puedes ver este despliegue y añadirle publicaciones.',
+  },
+  post_controls_component_back_button_toast_message: {
+    pao: `Pursa otra beh er botón P'atráh pa salî de l'aplicazión`,
+    nota: `Purza otra beh er botón P'atráh pa zalì de l'aplikazión`,
+    epa: `Purça otra bêh er botón P'atrâh pa çalîh de l'aplicaçión`,
+    cas: 'Pulsa el botón Atrás nuevamente para salir de la aplicación.',
+  },
   choose_deployment_components_deployment_outdated_alert_header: {
     pao: '¡Dehpliegue desahtualizao!',
-    nota: 'Dehpliege dehahtualizao',
+    nota: '¡Dehpliege dehahtualizao!',
     epa: '¡Dêppliege deçâttualiçao!',
     cas: '¡Despligue desactualizado!',
   },
@@ -1873,7 +2057,7 @@ export const appMessages: AppMessageMapping = {
     korrehtamente.</p><p>Si tú ereh el/la armenihtraó/ra d'ehte dehpliege, no turtugeeh de ponerte en kontahto kon nosotr@h pa 
     tenèh mah informazión.</p>`,
     epa: `<p>Lo çentimô, pero la ôççión de dêppliege que êttá intentando çelêççionâh no êh compatible con la aplicaçión,
-    ya que el âmminîttraôh toabía no la âttualiçao.  tta que no çe realiçe la âttualiçaçión, er dêppliege no funçionará
+    ya que el âmminîttraôh toabía no la âttualiçao. Âtta que no çe realiçe la âttualiçaçión, er dêppliege no funçionará
     corrêttamente.</p><p> Çi tú erê el âmminîttraôh de êtte dêppliege, no dude en ponerçe en contâtto con noçotrâ pa
     ôttenêh mâ informaçión.</p>`,
     cas: `<p>Lo sentimos, pero la opción de despliegue que está tratando de seleccionar no es compatible con la aplicación,

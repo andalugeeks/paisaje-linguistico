@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { navigationMenu } from '@constants';
+import { LocalStorageManager } from '@helpers';
 
 @Component({
   selector: 'app-menu',
@@ -8,6 +9,7 @@ import { navigationMenu } from '@constants';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent {
+  public LocalStorageManager = LocalStorageManager;
   public menu = navigationMenu;
 
   constructor(private router: Router) {}

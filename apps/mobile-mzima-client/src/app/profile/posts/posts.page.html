@@ -1,5 +1,5 @@
 <app-main-layout
-  title="Mî publicaçionê"
+  [title]="fieldAppMessages('post_page_title')"
   (back)="back()"
   [isSearch]="true"
   (search)="searchPosts($event)"
@@ -48,7 +48,7 @@
 <ng-template #emptyBox>
   <div class="empty-box">
     <ion-text color="medium" class="empty ion-text-center" *ngIf="!posts.length && !isPostsLoading">
-      ¡No ç'encuentra ninguna publicaçión!
+      {{fieldAppMessages('posts_page_posts_not_found_text')}}
     </ion-text>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>
   </div>
