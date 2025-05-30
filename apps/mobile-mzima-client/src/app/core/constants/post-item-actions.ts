@@ -3,7 +3,10 @@ import { ActionSheetButton } from '@ionic/angular';
 import { PostStatus } from '@mzima-client/sdk';
 import { LocalStorageManager } from '@helpers';
 
-interface PostItemAction extends ActionSheetButton {
+type SpellingKey = 'pao' | 'nota' | 'epa' | 'cas';
+
+interface PostItemAction extends Omit<ActionSheetButton, 'text'> {
+  text?: string | Record<SpellingKey, string>;
   guard: PostItemActionTypeUserRole[];
   status?: string;
 }
@@ -176,7 +179,23 @@ export const getPostItemActions = (
         ? !postItemAction.guard.length || postItemAction.guard.indexOf(role) > -1
         : !postItemAction.guard.length,
     )
-    .filter((action) => currentStatus !== action.status);
+    .filter((action) => currentStatus !== action.status)
+    .map((action) => {
+      let text: string | undefined;
+      if (typeof action.text === 'object' && action.text !== null) {
+        // Use LocalStorageManager to get the current spelling proposal id
+        const spellingId = (LocalStorageManager.getStoredSpellingProposalId?.() ||
+          'cas') as SpellingKey;
+        text = action.text[spellingId] || action.text['cas'];
+      } else {
+        text = action.text as string | undefined;
+      }
+      // Return a new object with text as string
+      return {
+        ...action,
+        text,
+      } as ActionSheetButton;
+    });
 };
 
 export const getPostStatusActions = (
@@ -186,7 +205,21 @@ export const getPostStatusActions = (
     .filter(
       (postItemAction) => postItemAction.role === 'status' || postItemAction.role === 'cancel',
     )
-    .filter((action) => currentStatus !== action.status);
+    .filter((action) => currentStatus !== action.status)
+    .map((action) => {
+      let text: string | undefined;
+      if (typeof action.text === 'object' && action.text !== null) {
+        const spellingId = (LocalStorageManager.getStoredSpellingProposalId?.() ||
+          'cas') as SpellingKey;
+        text = action.text[spellingId] || action.text['cas'];
+      } else {
+        text = action.text as string | undefined;
+      }
+      return {
+        ...action,
+        text,
+      } as ActionSheetButton;
+    });
 };
 
 export const postStatusChangedHeader: Record<PostStatus, { [key: string]: string }> = {

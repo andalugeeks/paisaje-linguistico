@@ -73,6 +73,7 @@
     "lodash": "^4.17.21",
     "lottie-web": "^5.10.2",
     "masonry-layout": "^4.2.2",
+    "moment": "^2.30.1",
     "ngx-color-picker": "^14.0.0",
     "ngx-cookie-service": "^14.0.1",
     "ngx-custom-tour": "^1.1.2",
