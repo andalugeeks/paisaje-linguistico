@@ -1,5 +1,5 @@
 <app-main-layout
-  title="Mî publicaçionê"
+  [title]="fieldAppMessages('post_page_title')"
   (back)="back()"
   [isSearch]="true"
   (search)="searchPosts($event)"
@@ -12,7 +12,7 @@
     color="custom"
   >
     <app-icon *ngIf="!isEditMode" name="edit" slot="icon-only"></app-icon>
-    <ng-container *ngIf="isEditMode">Exo</ng-container>
+    <ng-container *ngIf="isEditMode">{{fieldAppMessages('posts_page_edit_done_tag')}}</ng-container>
   </app-button>
   <ng-container *ngIf="posts.length; else emptyBox">
     <app-post-item
@@ -48,7 +48,7 @@
 <ng-template #emptyBox>
   <div class="empty-box">
     <ion-text color="medium" class="empty ion-text-center" *ngIf="!posts.length && !isPostsLoading">
-      ¡No ç'encuentra ninguna publicaçión!
+      {{fieldAppMessages('posts_page_posts_not_found_text')}}
     </ion-text>
     <app-spinner *ngIf="isPostsLoading"></app-spinner>
   </div>

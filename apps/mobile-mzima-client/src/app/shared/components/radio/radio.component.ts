@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { fieldAppMessages } from '@helpers';
 
 @Component({
   selector: 'app-radio',
@@ -14,6 +15,7 @@ export class RadioComponent {
   @Input() public justify: 'start' | 'end' | 'space-between' = 'start';
   @Output() optionDelete = new EventEmitter();
   @Output() optionEdit = new EventEmitter();
+  public fieldAppMessages = fieldAppMessages;
 
   public deleteHandle(): void {
     this.optionDelete.emit();

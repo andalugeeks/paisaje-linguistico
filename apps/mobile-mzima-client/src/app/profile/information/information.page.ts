@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { profileMenu } from '@constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService, SessionService, ToastService, DatabaseService } from '@services';
-import { fieldErrorMessages, regexHelper } from '@helpers';
+import { fieldErrorMessages, regexHelper, fieldAppMessages } from '@helpers';
 import {
   generalHelpers,
   RolesService,
@@ -36,6 +36,7 @@ import { map } from 'rxjs';
 })
 export class InformationPage {
   @ViewChild(ProfilePhotoComponent) profilePhotoComponent: ProfilePhotoComponent;
+  public fieldAppMessages = fieldAppMessages;
   public profileMenu: profileMenu.ProfileMenuItem[] = profileMenu.profileMenu;
   public profileInformationMenu = profileMenu.profileInformationMenu;
   public userPhoto: string;
@@ -239,7 +240,7 @@ export class InformationPage {
           console.error('Failed to upload file', error);
           this.isUploadInProgress = false;
           this.toastService.presentToast({
-            message: 'Failed to upload image. Please try again',
+            message: fieldAppMessages('information_page_upload_image_failed_toast_message'),
             duration: 3000,
             position: 'bottom',
           });
@@ -285,7 +286,9 @@ export class InformationPage {
               };
               this.usersService.update(userId, payload, 'settings/' + settings.id).subscribe({
                 next: async () => {
-                  console.log('Afoto de perfîh corrêttamente âttualiçá');
+                  console.log(
+                    fieldAppMessages('information_page_upload_profile_photo_succeed_toast_message'),
+                  );
                   this.profilePhotoComponent.uploadingSpinner = false;
                   this.userPhoto = photoUrl;
                   this.isUploadInProgress = false;
@@ -294,14 +297,16 @@ export class InformationPage {
                   await this.databaseService.remove(STORAGE_KEYS.PROFILE_PHOTO);
                   this.isPhotoChanged = false;
                   this.toastService.presentToast({
-                    message: 'Afoto de perfîh corrêttamente âttualiçá',
+                    message: fieldAppMessages(
+                      'information_page_upload_profile_photo_succeed_toast_message',
+                    ),
                     duration: 3000,
                     position: 'bottom',
                   });
                 },
                 error: async (error) => {
                   console.error(
-                    'Fayó er çubîh tu afoto de perfîh. Por fabôh intenta de nuebo',
+                    fieldAppMessages('information_page_upload_profile_photo_failed_toast_message'),
                     error,
                   );
                   this.isUploadInProgress = false;
@@ -309,7 +314,9 @@ export class InformationPage {
                   await this.databaseService.remove(STORAGE_KEYS.PROFILE_PHOTO);
                   this.isPhotoChanged = false;
                   this.toastService.presentToast({
-                    message: 'Fayó al añadîh afoto de perfîh. Prueba de nuebo.',
+                    message: fieldAppMessages(
+                      'information_page_upload_profile_photo_failed_toast_message',
+                    ),
                     duration: 3000,
                     position: 'bottom',
                   });
@@ -327,7 +334,9 @@ export class InformationPage {
                   this.userPhoto = photoUrl;
                   this.isUploadInProgress = false;
                   this.toastService.presentToast({
-                    message: 'Afoto de perfîh corrêttamente âttualiçá',
+                    message: fieldAppMessages(
+                      'information_page_upload_profile_photo_succeed_toast_message',
+                    ),
                     duration: 3000,
                     position: 'bottom',
                   });
@@ -339,7 +348,9 @@ export class InformationPage {
                   this.isUploadInProgress = false;
                   this.profilePhotoComponent.uploadingSpinner = false;
                   this.toastService.presentToast({
-                    message: 'Fayó al añadîh afoto de perfîh. Prueba de nuebo',
+                    message: fieldAppMessages(
+                      'information_page_upload_profile_photo_failed_toast_message',
+                    ),
                     duration: 3000,
                     position: 'bottom',
                   });
@@ -436,7 +447,7 @@ export class InformationPage {
         next: (response) => {
           const { result } = response;
           this.toastService.presentToast({
-            message: 'La informaçión de tu perfîh ça âttualiçao con éççito',
+            message: fieldAppMessages('information_page_update_profile_toast_message'),
             buttons: [],
           });
           resolve(response);

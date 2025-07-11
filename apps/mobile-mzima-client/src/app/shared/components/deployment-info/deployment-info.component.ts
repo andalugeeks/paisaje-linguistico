@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Deployment } from '@mzima-client/sdk';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlertService, DeploymentService, SessionService } from '@services';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -11,6 +12,7 @@ import { AlertService, DeploymentService, SessionService } from '@services';
 })
 export class DeploymentInfoComponent {
   @Output() deploymentClick = new EventEmitter();
+  public fieldAppMessages = fieldAppMessages;
   public deployment: Deployment | null;
   public isDeploymentOutdated = false;
   constructor(
@@ -40,9 +42,8 @@ export class DeploymentInfoComponent {
           name: 'warning',
           color: 'danger',
         },
-        header: '¡Dêppliege deçâttualiçao!',
-        message:
-          "Er dêppliege no êttá âttualiçao, por lo que puén produçirçe errorê âtta q'er âmminîttraôh lo âttualiçe.",
+        header: fieldAppMessages('deployment_info_component_warning_header'),
+        message: fieldAppMessages('deployment_info_component_warning_message'),
       });
     }
   }

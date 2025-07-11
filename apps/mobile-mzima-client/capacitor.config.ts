@@ -1,6 +1,6 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
-const appName: string = 'Paisaje Andalûh';
+const appName: string = 'Paisaje Andaluz';
 
 const config: CapacitorConfig = {
   // need change to app id before publish

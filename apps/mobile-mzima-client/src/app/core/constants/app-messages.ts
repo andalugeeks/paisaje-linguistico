@@ -696,6 +696,12 @@ export const appMessages: AppMessageMapping = {
     epa: 'Bîtta de Publicaçionê',
     cas: 'Vista de Publicaciones',
   },
+  posts_page_edit_done_tag: {
+    pao: `Jexo`,
+    nota: `Hexo`,
+    epa: 'Exo',
+    cas: 'Hecho',
+  },
   post_page_anonymous: {
     pao: 'Anónimo',
     nota: 'Anónimo',
@@ -1268,7 +1274,7 @@ export const appMessages: AppMessageMapping = {
     pao: 'Continuâ',
     nota: 'Kontinuà',
     epa: 'Continuâh',
-    cas: 'Propuesta Ortográfica',
+    cas: 'Continuar',
   },
   // *** FILTER COMPONENT ***
   filter_component_delete_option_header: {

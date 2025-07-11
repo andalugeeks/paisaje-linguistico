@@ -15,6 +15,7 @@ import {
 } from '@services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastService } from '@services';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -37,6 +38,7 @@ export class ChooseDeploymentComponent {
   public currentDeploymentId?: number | string;
   private domain: string | null = null;
   private readonly searchSubject = new Subject<string>();
+  public fieldAppMessages = fieldAppMessages;
 
   tap = 0;
 
@@ -123,15 +125,19 @@ export class ChooseDeploymentComponent {
 
   public async callModal(event: any) {
     const result = await this.alertService.presentAlert({
-      header: '¿Çeguro que quiêh borrâh êtte Dêppliege?',
-      message: 'Çi lo borrâ no lo berâh en tu lîtta de dêppliegê.',
+      header: fieldAppMessages('choose_deployment_components_remove_deployment_alert_header'),
+      message: fieldAppMessages('choose_deployment_components_remove_deployment_alert_message'),
       buttons: [
         {
-          text: 'Cançelâh',
+          text: fieldAppMessages(
+            'choose_deployment_components_remove_deployment_alert_cancel_button_text',
+          ),
           role: 'cancel',
         },
         {
-          text: 'Borrâh',
+          text: fieldAppMessages(
+            'choose_deployment_components_remove_deployment_alert_confirm_button_text',
+          ),
           role: 'confirm',
           cssClass: 'danger',
         },
@@ -166,16 +172,19 @@ export class ChooseDeploymentComponent {
     const isLoggedIn = this.sessionService.isLogged();
     if (isLoggedIn) {
       const result = await this.alertService.presentAlert({
-        header: 'Log out of current deployment?',
-        message:
-          'Switching deployments will log out out of your current deployment, and you may need to log in again.',
+        header: fieldAppMessages('choose_deployment_components_deployment_logout_alert_header'),
+        message: fieldAppMessages('choose_deployment_components_deployment_logout_alert_message'),
         buttons: [
           {
-            text: 'Cancel',
+            text: fieldAppMessages(
+              'choose_deployment_components_deployment_logout_alert_cancel_button_text',
+            ),
             role: 'cancel',
           },
           {
-            text: 'Confirm',
+            text: fieldAppMessages(
+              'choose_deployment_components_deployment_logout_alert_confirm_button_text',
+            ),
             role: 'confirm',
             cssClass: 'danger',
           },
@@ -213,12 +222,13 @@ export class ChooseDeploymentComponent {
         name: 'warning',
         color: 'danger',
       },
-      header: '¡Dêppliege deçâttualiçao!',
-      message:
-        '<p>Lo çentimô, pero la ôççión de dêppliege que êttá intentando çelêççionâh no êh compatible con la aplicaçión, ya que el âmminîttraôh toabía no la âttualiçao. Âtta que no çe realiçe la âttualiçaçión, er dêppliege no funçionará corrêttamente.</p><p> Çi tú erê el âmminîttraôh de êtte dêppliege, no dude en ponerçe en contâtto con noçotrâ pa ôttenêh mâ informaçión.</p>',
+      header: fieldAppMessages('choose_deployment_components_deployment_outdated_alert_header'),
+      message: fieldAppMessages('choose_deployment_components_deployment_outdated_alert_message'),
       buttons: [
         // {
-        //   text: 'Contact us',
+        //   text: fieldAppMessages(
+        //     'choose_deployment_components_deployment_outdated_alert_contact_us_button_text',
+        //   ),
         //   cssClass: 'medium',
         //   handler: () => {
         //     this.intercomService.displayMessenger();
@@ -286,12 +296,14 @@ export class ChooseDeploymentComponent {
     const deploymentCount = this.selectedDeployments.length;
     const header =
       deploymentCount > 1
-        ? deploymentCount + ' Deployments Added Successfully!'
-        : '1 Deployment Added Successfully!';
+        ? '¡' +
+          deploymentCount +
+          fieldAppMessages('post_controls_component_add_deployment_header_option_a')
+        : fieldAppMessages('post_controls_component_add_deployment_header_option_b');
     const message =
       deploymentCount > 1
-        ? 'You can now view these deployments and add posts to them'
-        : 'You can now view this deployment and add posts to it';
+        ? fieldAppMessages('post_controls_component_add_deployment_message_option_a')
+        : fieldAppMessages('post_controls_component_add_deployment_message_option_b');
 
     this.toastService.presentToast({
       header: header,
@@ -309,7 +321,7 @@ export class ChooseDeploymentComponent {
 
   protected async doubleTapExistToast() {
     const result = await this.toastService.presentToast({
-      message: 'Tap back button again to exit the App',
+      message: fieldAppMessages('post_controls_component_back_button_toast_message'),
       buttons: [],
     });
     if (result) {
