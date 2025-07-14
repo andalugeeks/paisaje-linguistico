@@ -27,6 +27,7 @@ import { UploadFileHelper } from './post/helpers';
 import { Location } from '@angular/common';
 import { LanguageInterface } from '@mzima-client/sdk';
 import { TranslateService } from '@ngx-translate/core';
+import { fieldAppMessages } from '@helpers';
 
 @UntilDestroy()
 @Component({
@@ -123,7 +124,8 @@ export class AppComponent extends BaseComponent {
     return this.collectionsService.getCollections(params).pipe(
       tap(async (response) => {
         await this.dataBaseService.set(STORAGE_KEYS.COLLECTIONS, response);
-        if (isToast) this.toastMessage$.next('Colêççionê âttualiçâh');
+        if (isToast)
+          this.toastMessage$.next(fieldAppMessages('app_component_get_collections_text'));
       }),
     );
   }
@@ -138,14 +140,15 @@ export class AppComponent extends BaseComponent {
       .pipe(
         tap(async (response) => {
           await this.dataBaseService.set(STORAGE_KEYS.SURVEYS, response.results);
-          if (isToast) this.toastMessage$.next('Datô de la Encuêtta Âttualiçaô');
+          if (isToast) this.toastMessage$.next(fieldAppMessages('app_component_get_surveys_text'));
         }),
       );
   }
 
   async checkPendingPosts(): Promise<boolean> {
     const posts: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_POST_KEY);
-    if (posts?.length) this.toastMessage$.next('Publicaçionê pendientê encontrâh');
+    if (posts?.length)
+      this.toastMessage$.next(fieldAppMessages('app_component_check_pending_posts_text'));
     return !!posts?.length;
   }
 
@@ -173,7 +176,8 @@ export class AppComponent extends BaseComponent {
 
   async checkPendingCollections(): Promise<boolean> {
     const coll: any[] = await this.dataBaseService.get(STORAGE_KEYS.PENDING_COLLECTIONS);
-    if (coll?.length) this.toastMessage$.next('Âttualiçando la colêççión de publicaçionê...');
+    if (coll?.length)
+      this.toastMessage$.next(fieldAppMessages('app_component_check_pending_collections_text'));
     return !!coll?.length;
   }
 
@@ -190,7 +194,7 @@ export class AppComponent extends BaseComponent {
     });
     forkJoin(observables).subscribe({
       next: async () => {
-        this.toastMessage$.next('Toâ lâ colêççionê pendientê fueron âttualiçâh');
+        this.toastMessage$.next(fieldAppMessages('app_component_upload_pending_collections_text'));
         await this.dataBaseService.set(STORAGE_KEYS.PENDING_COLLECTIONS, []);
       },
       error: ({ error }) => {

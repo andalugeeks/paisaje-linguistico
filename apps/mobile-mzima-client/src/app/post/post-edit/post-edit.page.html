@@ -1,6 +1,7 @@
 <app-header
   (back)="backNavigation()"
-  title="{{!postId ? 'Creâh' : 'Editâh'}} publicaçión"
+  title="{{!postId ? fieldAppMessages('post_edit_page_post_title_first_part') 
+  : fieldAppMessages('post_edit_page_edit_title_first_part')}} {{fieldAppMessages('post_edit_page_title_second_part')}}"
 ></app-header>
 
 <ion-content class="ion-padding-horizontal ion-padding-top page">
@@ -9,7 +10,9 @@
   </ng-container>
 
   <ng-container *ngIf="surveyList.length && !form">
-    <ion-title class="list-title">Elihe aquí primero</ion-title>
+    <ion-title class="list-title"
+      >{{fieldAppMessages('post_edit_page_survey_list_title')}}</ion-title
+    >
     <ion-list class="list">
       <ion-item
         class="list-item"
@@ -25,7 +28,7 @@
   </ng-container>
 
   <app-select
-    [label]="surveyList.length ? 'Elihe aquí primero' : 'Ôtteniendo info...'"
+    [label]="surveyList.length ? fieldAppMessages('post_edit_page_combobox_label_a') : fieldAppMessages('post_edit_page_combobox_label_b')"
     [options]="surveyListOptions"
     [disabled]="!!postId"
     [(ngModel)]="selectedSurveyId"
@@ -47,14 +50,11 @@
           <h2 class="task-label">{{ task.label }}</h2>
 
           <div *ngIf="task.show_when_published">
-            <p>Êtta tarea çerá biçible cuando la publicaçión ç'aya aproabo.</p>
+            <p>{{fieldAppMessages('post_edit_page_task_show_when_published')}}</p>
           </div>
 
           <div *ngIf="task.task_is_internal_only">
-            <p>
-              Êtta tarea êttá deçînná unicamente pa uço intênno. Lô uçuariô no la berán ar creâh una
-              publicaçión.
-            </p>
+            <p>{{fieldAppMessages('post_edit_page_task_is_internal_only')}}</p>
           </div>
 
           <!-- task complete -->
@@ -65,7 +65,7 @@
               [checked]="task.completed"
               (ionChange)="taskComplete(task, $event)"
             >
-              Tarea completá
+              {{fieldAppMessages('post_edit_page_task_completed')}}
               <span class="color-accent" *ngIf="task.required">*</span>
             </ion-toggle>
           </div>
@@ -144,7 +144,7 @@
                       [checked]="form.get(field.key)?.value.length === field.options.length"
                       (checkboxChange)="toggleAllSelection($event, field, field.key)"
                     >
-                      Çelêççionâh tó
+                      {{fieldAppMessages('post_edit_page_checkbox_select_all')}}
                     </app-checkbox>
                   </li>
                   <li
@@ -497,8 +497,7 @@
                 <span class="color-accent" *ngIf="field?.required">*</span>
               </ion-label>
               <p class="form-control--tip">
-                Ten en cuentra que lâ entrâh a lâ que çe refiere deben êttâh publicâh, lâ
-                publicaçionê q'êttén "baho rebiçión" no apareçerán en lô reçurtaô de búqquea.
+                {{fieldAppMessages('post_edit_page_relation_form_control_tip')}}
               </p>
               <div class="related-post-selected" *ngIf="selectedRelatedPost">
                 <div class="related-post-content">
@@ -528,7 +527,11 @@
                   [disabled]="!isConnection"
                   (buttonClick)="relationSearchPosts()"
                 >
-                  {{ isConnection ? 'Búqqueda de publicaçión' : 'La búqqueda no êttá dîpponible' }}
+                  {{ isConnection ?
+                  fieldAppMessages('post_edit_page_relation_form_control_button_search_connection')
+                  :
+                  fieldAppMessages('post_edit_page_relation_form_control_button_search_no_connection')
+                  }}
                 </app-button>
               </div>
 
@@ -569,16 +572,17 @@
             *ngIf="form.get(field.key)?.invalid && form.get(field.key)?.touched"
           >
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('required')">
-              {{ field.label }} eh un campo obligatorio *
+              {{ field.label }} {{fieldAppMessages('post_edit_page_field_error_required_text')}}
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('minlength')">
-              {{ field.label }} êh demaçiao corto, uça ar menô dô carâtterê.
+              {{ field.label }} {{fieldAppMessages('post_edit_page_field_error_minlength_text')}}
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('pattern')">
-              {{ field.label }} no êh bálido
+              {{ field.label }} {{fieldAppMessages('post_edit_page_field_error_pattern_text')}}
             </ion-text>
             <ion-text color="danger" *ngIf="form.get(field.key)?.hasError('specialCharacters')">
-              {{ field.label }} contiene carâtterê êppecialê
+              {{ field.label }}
+              {{fieldAppMessages('post_edit_page_field_error_special_characters_text')}}
             </ion-text>
           </div>
         </div>
@@ -588,7 +592,7 @@
 
   <ng-template #noOptions>
     <div>
-      <span class="no-options">Çin ôççionê</span>
+      <span class="no-options">{{fieldAppMessages('post_edit_page_no_options_tag')}}</span>
     </div>
   </ng-template>
 </ion-content>
@@ -604,10 +608,10 @@
         [disabled]="isSubmitting==='yes' || form.disabled || form.invalid || emptyLocation || (!requireApproval || post?.status === 'published' ? taskForm.invalid : false)"
         (buttonClick)="submitPost()"
       >
-        Açêttâh
+        {{fieldAppMessages('post_edit_page_accept_button_tag')}}
       </app-button>
       <app-button color="medium" fill="outline" expand="inline" (buttonClick)="backNavigation()">
-        Cançelâh
+        {{fieldAppMessages('post_edit_page_cancel_button_tag')}}
       </app-button>
     </ion-buttons>
   </ion-toolbar>

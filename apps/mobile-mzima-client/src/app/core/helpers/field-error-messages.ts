@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { formErrorMessages } from '@constants';
+import { LocalStorageManager } from '@helpers';
 
 export const fieldErrorMessages = (control: FormControl, controlName: string): string[] => {
   if (!control.touched) return [];
@@ -10,7 +11,8 @@ export const fieldErrorMessages = (control: FormControl, controlName: string): s
     for (const key in control.errors) {
       const errorMessage = errorMap[key];
       if (errorMessage) {
-        errors.push(errorMessage);
+        errors.push(errorMessage[LocalStorageManager.getStoredSpellingProposalId()]);
+        // errors.push(errorMessage);
       }
     }
   }
