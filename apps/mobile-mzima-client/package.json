@@ -21,7 +21,8 @@
     "@capacitor/share": "^6.0.0",
     "@capacitor/splash-screen": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
-    "capacitor-native-settings": "^6.0.1"
+    "capacitor-native-settings": "^6.0.1",
+    "ion2-calendar": "^3.5.0"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.4",

@@ -75,7 +75,14 @@ export class BaseComponent {
   }
 
   async listenToNetworkStatus() {
-    this.networkService.networkStatus$
+    // setTimeout(() => { }, 1000);
+
+    /*
+    He tenido que comentar este pop up porque hasta que no se minimiza 
+    la app por primera vez no se ve correctamente y no se puede cerrar.
+    */
+   
+    /* this.networkService.networkStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe({
         next: async (value) => {
@@ -85,7 +92,7 @@ export class BaseComponent {
               : fieldAppMessages('base_components_network_status_text_2'),
           );
         },
-      });
+      }); */
   }
 
   async showConnectionInfo(message: string) {
