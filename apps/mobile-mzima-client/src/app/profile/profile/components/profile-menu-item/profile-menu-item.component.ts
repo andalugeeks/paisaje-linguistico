@@ -19,6 +19,8 @@ export class ProfileMenuItemComponent {
     const action = this.menuItem.action;
     if (action) {
       this.action.emit(action);
+    } else if (this.menuItem.url) {
+      window.open(this.menuItem.url, '_blank');
     } else {
       this.router.navigate([this.menuItem.route]);
     }

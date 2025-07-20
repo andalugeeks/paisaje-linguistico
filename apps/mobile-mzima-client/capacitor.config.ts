@@ -4,7 +4,7 @@ const appName: string = 'Paisaje Andaluz';
 
 const config: CapacitorConfig = {
   // need change to app id before publish
-  appId: 'es.andaluh.paisaje',
+  appId: 'org.zeaandalu.paisaje',
   appName: appName,
   webDir: '../../dist/apps/mobile-mzima-client',
   bundledWebRuntime: false,
