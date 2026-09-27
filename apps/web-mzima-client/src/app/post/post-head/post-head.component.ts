@@ -20,10 +20,12 @@ export class PostHeadComponent extends BaseComponent implements OnInit {
   @Input() public editable: boolean;
   @Input() public feedView: boolean;
   @Input() public deleteable: boolean;
+  @Input() public hideTranslationsIcon: boolean;
   @Output() edit = new EventEmitter();
   @Output() refresh = new EventEmitter();
   @Output() deleted = new EventEmitter();
   @Output() statusChanged = new EventEmitter();
+  @Output() openTranslationModal = new EventEmitter();
   public isLocked: boolean;
 
   constructor(
@@ -72,7 +74,10 @@ export class PostHeadComponent extends BaseComponent implements OnInit {
   underReview() {
     this.postsService.updateStatus(this.post.id, PostStatus.Draft).subscribe((res) => {
       this.post = res.result;
-      this.statusChanged.emit();
+      this.eventBusService.next({
+        type: EventType.StatusChange,
+        payload: this.post,
+      });
     });
   }
 
@@ -81,7 +86,10 @@ export class PostHeadComponent extends BaseComponent implements OnInit {
       if (postHelpers.isAllRequiredCompleted(post)) {
         this.postsService.updateStatus(this.post.id, PostStatus.Published).subscribe((res) => {
           this.post = res.result;
-          this.statusChanged.emit();
+          this.eventBusService.next({
+            type: EventType.StatusChange,
+            payload: this.post,
+          });
         });
       } else {
         this.showMessage(this.translate.instant('notify.post.unfinished_post_task'), 'error', 5000);
@@ -100,7 +108,10 @@ export class PostHeadComponent extends BaseComponent implements OnInit {
   archive() {
     this.postsService.updateStatus(this.post.id, PostStatus.Archived).subscribe((res) => {
       this.post = res.result;
-      this.statusChanged.emit();
+      this.eventBusService.next({
+        type: EventType.StatusChange,
+        payload: this.post,
+      });
     });
   }
 
@@ -151,9 +162,13 @@ export class PostHeadComponent extends BaseComponent implements OnInit {
   }
 
   private showMessage(message: string, type: string, duration = 3000) {
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, this.translate.instant('notify.snackbar.close'), {
       panelClass: [type],
       duration,
     });
+  }
+  public showTranslationsIcon() {
+    const languagesAvailabe = this.post?.enabled_languages?.available?.length > 0;
+    return !this.hideTranslationsIcon && (languagesAvailabe || this.editable);
   }
 }

@@ -46,7 +46,7 @@ import {
 import { BaseComponent } from '../../base.component';
 import { preparingVideoUrl } from '../../core/helpers/validators';
 import { objectHelpers, formValidators, dateHelper } from '@helpers';
-import { PhotoRequired, PointValidator } from '../../core/validators';
+import { MediaRequired, PointValidator } from '../../core/validators';
 import { Observable, lastValueFrom, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LanguageInterface } from '@mzima-client/sdk';
@@ -60,7 +60,7 @@ dayjs.extend(timezone);
   styleUrls: ['./post-edit.component.scss'],
 })
 export class PostEditComponent extends BaseComponent implements OnInit, OnChanges {
-  @Input() public postInput: any;
+  @Input() public postFromModal: any;
   @Input() public modalView: boolean;
   @Output() cancel = new EventEmitter();
   @Output() updated = new EventEmitter();
@@ -135,7 +135,6 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
       }
       if (params.get('id')) {
         this.postId = Number(params.get('id'));
-        this.loadPostData(this.postId);
       }
       if (!this.formId) {
         this.surveysService.get().subscribe((result) => {
@@ -143,7 +142,14 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
         });
       }
     });
-
+    if (this.postFromModal) {
+      this.post = this.postFromModal;
+    } else {
+      this.route.data.subscribe((data) => {
+        this.post = data['post'];
+        if (this.post) this.loadPostData();
+      });
+    }
     this.translate.onLangChange.subscribe((newLang) => {
       this.activeLanguage = newLang.lang;
     });
@@ -152,8 +158,8 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['postInput'] && changes['postInput'].currentValue) {
-      this.post = this.postInput;
+    if (changes['postFromModal'] && changes['postFromModal'].currentValue) {
+      this.post = this.postFromModal;
       this.formId = this.post.form_id;
       this.postId = this.post.id;
       this.loadSurveyData(this.formId!, this.post.post_content);
@@ -174,19 +180,14 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
     this.surveyName = this.formInfo.translations[this.activeLanguage]?.name || this.formInfo.name;
   }
 
-  private loadPostData(postId: number) {
-    this.postsService.getById(postId).subscribe({
-      next: (post) => {
-        this.formId = post.form_id;
-        this.post = post;
-        if (!this.postsService.isPostLockedForCurrentUser(this.post)) {
-          this.postsService.lockPost(this.post.id).subscribe();
-          this.loadSurveyData(this.formId!, post.post_content);
-        } else {
-          this.backNavigation();
-        }
-      },
-    });
+  private loadPostData() {
+    this.formId = this.post.form_id;
+    if (!this.postsService.isPostLockedForCurrentUser(this.post)) {
+      this.postsService.lockPost(this.post.id).subscribe();
+      this.loadSurveyData(this.formId!, this.post.post_content);
+    } else {
+      this.backNavigation();
+    }
   }
 
   getParentsWithChildren(options: any[]) {
@@ -551,7 +552,7 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
         break;
       case 'media':
         if (field.required) {
-          validators.push(PhotoRequired());
+          validators.push(MediaRequired());
         }
         break;
       default:
@@ -564,11 +565,12 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
   }
 
   async preparationData(): Promise<any> {
-    for (const task of this.tasks) {
+    for (const [index, task] of this.tasks.entries()) {
       task.fields = await Promise.all(
         task.fields.map(
           async (field: { key: string | number; input: string; type: string; options: any }) => {
             let value: any = {
+              translations: [],
               value: this.form.value[field.key],
             };
 
@@ -704,6 +706,12 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
                   this.form.value[field.key]?.map((fieldValue: any) => fieldValue.value) || [];
                 break;
               default:
+                if (this.post?.post_content) {
+                  const postField = this.post.post_content[index].fields.find(
+                    (f: any) => f.key === field.key,
+                  );
+                  value.translations = postField?.value?.translations || [];
+                }
                 value.value = this.form.value[field.key] || null;
             }
             return {
@@ -724,24 +732,26 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
     try {
       await this.preparationData();
     } catch (error: any) {
+      console.log(error);
       this.form.enable();
       this.submitted = false;
       this.showMessage(error, 'error');
       return;
     }
 
+    const postLanguage = this.selectedLanguage?.code || this.languageService.initialLanguage;
     const postData = {
-      base_language: 'en',
+      base_language: postLanguage,
       completed_stages: this.completeStages,
       content: this.description,
       description: '',
-      enabled_languages: {},
       form_id: this.formId,
       locale: 'en_US',
       post_content: this.tasks,
       published_to: [],
       title: this.title,
       type: 'report',
+      translations: this.post?.translations || [],
     };
 
     if (!this.form.valid) this.form.markAllAsTouched();
@@ -804,7 +814,7 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
   }
 
   private showMessage(message: string, type: string) {
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, this.translate.instant('notify.snackbar.close'), {
       panelClass: [type],
       duration: 3000,
     });
@@ -843,7 +853,7 @@ export class PostEditComponent extends BaseComponent implements OnInit, OnChange
       const confirmed = await this.confirmModalService.open({
         title: this.translate.instant('notify.default.data_has_not_been_saved'),
         description: this.translate.instant('notify.default.proceed_warning'),
-        confirmButtonText: 'OK',
+        confirmButtonText: this.translate.instant('notify.confirm_modal.deleted.success_button'),
       });
       if (!confirmed) return;
     }
