@@ -298,7 +298,7 @@
                     </mat-form-field>
                   </div>
                   <mat-error *ngIf="option === 'Other' && hasEmptyOther(field.key)">
-                    Input cannot be empty
+                    {{ 'post.modify.input_empty_warn' | translate }}
                   </mat-error>
                 </div>
               </mat-radio-group>
@@ -343,13 +343,14 @@
                         matInput
                         #otherCheckbox="matInput"
                         type="text"
+                        placeholder="{{ 'form.field_add_other' | translate }}"
                         [formControlName]="'other' + field.key"
                         (focus)="selectOther($event, field)"
                       />
                     </mat-form-field>
                   </div>
                   <mat-error *ngIf="option === 'Other' && hasEmptyOther(field.key)">
-                    Input cannot be empty
+                    {{ 'post.modify.input_empty_warn' | translate }}
                   </mat-error>
                 </ng-container>
               </mat-selection-list>
@@ -388,22 +389,29 @@
             </ng-container>
 
             <ng-container *ngIf="field.type === 'media'">
-              <span class="form-row__instruction" *ngIf="maxImageSize">
-                Max size: {{ field.config.maxUploadSize }} MB
-              </span>
               <div *ngIf="field.input === 'upload'">
                 <app-image-uploader
                   [formControlName]="field.key"
                   [hasCaption]="field.config.hasCaption"
                   (change)="maxSizeError = false"
                   [requiredError]="
-                    form.get(field.key)?.touched && form.get(field.key)?.hasError('photoRequired')
+                    form.get(field.key)?.touched && form.get(field.key)?.hasError('mediaRequired')
                   "
                   [maxSizeError]="maxSizeError"
                 >
                 </app-image-uploader>
               </div>
               <div *ngIf="field.input === 'image'">
+                <span class="form-row__instruction" *ngIf="maxImageSize">
+                  {{
+                    'post.modify.max_size'
+                      | translate
+                        : {
+                            size: field.config.maxUploadSize,
+                            format: 'post.modify.format.image' | translate
+                          }
+                  }}
+                </span>
                 <app-media-uploader
                   [formControlName]="field.key"
                   media="image"
@@ -411,31 +419,51 @@
                   [maxUploadSize]="field.config.maxUploadSize"
                   (change)="maxSizeError = false"
                   [requiredError]="
-                    form.get(field.key)?.touched && form.get(field.key)?.hasError('photoRequired')
+                    form.get(field.key)?.touched && form.get(field.key)?.hasError('mediaRequired')
                   "
                 >
                 </app-media-uploader>
               </div>
               <div *ngIf="field.input === 'audio'">
+                <span class="form-row__instruction" *ngIf="maxImageSize">
+                  {{
+                    'post.modify.max_size'
+                      | translate
+                        : {
+                            size: field.config.maxUploadSize,
+                            format: 'post.modify.format.audio' | translate
+                          }
+                  }}
+                </span>
                 <app-media-uploader
                   [formControlName]="field.key"
                   media="audio"
                   [maxUploadSize]="field.config.maxUploadSize"
                   (change)="maxSizeError = false"
                   [requiredError]="
-                    form.get(field.key)?.touched && form.get(field.key)?.hasError('photoRequired')
+                    form.get(field.key)?.touched && form.get(field.key)?.hasError('mediaRequired')
                   "
                 >
                 </app-media-uploader>
               </div>
               <div *ngIf="field.input === 'document'">
+                <span class="form-row__instruction" *ngIf="maxImageSize">
+                  {{
+                    'post.modify.max_size'
+                      | translate
+                        : {
+                            size: field.config.maxUploadSize,
+                            format: 'post.modify.format.document' | translate
+                          }
+                  }}
+                </span>
                 <app-media-uploader
                   [formControlName]="field.key"
                   [maxUploadSize]="field.config.maxUploadSize"
                   media="document"
                   (change)="maxSizeError = false"
                   [requiredError]="
-                    form.get(field.key)?.touched && form.get(field.key)?.hasError('photoRequired')
+                    form.get(field.key)?.touched && form.get(field.key)?.hasError('mediaRequired')
                   "
                 >
                 </app-media-uploader>
@@ -457,7 +485,7 @@
                   !form.get(field.key)?.hasError('required')
                 "
               >
-                Invalid video embed url
+                {{ 'post.modify.invalid_video_embed' | translate }}
               </mat-error>
               <iframe
                 *ngIf="form.get(field.key)?.value"
@@ -540,16 +568,16 @@
             </ng-container>
             <mat-error *ngIf="form.get(field.key)?.invalid && form.get(field.key)?.touched">
               <p *ngIf="form.get(field.key)?.hasError('required')">
-                {{ field.label }} field is a required field *
+                {{ 'post.modify.errors.required' | translate : { label: field.label } }}
               </p>
               <p *ngIf="form.get(field.key)?.hasError('minlength')">
-                {{ field.label }} field is too short, use at least 2 characters
+                {{ 'post.modify.errors.too_short' | translate : { label: field.label } }}
               </p>
               <p *ngIf="form.get(field.key)?.hasError('pattern')">
-                {{ field.label }} field is invalid
+                {{ 'post.modify.errors.invalid_pattern' | translate : { label: field.label } }}
               </p>
               <p *ngIf="form.get(field.key)?.hasError('specialCharacters')">
-                {{ field.label }} field contains special characters
+                {{ 'post.modify.errors.special_char' | translate : { label: field.label } }}
               </p>
             </mat-error>
           </div>
