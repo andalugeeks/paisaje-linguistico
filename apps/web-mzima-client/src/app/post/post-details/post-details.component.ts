@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, Meta } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ResolveEnd } from '@angular/router';
 import { Permissions } from '@enums';
 import {
   CategoryInterface,
@@ -25,11 +25,14 @@ import {
   SurveysService,
 } from '@mzima-client/sdk';
 import { TranslateService } from '@ngx-translate/core';
-import { lastValueFrom } from 'rxjs';
+import { untilDestroyed } from '@ngneat/until-destroy';
+import { lastValueFrom, Subscription } from 'rxjs';
 import { BaseComponent } from '../../base.component';
 import { preparingVideoUrl } from '../../core/helpers/validators';
 import { dateHelper } from '@helpers';
 import { BreakpointService, EventBusService, EventType, SessionService } from '@services';
+import { LanguageService } from '../../core/services/language.service';
+import { PostTranslateComponent } from '../post-translate/post-translate.component';
 
 @Component({
   selector: 'app-post-details',
@@ -37,7 +40,7 @@ import { BreakpointService, EventBusService, EventType, SessionService } from '@
   styleUrls: ['./post-details.component.scss'],
 })
 export class PostDetailsComponent extends BaseComponent implements OnChanges, OnDestroy, OnInit {
-  @Input() post: PostResult;
+  @Input() postFromModal: PostResult;
   @Input() feedView: boolean = true;
   @Input() userId?: number | string;
   @Input() color?: string;
@@ -51,7 +54,10 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
   public isPostLoading: boolean = true;
   public isManagePosts: boolean = false;
   public postChanged: boolean;
+  public displayLanguage: string;
 
+  public post: PostResult;
+  private dataSubscription: Subscription;
   constructor(
     protected override sessionService: SessionService,
     protected override breakpointService: BreakpointService,
@@ -60,15 +66,22 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     private mediaService: MediaService,
     private metaService: Meta,
     private route: ActivatedRoute,
+    private router: Router,
     private postsService: PostsService,
     private surveyService: SurveysService,
     protected sanitizer: DomSanitizer,
     private eventBusService: EventBusService,
+    private languageService: LanguageService,
   ) {
     super(sessionService, breakpointService);
     this.getUserData();
     this.checkPermission();
     this.userId = Number(this.user.userId);
+    this.router.events.subscribe((ev) => {
+      if (ev instanceof ResolveEnd) {
+        this.dataSubscription.unsubscribe();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -78,12 +91,35 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
         this.postChanged = true;
         //----------------------
         this.allowed_privileges = localStorage.getItem('USH_allowed_privileges') ?? '';
-
         this.postId = Number(params['id']);
-
-        this.getPost(this.postId);
+        this.translatePost();
       }
     });
+
+    //map View
+    if (this.postFromModal) {
+      this.post = this.postFromModal;
+      this.postChanged = false;
+
+      //assign post id and get survey
+      this.postId = this.post.id;
+      this.getSurvey();
+    } else {
+      this.dataSubscription = this.route.data.subscribe((data) => {
+        this.post = data['post'];
+        if (this.post) this.getSurvey();
+      });
+    }
+  }
+  translatePost() {
+    this.eventBusService
+      .on(EventType.DisplayTranslatedPost)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (language) => {
+          this.displayLanguage = language.code;
+        },
+      });
   }
 
   loadData(): void {}
@@ -112,11 +148,11 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     );
     this.post!.post_content = postHelpers.replaceNewlinesWithBreaks(this.post?.post_content || []);
     this.post!.content = postHelpers.replaceNewlinesInString(this.post!.content);
+    this.isPostLoading = false;
   }
 
-  private async getPost(id: number): Promise<void> {
+  private async getSurvey(): Promise<void> {
     if (!this.postId) return;
-    this.post = await this.getPostInformation(id);
     if (this.post && this.post.form_id) {
       const form = await lastValueFrom(this.surveyService.getById(this.post.form_id!));
       this.post.form = form.result;
@@ -142,22 +178,24 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     fields
       .filter((field: any) => field.type === 'tags')
       .map((categories: any) => {
-        categories.value = categories.value.filter((category: any) => {
-          // Adding children to parents
-          if (!category.parent_id) {
-            category.children = categories.value.filter(
-              (child: any) => child.parent_id === category.id,
-            );
-            return category;
-          }
-          // Removing children with parents from values to avoid repetition
-          if (
-            category.parent_id &&
-            !categories.value.filter((parent: any) => category.parent_id === parent.id).length
-          ) {
-            return category;
-          }
-        });
+        if (categories.value) {
+          categories.value = categories.value.filter((category: any) => {
+            // Adding children to parents
+            if (!category.parent_id) {
+              category.children = categories.value.filter(
+                (child: any) => child.parent_id === category.id,
+              );
+              return category;
+            }
+            // Removing children with parents from values to avoid repetition
+            if (
+              category.parent_id &&
+              !categories.value.filter((parent: any) => category.parent_id === parent.id).length
+            ) {
+              return category;
+            }
+          });
+        }
         return categories;
       });
     //----------------------
@@ -224,7 +262,6 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
         };
       });
   }
-
   private async getPostInformation(postId: number): Promise<any> {
     try {
       this.isPostLoading = true;
@@ -234,7 +271,6 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
       return;
     }
   }
-
   private async getPostMedia(mediaId: string): Promise<any> {
     try {
       return await lastValueFrom(this.mediaService.getById(mediaId));
@@ -269,7 +305,6 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
   }
 
   public statusChangedHandle(): void {
-    this.getPost(this.postId);
     this.statusChanged.emit();
     this.eventBusService.next({
       type: EventType.UpdatedPost,
@@ -285,7 +320,6 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
     });
   }
   public deletedHandle(): void {
-    this.getPost(this.postId);
     this.eventBusService.next({
       type: EventType.DeletedPost,
       payload: this.post,
@@ -302,5 +336,29 @@ export class PostDetailsComponent extends BaseComponent implements OnChanges, On
 
   public getDate(value: any, format: string): string {
     return dateHelper.getDateWithTz(value, format);
+  }
+
+  public openTranslatePost() {
+    const dialogRef = this.dialog.open(PostTranslateComponent, {
+      width: '100%',
+      maxWidth: '768px',
+      panelClass: ['modal', 'select-languages-modal'],
+      data: {
+        post: this.post,
+        languages: this.languageService.getEntityLanguages(),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.post = response.post;
+        this.getData(this.post);
+        this.displayLanguage = response.displayLanguage.code;
+      }
+    });
+  }
+
+  public displayOriginalPost() {
+    this.displayLanguage = '';
   }
 }

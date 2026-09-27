@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -333,38 +333,20 @@ export class SurveyItemComponent extends BaseComponent implements OnInit {
           this.submitted = false;
           if (error.errors.status === 422) {
             this.form.controls['name'].setErrors({ invalidCharacters: true });
-            this.notification.showError('Please remove invalid characters (e.g. +, $, ^, =)');
+            this.notification.showError(this.translate.instant('notify.survey.invalid_characters'));
           } else {
             this.notification.showError(JSON.stringify(error.name[0]));
           }
         },
       });
     } else {
-      this.notification
-        .showError(`You need to add translations for all names, and ensure checkboxes and radios do not have duplicates.
-       Check that you have translated the survey-names for all added languages and that your checkbox and radio button values are unique (within each language).`);
+      this.notification.showError(this.translate.instant('notify.survey.translations_missing'));
     }
   }
 
-  public async openConfirmModal() {
-    if (this.hasChanges()) {
-      const confirmed = await this.confirmModalService.open({
-        title: this.translate.instant('notify.default.discard_changes'),
-        description: this.translate.instant('notify.default.survey_has_not_been_saved'),
-        cancelButtonText: 'Discard Changes',
-        confirmButtonText: 'Save Changes',
-        isCancelDestructive: true,
-        isConfirmNotDestructive: true,
-      });
-
-      if (confirmed) {
-        this.save();
-      } else {
-        this.navigateBack();
-      }
-    } else {
-      this.navigateBack();
-    }
+  @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any): void {
+    if (this.changesMade)
+      $event.returnValue = 'Form has changed! - Just to let browser popup show up';
   }
 
   navigateBack() {
