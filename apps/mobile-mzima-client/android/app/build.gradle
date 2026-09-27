@@ -17,6 +17,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            // Installs side by side with the Play Store build
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
