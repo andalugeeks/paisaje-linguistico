@@ -7,7 +7,6 @@ const config: CapacitorConfig = {
   appId: 'es.andaluh.paisaje',
   appName: appName,
   webDir: '../../dist/apps/mobile-mzima-client',
-  bundledWebRuntime: false,
   loggingBehavior: process.env['NODE_ENV'] === 'production' ? 'production' : 'debug',
   plugins: {
     SplashScreen: {
