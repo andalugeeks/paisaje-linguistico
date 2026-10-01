@@ -1,0 +1,158 @@
+# Builds the iOS app on a GitHub-hosted macOS runner, signs it with Xcode
+# cloud-managed signing (App Store Connect API key) and uploads it to TestFlight.
+# Setup and required secrets: docs/ios-testflight.md
+name: iOS TestFlight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile-mzima-client/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/ios-testflight.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-testflight
+  cancel-in-progress: false
+
+jobs:
+  testflight:
+    # Secrets are only available in this repository, never in forks.
+    if: github.repository == 'andalugeeks/paisaje-linguistico'
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      XCODE_APP: /Applications/Xcode_26.6.app
+      TEAM_ID: LAWPFLVDHJ
+      IOS_DIR: apps/mobile-mzima-client/ios/App
+      # TestFlight rejects repeated build numbers; re-runs bump the last component.
+      BUILD_NUMBER: ${{ github.run_number }}.${{ github.run_attempt }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s "$XCODE_APP"
+          xcodebuild -version
+
+      # Nx 16 / Angular 14 need Node 18.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Build web bundle
+        run: |
+          npm ci
+          npx nx build mobile-mzima-client --configuration=production
+
+      # Capacitor 8 CLI needs Node 22.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile-mzima-client/package-lock.json
+
+      - name: Capacitor sync (runs pod install)
+        working-directory: apps/mobile-mzima-client
+        run: |
+          npm ci
+          npx cap sync ios
+
+      - name: Install App Store Connect API key
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          # altool looks the key up in this directory by its Key ID.
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s\n' "$ASC_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          chmod 600 ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          echo "ASC_KEY_PATH=$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      - name: Archive
+        working-directory: ${{ env.IOS_DIR }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/logs"
+          xcodebuild archive \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$TEAM_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            > "$RUNNER_TEMP/logs/archive.log" 2>&1 \
+            || { tail -n 200 "$RUNNER_TEMP/logs/archive.log"; exit 1; }
+          tail -n 5 "$RUNNER_TEMP/logs/archive.log"
+
+      - name: Export IPA
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>export</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            > "$RUNNER_TEMP/logs/export.log" 2>&1 \
+            || { tail -n 200 "$RUNNER_TEMP/logs/export.log"; exit 1; }
+          ls -l "$RUNNER_TEMP/export"
+
+      - name: Upload to TestFlight
+        run: |
+          xcrun altool --upload-app \
+            --type ios \
+            --file "$RUNNER_TEMP/export/App.ipa" \
+            --apiKey "$ASC_KEY_ID" \
+            --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Remove API key
+        if: always()
+        run: rm -rf ~/.appstoreconnect
+
+      - name: Keep IPA
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paisaje-ios-${{ env.BUILD_NUMBER }}
+          path: ${{ runner.temp }}/export/*.ipa
+          retention-days: 7
+
+      - name: Keep logs and Podfile.lock
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-logs-${{ env.BUILD_NUMBER }}
+          path: |
+            ${{ runner.temp }}/logs/
+            ${{ env.IOS_DIR }}/Podfile.lock
+          if-no-files-found: ignore
+          retention-days: 14
