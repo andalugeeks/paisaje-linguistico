@@ -15,6 +15,7 @@ build a TestFlight.
 ## Pasos del workflow
 
 1. Build web con Node 18 (Nx 16 / Angular 14): `nx build mobile-mzima-client --configuration=production`.
+   Después, `scripts/inject-mapbox-token.js` mete el token de Mapbox en el `env.json` compilado (ver abajo).
 2. `npx cap sync ios` con Node 22 (Capacitor 8), que ejecuta `pod install`.
 3. `xcodebuild archive` + `-exportArchive` (`method` = `app-store-connect`) con
    `-allowProvisioningUpdates` y la API Key: Xcode crea o reutiliza el certificado de
@@ -46,7 +47,7 @@ La versión (`MARKETING_VERSION`) se mantiene alineada a mano con `versionName` 
 | `ASC_KEY_P8` | Contenido del fichero `AuthKey_XXXX.p8` |
 | `ASC_KEY_ID` | Key ID de la API Key |
 | `ASC_ISSUER_ID` | Issuer ID (UUID) de App Store Connect |
-| `MAPBOX_MOBILE_TOKEN` | Token público de Mapbox **sin restricción de URL** para las apps (en iOS la WebView sirve desde `capacitor://localhost`, que las restricciones de URL rechazan). Se inyecta en `env.json` solo durante el build; no está en el repo |
+| `MAPBOX_MOBILE_TOKEN` | Token público de Mapbox para las apps móviles (ver abajo) |
 
 ```sh
 R=andalugeeks/paisaje-linguistico
@@ -58,6 +59,30 @@ gh secret set MAPBOX_MOBILE_TOKEN -R $R
 
 El `.p8` solo se puede descargar una vez: guárdalo fuera del repo. El workflow lo escribe
 en el runner y lo borra al terminar, pase lo que pase.
+
+## Token de Mapbox (iOS y Android)
+
+El token de Mapbox **no está en el repo**: en `apps/mobile-mzima-client/src/env.json` el campo
+`mapbox_api_key` va vacío. El script `apps/mobile-mzima-client/scripts/inject-mapbox-token.js` lo
+escribe en el `env.json` ya compilado (`dist/apps/mobile-mzima-client/`), que `cap sync` copia
+a los proyectos nativos (carpetas ignoradas por git). Lo toma de:
+
+- `MAPBOX_MOBILE_TOKEN` (variable de entorno; en CI, el secreto), o
+- `mapbox-mobile-token.secret` en la raíz del repo (builds locales; `*.secret` está en `.gitignore`).
+
+Tiene que ser un token **sin restricción de URL**: en iOS la WebView sirve la app desde
+`capacitor://localhost`, y Mapbox rechaza (403) ese origen en los tokens restringidos.
+Hay alertas de uso en Mapbox (Raster/Static Tiles API) para detectar abusos.
+
+Build local de Android, en este orden:
+
+```sh
+npx nx build mobile-mzima-client --configuration=production   # Node 18
+node apps/mobile-mzima-client/scripts/inject-mapbox-token.js
+(cd apps/mobile-mzima-client && npx cap sync android)          # Node 22
+```
+
+Si se salta el paso de inyección, la app arranca, pero el mapa sale en blanco.
 
 ## Notas
 

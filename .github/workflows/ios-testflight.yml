@@ -52,19 +52,12 @@ jobs:
 
       - name: Build web bundle
         env:
-          MAPBOX_TOKEN: ${{ secrets.MAPBOX_MOBILE_TOKEN }}
+          MAPBOX_MOBILE_TOKEN: ${{ secrets.MAPBOX_MOBILE_TOKEN }}
         run: |
           npm ci
-          # The mobile Mapbox token is kept out of the repo and injected only into the CI build.
-          test -n "$MAPBOX_TOKEN" || { echo "MAPBOX_MOBILE_TOKEN secret is not set"; exit 1; }
-          node -e '
-            const fs = require("fs");
-            const f = "apps/mobile-mzima-client/src/env.json";
-            const env = JSON.parse(fs.readFileSync(f, "utf8"));
-            env.mapbox_api_key = process.env.MAPBOX_TOKEN;
-            fs.writeFileSync(f, JSON.stringify(env, null, 2) + "\n");
-          '
           npx nx build mobile-mzima-client --configuration=production
+          # The mobile Mapbox token is kept out of the repo and injected into the built env.json.
+          node apps/mobile-mzima-client/scripts/inject-mapbox-token.js
 
       # Capacitor 8 CLI needs Node 22.
       - uses: actions/setup-node@v5
