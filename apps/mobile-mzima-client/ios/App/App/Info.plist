@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Paisaje Andalûh usa tu ubicación para situar tu aportación en el mapa. Solo la consulta mientras usas la app.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Paisaje Andalûh usa tu ubicación para situar tu aportación en el mapa.</string>
 	<key>UILaunchStoryboardName</key>
