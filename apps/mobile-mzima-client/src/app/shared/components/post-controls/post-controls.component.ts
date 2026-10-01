@@ -1,9 +1,21 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { ActionSheetButton, ActionSheetController, ModalController } from '@ionic/angular';
 import { PostResult, PostStatus, PostsService, postHelpers } from '@mzima-client/sdk';
-import { PostItemActionType, getPostStatusActions, postStatusChangedHeader } from '@constants';
-import { forkJoin } from 'rxjs';
-import { AlertService, DeploymentService, ShareService, ToastService } from '@services';
+import {
+  PostItemActionType,
+  getPostStatusActions,
+  moderationTexts,
+  postStatusChangedHeader,
+} from '@constants';
+import { forkJoin, lastValueFrom, take } from 'rxjs';
+import {
+  AlertService,
+  DeploymentService,
+  ModerationService,
+  SessionService,
+  ShareService,
+  ToastService,
+} from '@services';
 import { CollectionsModalComponent } from '../collections-modal/collections-modal.component';
 import { Router } from '@angular/router';
 
@@ -18,6 +30,7 @@ export class PostControlsComponent {
   @Input() isProfile?: boolean;
   @Output() postChanged = new EventEmitter();
   @Output() postDeleted = new EventEmitter();
+  @Output() userBlocked = new EventEmitter();
 
   public statusOptionsButtons?: ActionSheetButton[] = getPostStatusActions();
 
@@ -30,6 +43,8 @@ export class PostControlsComponent {
     private deploymentService: DeploymentService,
     private alertService: AlertService,
     private router: Router,
+    private moderationService: ModerationService,
+    private sessionService: SessionService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -177,6 +192,34 @@ export class PostControlsComponent {
           this.postDeleted.emit(postIds);
         },
       });
+    }
+  }
+
+  // Paisaje-Linguistico: App Store Review Guideline 1.2, available to everyone except the author
+  public async openModerationOptions(): Promise<void> {
+    const post = this.posts[0];
+    if (!post) return;
+    const { userId } = await lastValueFrom(this.sessionService.getCurrentUserData().pipe(take(1)));
+
+    const buttons: any[] = [
+      { text: moderationTexts.reportAction, icon: '/assets/icon/warning.svg', data: 'report' },
+    ];
+    if (this.moderationService.canBlock(post, userId)) {
+      buttons.push({
+        text: moderationTexts.blockAction,
+        icon: '/assets/icon/info-shield.svg',
+        role: 'destructive',
+        data: 'block',
+      });
+    }
+    buttons.push({ text: moderationTexts.cancel, role: 'cancel' });
+
+    const actionSheet = await this.actionSheetController.create({ mode: 'ios', buttons });
+    await actionSheet.present();
+    const { data } = await actionSheet.onWillDismiss();
+    if (data === 'report') await this.moderationService.reportPost(post);
+    if (data === 'block' && (await this.moderationService.blockUser(post))) {
+      this.userBlocked.emit(post);
     }
   }
 

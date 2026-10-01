@@ -5,3 +5,4 @@ export * as profileMenu from './profile-menu';
 export * from './walkthrough';
 export * from './storage-key';
 export * from './post-item-actions';
+export * from './moderation';

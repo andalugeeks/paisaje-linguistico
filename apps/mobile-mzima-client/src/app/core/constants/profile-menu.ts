@@ -1,6 +1,10 @@
+import { MODERATION_CONTACT_EMAIL } from './moderation';
+
 export enum ProfileMenuActions {
   LOGOUT = 'LOGOUT',
   SUPPORT = 'SUPPORT',
+  CONTACT = 'CONTACT',
+  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
   // RESET_DATA = 'RESET_DATA',
   // CLEAR_PENDING_POSTS = 'CLEAR_PENDING_POSTS',
 }
@@ -57,12 +61,26 @@ export const profileMenu: ProfileMenuItem[] = [
     hideDetails: true,
     isLoggedGuard: true,
   },
+  // Paisaje-Linguistico: App Store Review Guidelines 5.1.1(v) and 1.2
+  {
+    label: 'Borrâh mi cuenta',
+    description: 'Elimina tu cuenta y tû datô',
+    icon: 'delete',
+    action: ProfileMenuActions.DELETE_ACCOUNT,
+    isLoggedGuard: true,
+  },
   {
     label: 'Aççedêh o Rehîttrarçe',
     icon: 'logout',
     route: '/auth',
     hideDetails: true,
     isLoggedGuard: false,
+  },
+  {
+    label: 'Contâtto y çoporte',
+    description: MODERATION_CONTACT_EMAIL,
+    icon: 'email',
+    action: ProfileMenuActions.CONTACT,
   },
 ];
 

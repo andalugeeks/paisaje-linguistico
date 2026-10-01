@@ -33,7 +33,8 @@
       <span>Back</span>
     </div>
     <p class="feed-header--title" *ngIf="!isPostsLoading">
-      {{ totalPosts }} {{ totalPosts > 1 ? 'publicaçionê' : 'publicaçión' }} {{ ' - ' + collectionName }}
+      {{ totalPosts }} {{ totalPosts > 1 ? 'publicaçionê' : 'publicaçión' }}
+      {{ ' - ' + collectionName }}
     </p>
   </div>
 
@@ -46,6 +47,7 @@
       *ngFor="let post of posts"
       [post]="post"
       (postDeleted)="handlePostDeleted($event)"
+      (userBlocked)="handleUserBlocked($event)"
       (click)="showPost(post.id.toString())"
     ></app-post-item>
 
