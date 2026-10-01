@@ -217,13 +217,6 @@ export class ChooseDeploymentComponent {
       message:
         '<p>Lo çentimô, pero la ôççión de dêppliege que êttá intentando çelêççionâh no êh compatible con la aplicaçión, ya que el âmminîttraôh toabía no la âttualiçao. Âtta que no çe realiçe la âttualiçaçión, er dêppliege no funçionará corrêttamente.</p><p> Çi tú erê el âmminîttraôh de êtte dêppliege, no dude en ponerçe en contâtto con noçotrâ pa ôttenêh mâ informaçión.</p>',
       buttons: [
-        // {
-        //   text: 'Contact us',
-        //   cssClass: 'medium',
-        //   handler: () => {
-        //     this.intercomService.displayMessenger();
-        //   },
-        // },
         {
           text: 'Ok',
           cssClass: 'primary',
