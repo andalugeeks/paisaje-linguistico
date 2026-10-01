@@ -6,7 +6,8 @@ name: iOS TestFlight
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    # TEMP: ios-testflight branch trigger, remove before merging.
+    branches: [main, ios-testflight]
     paths:
       - 'apps/mobile-mzima-client/**'
       - 'libs/**'
