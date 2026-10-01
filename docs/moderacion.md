@@ -15,12 +15,12 @@ La API de Ushahidi **no permite que un usuario se borre a sí mismo**, así que 
 borra nada: registra una **solicitud** que procesa un admin. Apple lo acepta si el plazo se
 comunica (lo hace la app) y se confirma al usuario cuando está hecho.
 
-## El formulario "Solicitudes" (configuración, una sola vez)
+## La encuesta "Solicitudes" (configuración, una sola vez)
 
-Todas las denuncias, bloqueos y solicitudes de borrado llegan como publicaciones de un
-formulario privado de Ushahidi:
+Todas las denuncias, bloqueos y solicitudes de borrado llegan como publicaciones de una
+encuesta (formulario) privada de Ushahidi:
 
-1. En el panel de Ushahidi: **Ajustes → Formularios → Añadir formulario**.
+1. En el panel de Ushahidi: **Ajustes → Encuestas → Añadir encuesta**.
 2. Nombre: `Solicitudes a AndaluGeeks (denuncias y borrado de cuenta)`.
    Descripción: `Uso interno: la app crea aquí las denuncias de contenido, los bloqueos de
    usuarios y las solicitudes de borrado de cuenta.`
@@ -28,16 +28,16 @@ formulario privado de Ushahidi:
    obligatorios: la app solo rellena esos dos.
 4. Opciones: **Requiere revisión antes de publicarse: sí** (así solo lo ven los admins) y
    **Quién puede añadir: todo el mundo** (las denuncias pueden ser anónimas).
-5. Guarda y apunta el **ID** del formulario (aparece en la URL al editarlo).
+5. Guarda y apunta el **ID** de la encuesta (aparece en la URL al editarla, `…/settings/surveys/update/<ID>`).
 6. Pon ese ID en `apps/mobile-mzima-client/src/env.json` → `"moderation_survey_id": <ID>`.
 
-La app oculta ese formulario al crear aportaciones y en los filtros del mapa. El cliente
+La app oculta esa encuesta al crear aportaciones y en los filtros del mapa. El cliente
 web de Ushahidi sí lo muestra en "Añadir publicación"; sirve también como canal para
 quien use la web.
 
 ## Procesar las solicitudes
 
-Revisa el formulario "Solicitudes" en el panel (filtro *En revisión*). Cada entrada lleva en
+Revisa la encuesta "Solicitudes" en el panel (filtro *En revisión*). Cada entrada lleva en
 el título su tipo:
 
 - **`[DENUNCIA] Publicación #N`** (plazo comprometido: **72 horas**). Abre la publicación
