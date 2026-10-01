@@ -59,7 +59,8 @@ swiper-container {
     flex-direction: column;
     justify-content: center;
     padding: 0 var(--ion-padding);
-    height: calc(100vh - 324px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
+    // Leave room for a two-line title and a three-line description below the image.
+    height: calc(100vh - 372px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
 
     img {
       max-height: 100%;

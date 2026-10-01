@@ -1,37 +1,43 @@
 PODS:
-  - Capacitor (5.6.0):
+  - Capacitor (8.5.2):
     - CapacitorCordova
-  - CapacitorApp (5.0.7):
+  - CapacitorApp (8.1.1):
     - Capacitor
-  - CapacitorCamera (5.0.9):
+  - CapacitorCamera (8.2.4):
     - Capacitor
-  - CapacitorCommunityIntercom (5.0.1):
+    - IONCameraLib (~> 2.0.0)
+  - CapacitorCommunityIntercom (8.0.0):
     - Capacitor
-    - Intercom
-  - CapacitorCordova (5.6.0)
-  - CapacitorDevice (5.0.7):
+    - Intercom (~> 18.0)
+  - CapacitorCordova (8.5.2)
+  - CapacitorDevice (8.0.3):
     - Capacitor
-  - CapacitorDialog (5.0.7):
+  - CapacitorDialog (8.0.1):
     - Capacitor
-  - CapacitorFilesystem (5.2.1):
+  - CapacitorFilesystem (8.1.3):
     - Capacitor
-  - CapacitorGeolocation (5.0.7):
+    - IONFilesystemLib (~> 1.1.1)
+  - CapacitorGeolocation (8.2.2):
     - Capacitor
-  - CapacitorHaptics (5.0.6):
+    - IONGeolocationLib (= 2.1.0)
+  - CapacitorHaptics (8.0.2):
     - Capacitor
-  - CapacitorKeyboard (5.0.7):
+  - CapacitorKeyboard (8.0.5):
     - Capacitor
-  - CapacitorNativeSettings (5.0.1):
+  - CapacitorNativeSettings (8.2.0):
     - Capacitor
-  - CapacitorNetwork (5.0.7):
+  - CapacitorNetwork (8.0.1):
     - Capacitor
-  - CapacitorShare (5.0.7):
+  - CapacitorShare (8.0.2):
     - Capacitor
-  - CapacitorSplashScreen (5.0.6):
+  - CapacitorSplashScreen (8.0.2):
     - Capacitor
-  - CapacitorStatusBar (5.0.7):
+  - CapacitorStatusBar (8.0.3):
     - Capacitor
-  - Intercom (15.2.3)
+  - Intercom (18.8.1)
+  - IONCameraLib (2.0.0)
+  - IONFilesystemLib (1.1.4)
+  - IONGeolocationLib (2.1.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -50,11 +56,13 @@ DEPENDENCIES:
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
-  - Intercom (<= 15.2.3)
 
 SPEC REPOS:
   trunk:
     - Intercom
+    - IONCameraLib
+    - IONFilesystemLib
+    - IONGeolocationLib
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -91,24 +99,27 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: ebfc16cdb8116d04c101686b080342872da42d43
-  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
-  CapacitorCamera: 4892c5c392f60039d853dde78bc50ba19fbd113e
-  CapacitorCommunityIntercom: 83b438306cb472db7ca7d1893f726d8162d8d4d5
-  CapacitorCordova: 931b48fcdbc9bc985fc2f16cec9f77c794a27729
-  CapacitorDevice: fc91bdb484dc0e70755e9b621cd557afe642613a
-  CapacitorDialog: ea1beaccb7f825191aa18b72cba8981b881b3b2d
-  CapacitorFilesystem: 9f3e3c7fea2fff12f46dd5b07a2914f2103e4cfc
-  CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
-  CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
-  CapacitorKeyboard: ce5e01064cf57a2c05b32565310713b7fe6cc6f9
-  CapacitorNativeSettings: 6e94ed3c0465206756f320df18efc52f053ce3c7
-  CapacitorNetwork: 81ef9728aa7a65cac8c1181ce79e578162b57b57
-  CapacitorShare: c6a1ebbf0114ff9e863b966cd6052678fa25d480
-  CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
-  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
-  Intercom: 9bffad96cc66d42cfd971b37807d6dc49d5bb914
+  Capacitor: 89067779e14fb7ea56af07b4817f45d1f0c2a269
+  CapacitorApp: 305bd13c44f6f9d164e2ee66a4faa956ed8c0e06
+  CapacitorCamera: 4299fe8cf9b2b15e6ad602bce68d063b2008e8be
+  CapacitorCommunityIntercom: fdc8148c7e790097f7dc28613dbcb50608901e23
+  CapacitorCordova: 5bec5648cbd09a176ce34ce5e7b6cdabb2c8a327
+  CapacitorDevice: 708e742b60a61572cd593e44c809592e8f31da14
+  CapacitorDialog: 854c5dac405081cae697c177ca43bcaa95ae67bf
+  CapacitorFilesystem: b2bbd84bb91c177906c9dbc252864cb71ab9957b
+  CapacitorGeolocation: 327f18983c8f8a55e191fcf7dee80b9294f1ab78
+  CapacitorHaptics: 296f771ecd89c7a1bd92a7b6826a7d268e2e70f5
+  CapacitorKeyboard: b6b0744890cdb1d9a96e2cafcc9253fdcc55de3b
+  CapacitorNativeSettings: 3f12e9700e0a10cb5d0e22aec00de29d72589a12
+  CapacitorNetwork: 8812ce60d11fb63d8f2e4ba51a49b2e59892ebe2
+  CapacitorShare: 2fde721d06a6f83ff5c7578e6a91b190d341ac6a
+  CapacitorSplashScreen: 7bf61c2001557ff9e195e601c6b87344480d3c65
+  CapacitorStatusBar: eca7bc2b58d9f886f1ef9edb66e57a9b29c121af
+  Intercom: b636b0e27ab832827abdf6573c57a80cf090ff5a
+  IONCameraLib: 729cae576e1a952602ce750a9790b6dc7d7e2e95
+  IONFilesystemLib: e6610c2b260d15e4b9cb9d5e37a87095479b669e
+  IONGeolocationLib: 6a7b6f76063fb1b01cfb14fae7d0f526e3c9b271
 
-PODFILE CHECKSUM: 9445f54dca507d71945f8990984f13ae82a5f33e
+PODFILE CHECKSUM: 683abcacf5342c0b2d0e8e1bdc000e34da031e73
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.17.0
