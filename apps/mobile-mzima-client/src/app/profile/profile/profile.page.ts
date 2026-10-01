@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { STORAGE_KEYS, profileMenu } from '@constants';
+import { MODERATION_CONTACT_EMAIL, STORAGE_KEYS, profileMenu } from '@constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AlertService, AuthService, DatabaseService, SessionService } from '@services';
+import {
+  AlertService,
+  AuthService,
+  DatabaseService,
+  ModerationService,
+  SessionService,
+} from '@services';
 
 interface SupportItem {
   title: string;
@@ -31,6 +37,7 @@ export class ProfilePage {
     private authService: AuthService,
     private alertService: AlertService,
     private dataBaseService: DatabaseService,
+    private moderationService: ModerationService,
   ) {
     this.sessionService
       .getCurrentUserData()
@@ -50,6 +57,10 @@ export class ProfilePage {
     const actions: Record<profileMenu.ProfileMenuActions, () => void> = {
       [profileMenu.ProfileMenuActions.LOGOUT]: () => this.logout(),
       [profileMenu.ProfileMenuActions.SUPPORT]: () => this.showSupportModal(),
+      [profileMenu.ProfileMenuActions.CONTACT]: () =>
+        window.open(`mailto:${MODERATION_CONTACT_EMAIL}?subject=Paisaje%20Andal%C3%BBh`, '_system'),
+      [profileMenu.ProfileMenuActions.DELETE_ACCOUNT]: () =>
+        this.moderationService.requestAccountDeletion(),
       // [profileMenu.ProfileMenuActions.RESET_DATA]: () => this.resetAppData(),
       // [profileMenu.ProfileMenuActions.CLEAR_PENDING_POSTS]: () => this.clearPosts(),
     };
