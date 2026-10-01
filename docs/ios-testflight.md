@@ -21,8 +21,9 @@ build a TestFlight.
    distribución gestionado en la nube y el perfil de aprovisionamiento. No hay
    certificados ni perfiles en el repo.
 4. `xcrun altool --upload-app` con la misma API Key.
-5. Se guardan como artifacts el `.ipa` (7 días), los logs de xcodebuild y el
-   `Podfile.lock` resuelto.
+5. Se guardan como artifacts los logs de xcodebuild y el `Podfile.lock` resuelto. El `.ipa`
+   no se guarda: en un repo público cualquier usuario con sesión podría descargarlo, y
+   lleva dentro el token de Mapbox.
 
 Número de build (`CFBundleVersion`): `<run_number>.<run_attempt>`, siempre creciente.
 La versión (`MARKETING_VERSION`) se mantiene alineada a mano con `versionName` de
@@ -45,12 +46,14 @@ La versión (`MARKETING_VERSION`) se mantiene alineada a mano con `versionName` 
 | `ASC_KEY_P8` | Contenido del fichero `AuthKey_XXXX.p8` |
 | `ASC_KEY_ID` | Key ID de la API Key |
 | `ASC_ISSUER_ID` | Issuer ID (UUID) de App Store Connect |
+| `MAPBOX_MOBILE_TOKEN` | Token público de Mapbox **sin restricción de URL** para las apps (en iOS la WebView sirve desde `capacitor://localhost`, que las restricciones de URL rechazan). Se inyecta en `env.json` solo durante el build; no está en el repo |
 
 ```sh
 R=andalugeeks/paisaje-linguistico
 gh secret set ASC_KEY_P8 -R $R < AuthKey_XXXX.p8
 gh secret set ASC_KEY_ID -R $R
 gh secret set ASC_ISSUER_ID -R $R
+gh secret set MAPBOX_MOBILE_TOKEN -R $R
 ```
 
 El `.p8` solo se puede descargar una vez: guárdalo fuera del repo. El workflow lo escribe

@@ -52,8 +52,19 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Build web bundle
+        env:
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_MOBILE_TOKEN }}
         run: |
           npm ci
+          # The mobile Mapbox token is kept out of the repo and injected only into the CI build.
+          test -n "$MAPBOX_TOKEN" || { echo "MAPBOX_MOBILE_TOKEN secret is not set"; exit 1; }
+          node -e '
+            const fs = require("fs");
+            const f = "apps/mobile-mzima-client/src/env.json";
+            const env = JSON.parse(fs.readFileSync(f, "utf8"));
+            env.mapbox_api_key = process.env.MAPBOX_TOKEN;
+            fs.writeFileSync(f, JSON.stringify(env, null, 2) + "\n");
+          '
           npx nx build mobile-mzima-client --configuration=production
 
       # Capacitor 8 CLI needs Node 22.
@@ -139,14 +150,6 @@ jobs:
       - name: Remove API key
         if: always()
         run: rm -rf ~/.appstoreconnect
-
-      - name: Keep IPA
-        if: success()
-        uses: actions/upload-artifact@v5
-        with:
-          name: paisaje-ios-${{ env.BUILD_NUMBER }}
-          path: ${{ runner.temp }}/export/*.ipa
-          retention-days: 7
 
       - name: Keep logs and Podfile.lock
         if: always()
