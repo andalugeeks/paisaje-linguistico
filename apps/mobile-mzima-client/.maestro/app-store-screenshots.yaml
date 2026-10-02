@@ -23,6 +23,11 @@ name: App Store screenshots
 - tapOn:
     point: 86%, 10%
 - waitForAnimationToEnd:
+    timeout: 10000
+# First launch asks for the Ushahidi deployment: pick "Paisaje Lingüístico Andaluz"
+- tapOn:
+    point: 50%, 49%
+- waitForAnimationToEnd:
     timeout: 25000
 - runFlow: dismiss-toast.yaml
 - takeScreenshot: 02-mapa
