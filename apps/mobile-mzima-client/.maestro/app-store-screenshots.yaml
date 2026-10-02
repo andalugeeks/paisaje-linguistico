@@ -55,5 +55,10 @@ name: App Store screenshots
     point: 89%, 86%
 - waitForAnimationToEnd:
     timeout: 15000
+# Open the "Corpus" survey to show the contribution form
+- tapOn:
+    point: 50%, 25%
+- waitForAnimationToEnd:
+    timeout: 15000
 - runFlow: dismiss-toast.yaml
 - takeScreenshot: 05-aportar
