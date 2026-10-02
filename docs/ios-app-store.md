@@ -6,7 +6,7 @@ La ficha de Paisaje Andalûh se mantiene en el repo y se sube con el workflow
 - **Textos** (español `es-ES` e inglés `en-US`): `apps/mobile-mzima-client/fastlane/metadata/`.
   Nombre, subtítulo (≤ 30), palabras clave (≤ 100, separadas por comas), texto promocional
   (≤ 170), descripción, URLs de privacidad y soporte, categoría (Educación / Referencia),
-  copyright y notas para el revisor.
+  y copyright. Las notas para el revisor están aparte, en `fastlane/review_information/` (ver abajo).
 - **Capturas**: las genera el propio workflow en un simulador de iPhone 17 Pro Max
   (1320×2868, el tamaño de 6,9" que exige Apple) recorriendo la app con
   [Maestro](https://maestro.dev) según `apps/mobile-mzima-client/.maestro/app-store-screenshots.yaml`.
@@ -74,7 +74,13 @@ Gratis. Disponible en todos los países, o como mínimo en España.
 
 ### 5. Revisión de la app (en la versión)
 
-- **Teléfono de contacto:** el workflow no lo rellena; ponlo a mano.
+El workflow no sube este apartado: Apple exige un teléfono, que no debe ir en un repo público.
+Los textos están preparados en `apps/mobile-mzima-client/fastlane/review_information/`:
+
+- **Nombre y email de contacto:** `first_name.txt`, `last_name.txt`, `email_address.txt`.
+- **Teléfono:** el tuyo.
+- **Notas:** pega `notes.txt` entero. Explica al revisor la moderación (norma 1.2) y el borrado de
+  cuenta (norma 5.1.1(v)).
 - **Cuenta de demostración:** no hace falta, porque el registro está abierto. Si quieres
   facilitárselo al revisor, crea una cuenta de prueba y añádela.
 - **Compilación:** elige la última de TestFlight en el apartado *Compilación*.
