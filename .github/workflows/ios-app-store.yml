@@ -127,11 +127,16 @@ jobs:
       - name: Take the screenshots
         env:
           MAESTRO_CLI_NO_ANALYTICS: 1
-          MAESTRO_DRIVER_STARTUP_TIMEOUT: 240000
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 480000
         run: |
-          maestro --device "$UDID" test "$MOBILE_DIR/.maestro/app-store-screenshots.yaml" \
-            --test-output-dir "$RUNNER_TEMP/maestro" \
-            --debug-output "$RUNNER_TEMP/maestro-debug"
+          # The XCTest driver sometimes fails to start on hosted runners: retry once.
+          for attempt in 1 2; do
+            maestro --device "$UDID" test "$MOBILE_DIR/.maestro/app-store-screenshots.yaml" \
+              --test-output-dir "$RUNNER_TEMP/maestro" \
+              --debug-output "$RUNNER_TEMP/maestro-debug" && exit 0
+            echo "Maestro attempt $attempt failed"
+          done
+          exit 1
 
       - name: Collect and check the screenshots
         run: |
