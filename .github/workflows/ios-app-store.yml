@@ -176,7 +176,8 @@ jobs:
 
   upload:
     needs: screenshots
-    if: inputs.upload == true
+    # TEMP: on its branch, a push whose commit message contains [upload] also uploads.
+    if: inputs.upload == true || (github.event_name == 'push' && contains(github.event.head_commit.message, '[upload]'))
     runs-on: macos-26
     timeout-minutes: 30
     env:
