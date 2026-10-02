@@ -18,6 +18,10 @@ on:
         description: 'Upload metadata and screenshots to App Store Connect (never submits for review)'
         type: boolean
         default: false
+      screenshots_only:
+        description: 'Upload only the screenshots (needed until the App Review contact exists in App Store Connect)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -203,10 +207,18 @@ jobs:
 
       - name: Upload metadata and screenshots
         working-directory: ${{ env.MOBILE_DIR }}
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           VERSION=$(grep -m1 -o 'MARKETING_VERSION = [0-9.]*' ios/App/App.xcodeproj/project.pbxproj | awk '{print $3}')
           echo "App Store version: $VERSION"
+          # fastlane fails on the very first version while App Review has no contact details yet.
+          SKIP_METADATA=false
+          if [ "${{ inputs.screenshots_only }}" = "true" ] || [[ "$COMMIT_MESSAGE" == *"[screenshots-only]"* ]]; then
+            SKIP_METADATA=true
+          fi
           fastlane deliver \
+            --skip_metadata "$SKIP_METADATA" \
             --api_key_path "$RUNNER_TEMP/asc/key.json" \
             --app_identifier "$APP_ID" \
             --platform ios \
