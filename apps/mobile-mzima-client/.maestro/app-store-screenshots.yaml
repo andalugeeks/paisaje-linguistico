@@ -1,0 +1,59 @@
+# App Store screenshots for Paisaje Andalûh, run by .github/workflows/ios-app-store.yml on an
+# iPhone 17 Pro Max simulator (1320x2868, the 6.9" slot). Points are percentages of the screen
+# because most of the UI lives inside the Capacitor WebView.
+appId: es.andaluh.paisaje
+name: App Store screenshots
+---
+- launchApp:
+    clearState: true
+    permissions:
+      location: allow
+      photos: allow
+      camera: allow
+
+# 1. Walkthrough, first slide
+- extendedWaitUntil:
+    visible: "Çartâh"
+    timeout: 60000
+- waitForAnimationToEnd
+- takeScreenshot: 01-tour
+
+# 2. Map of Andalusia with the feed below
+- tapOn: "Çartâh"
+- extendedWaitUntil:
+    visible: ".*posts"
+    timeout: 90000
+# Wait until the WebView and the map tiles stop changing
+- waitForAnimationToEnd:
+    timeout: 12000
+- takeScreenshot: 02-mapa
+
+# 3. Zoom into the Seville cluster
+- tapOn:
+    point: 37%, 44%
+# Wait until the WebView and the map tiles stop changing
+- waitForAnimationToEnd:
+    timeout: 12000
+- takeScreenshot: 03-mapa-detalle
+
+# 4. A contribution: photo, transcription and location
+- tapOn:
+    point: 50%, 68%
+- extendedWaitUntil:
+    visible: "Localización"
+    timeout: 60000
+# Wait until the WebView and the map tiles stop changing
+- waitForAnimationToEnd:
+    timeout: 9000
+- takeScreenshot: 04-aportacion
+
+# 5. Contributing a new sign
+- tapOn:
+    point: 7%, 10%
+- waitForAnimationToEnd
+- tapOn:
+    point: 89%, 86%
+# Wait until the WebView and the map tiles stop changing
+- waitForAnimationToEnd:
+    timeout: 12000
+- takeScreenshot: 05-aportar
