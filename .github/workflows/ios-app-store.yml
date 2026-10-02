@@ -11,6 +11,7 @@ on:
     paths:
       - '.github/workflows/ios-app-store.yml'
       - 'apps/mobile-mzima-client/.maestro/**'
+      - 'apps/mobile-mzima-client/fastlane/**'
   workflow_dispatch:
     inputs:
       upload:
