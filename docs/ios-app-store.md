@@ -22,6 +22,9 @@ Actions → *iOS App Store listing* → *Run workflow*:
 - Marcando *upload*: además sube textos y capturas a App Store Connect con
   `fastlane deliver`, sobre la versión indicada en `MARKETING_VERSION`. **Nunca envía la app a
   revisión.** Usa los mismos secretos `ASC_*` que el workflow de TestFlight.
+- *screenshots_only*: sube solo las capturas. En la primera versión de la app, `fastlane deliver`
+  falla al subir los textos mientras el apartado "Revisión de la app" no tenga datos de contacto
+  (punto 5 de abajo). Una vez rellenado a mano, la subida completa funciona.
 
 ## Lo que hay que hacer a mano en App Store Connect
 
