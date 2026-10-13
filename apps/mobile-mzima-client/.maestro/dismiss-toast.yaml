@@ -1,0 +1,9 @@
+# Closes the network status toast ("Conêççión rêttableçía" ... "Ok") if it is on screen,
+# so it does not end up in a screenshot.
+appId: es.andaluh.paisaje
+---
+- tapOn:
+    text: "Ok"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

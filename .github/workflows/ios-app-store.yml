@@ -1,0 +1,237 @@
+# App Store listing for the iOS app: takes the screenshots on an iPhone 17 Pro Max simulator with
+# Maestro and, when asked, uploads them with the metadata in apps/mobile-mzima-client/fastlane to
+# App Store Connect. It never submits the app for review.
+# Setup and the parts that must be done by hand: docs/ios-app-store.md
+name: iOS App Store listing
+
+on:
+  # TEMP: run on its branch until it is on main; a push only takes screenshots.
+  push:
+    branches: [ios-app-store-listing]
+    paths:
+      - '.github/workflows/ios-app-store.yml'
+      - 'apps/mobile-mzima-client/.maestro/**'
+      - 'apps/mobile-mzima-client/fastlane/**'
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: 'Upload metadata and screenshots to App Store Connect (never submits for review)'
+        type: boolean
+        default: false
+      screenshots_only:
+        description: 'Upload only the screenshots (needed until the App Review contact exists in App Store Connect)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-app-store
+  cancel-in-progress: false
+
+env:
+  XCODE_APP: /Applications/Xcode_26.6.app
+  MOBILE_DIR: apps/mobile-mzima-client
+  IOS_DIR: apps/mobile-mzima-client/ios/App
+  APP_ID: es.andaluh.paisaje
+
+jobs:
+  screenshots:
+    if: github.repository == 'andalugeeks/paisaje-linguistico'
+    runs-on: macos-26
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$XCODE_APP"
+
+      # Nx 16 / Angular 14 need Node 18.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Build web bundle
+        env:
+          MAPBOX_MOBILE_TOKEN: ${{ secrets.MAPBOX_MOBILE_TOKEN }}
+        run: |
+          npm ci
+          npx nx build mobile-mzima-client --configuration=production
+          node "$MOBILE_DIR/scripts/inject-mapbox-token.js"
+
+      # Capacitor 8 CLI needs Node 22.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile-mzima-client/package-lock.json
+
+      - name: Capacitor sync (runs pod install)
+        working-directory: ${{ env.MOBILE_DIR }}
+        run: |
+          npm ci --legacy-peer-deps
+          npx cap sync ios
+
+      - name: Build for the simulator
+        working-directory: ${{ env.IOS_DIR }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/logs"
+          xcodebuild build \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/dd" \
+            CODE_SIGNING_ALLOWED=NO \
+            > "$RUNNER_TEMP/logs/simulator-build.log" 2>&1 \
+            || { tail -n 200 "$RUNNER_TEMP/logs/simulator-build.log"; exit 1; }
+          echo "APP_PATH=$RUNNER_TEMP/dd/Build/Products/Release-iphonesimulator/App.app" >> "$GITHUB_ENV"
+
+      # 1320x2868 = the 6.9" screenshot slot, the only iPhone size App Store Connect requires.
+      - name: Boot an iPhone Pro Max simulator
+        run: |
+          RUNTIME=$(xcrun simctl list runtimes -j \
+            | jq -r '[.runtimes[] | select(.platform == "iOS" and .isAvailable)] | sort_by(.version) | last | .identifier')
+          for name in "iPhone 17 Pro Max" "iPhone 16 Pro Max"; do
+            TYPE=$(xcrun simctl list devicetypes -j | jq -r --arg n "$name" '.devicetypes[] | select(.name == $n) | .identifier')
+            [ -n "$TYPE" ] && break
+          done
+          echo "Runtime: $RUNTIME / device: $TYPE"
+          UDID=$(xcrun simctl create app-store "$TYPE" "$RUNTIME")
+
+          # Spanish system language, then reboot so it applies.
+          xcrun simctl boot "$UDID" && xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl spawn "$UDID" defaults write "Apple Global Domain" AppleLanguages -array es-ES
+          xcrun simctl spawn "$UDID" defaults write "Apple Global Domain" AppleLocale -string es_ES
+          xcrun simctl shutdown "$UDID"
+          xcrun simctl boot "$UDID" && xcrun simctl bootstatus "$UDID" -b
+
+          xcrun simctl ui "$UDID" appearance light
+          xcrun simctl status_bar "$UDID" override --time 9:41 \
+            --dataNetwork wifi --wifiMode active --wifiBars 3 \
+            --cellularMode active --cellularBars 4 \
+            --batteryState charged --batteryLevel 100
+          xcrun simctl location "$UDID" set 37.3891,-5.9845
+          xcrun simctl install "$UDID" "$APP_PATH"
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Take the screenshots
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 480000
+        run: |
+          # The XCTest driver sometimes fails to start on hosted runners: retry once.
+          for attempt in 1 2; do
+            maestro --device "$UDID" test "$MOBILE_DIR/.maestro/app-store-screenshots.yaml" \
+              --test-output-dir "$RUNNER_TEMP/maestro" \
+              --debug-output "$RUNNER_TEMP/maestro-debug" && exit 0
+            echo "Maestro attempt $attempt failed"
+          done
+          exit 1
+
+      - name: Collect and check the screenshots
+        run: |
+          mkdir -p "$RUNNER_TEMP/screenshots/es-ES" "$RUNNER_TEMP/screenshots/en-US"
+          find "$RUNNER_TEMP/maestro" "$GITHUB_WORKSPACE" -maxdepth 4 -name '0[1-9]-*.png' -not -path '*/node_modules/*' -print0 \
+            | xargs -0 -I{} cp {} "$RUNNER_TEMP/screenshots/es-ES/"
+          ls "$RUNNER_TEMP/screenshots/es-ES"
+          count=0
+          for f in "$RUNNER_TEMP"/screenshots/es-ES/*.png; do
+            size=$(sips -g pixelWidth -g pixelHeight "$f" | awk '/pixel/ {print $2}' | paste -sd x -)
+            echo "$(basename "$f"): $size"
+            [ "$size" = "1320x2868" ] || { echo "Unexpected size"; exit 1; }
+            count=$((count + 1))
+          done
+          [ "$count" -eq 5 ] || { echo "Expected 5 screenshots, got $count"; exit 1; }
+          # The app UI is the same in both languages.
+          cp "$RUNNER_TEMP"/screenshots/es-ES/*.png "$RUNNER_TEMP/screenshots/en-US/"
+
+      - name: Keep the screenshots
+        uses: actions/upload-artifact@v5
+        with:
+          name: app-store-screenshots
+          path: ${{ runner.temp }}/screenshots/
+          retention-days: 14
+
+      - name: Keep Maestro and build logs
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: app-store-screenshots-debug
+          path: |
+            ${{ runner.temp }}/maestro/
+            ${{ runner.temp }}/maestro-debug/
+            ${{ runner.temp }}/logs/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  upload:
+    needs: screenshots
+    # TEMP: on its branch, a push whose commit message contains [upload] also uploads.
+    if: inputs.upload == true || (github.event_name == 'push' && contains(github.event.head_commit.message, '[upload]'))
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: app-store-screenshots
+          path: ${{ env.MOBILE_DIR }}/fastlane/screenshots
+
+      - name: Install App Store Connect API key
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/asc"
+          jq -n --arg id "$ASC_KEY_ID" --arg issuer "$ASC_ISSUER_ID" --arg key "$ASC_KEY_P8" \
+            '{key_id: $id, issuer_id: $issuer, key: $key, in_house: false}' > "$RUNNER_TEMP/asc/key.json"
+          chmod 600 "$RUNNER_TEMP/asc/key.json"
+
+      - name: Upload metadata and screenshots
+        working-directory: ${{ env.MOBILE_DIR }}
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          VERSION=$(grep -m1 -o 'MARKETING_VERSION = [0-9.]*' ios/App/App.xcodeproj/project.pbxproj | awk '{print $3}')
+          echo "App Store version: $VERSION"
+          # fastlane fails on the very first version while App Review has no contact details yet.
+          SKIP_METADATA=false
+          if [ "${{ inputs.screenshots_only }}" = "true" ] || [[ "$COMMIT_MESSAGE" == *"[screenshots-only]"* ]]; then
+            SKIP_METADATA=true
+          fi
+          fastlane deliver \
+            --skip_metadata "$SKIP_METADATA" \
+            --api_key_path "$RUNNER_TEMP/asc/key.json" \
+            --app_identifier "$APP_ID" \
+            --platform ios \
+            --app_version "$VERSION" \
+            --metadata_path fastlane/metadata \
+            --screenshots_path fastlane/screenshots \
+            --overwrite_screenshots true \
+            --skip_binary_upload true \
+            --submit_for_review false \
+            --automatic_release false \
+            --run_precheck_before_submit false \
+            --force true
+
+      - name: Remove API key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/asc"

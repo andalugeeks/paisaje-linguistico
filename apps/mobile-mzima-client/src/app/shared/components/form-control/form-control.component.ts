@@ -57,11 +57,15 @@ export class FormControlComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
+  // ionInput fires for typing, paste, iOS AutoFill and dictation; keyup only for typing,
+  // which left pasted credentials invisible to the form (App Review could not sign in).
   public handleInputChange(event: Event): void {
-    this.onChange((event.target as HTMLInputElement)?.value);
+    const value = (event as CustomEvent).detail?.value ?? (event.target as HTMLInputElement)?.value;
+    this.onChange(value ?? '');
   }
 
   public handleBlur(): void {
+    this.onChange(this.value ?? '');
     this.onTouched();
     this.isOnFocus = false;
     this.inputBlur.emit();

@@ -1,0 +1,64 @@
+# App Store screenshots for Paisaje Andalûh, run by .github/workflows/ios-app-store.yml on an
+# iPhone 17 Pro Max simulator (1320x2868, the 6.9" slot).
+# Maestro cannot read most of the text inside the Capacitor WebView, so the flow taps by screen
+# percentage (measured on that simulator) and waits for the screen to settle instead of
+# waiting for texts. The native-looking toasts ("Ok") are visible to it.
+appId: es.andaluh.paisaje
+name: App Store screenshots
+---
+- launchApp:
+    clearState: true
+    permissions:
+      location: inuse
+      photos: allow
+      camera: allow
+
+# 1. Walkthrough, first slide
+- waitForAnimationToEnd:
+    timeout: 20000
+- runFlow: dismiss-toast.yaml
+- takeScreenshot: 01-tour
+
+# 2. Map of Andalusia with the feed below ("Çartâh" = skip)
+- tapOn:
+    point: 86%, 10%
+- waitForAnimationToEnd:
+    timeout: 10000
+# First launch asks for the Ushahidi deployment: pick "Paisaje Lingüístico Andaluz"
+- tapOn:
+    point: 50%, 49%
+- waitForAnimationToEnd:
+    timeout: 25000
+- runFlow: dismiss-toast.yaml
+- takeScreenshot: 02-mapa
+
+# 3. Zoom into the Seville cluster
+- tapOn:
+    point: 37%, 44%
+- waitForAnimationToEnd:
+    timeout: 15000
+- takeScreenshot: 03-mapa-detalle
+
+# 4. A contribution: photo, transcription and location
+- tapOn:
+    point: 50%, 68%
+- waitForAnimationToEnd:
+    timeout: 20000
+- takeScreenshot: 04-aportacion
+
+# 5. Contributing a new sign (back, then the "+" button)
+- tapOn:
+    point: 7%, 10%
+- waitForAnimationToEnd:
+    timeout: 10000
+- tapOn:
+    point: 89%, 86%
+- waitForAnimationToEnd:
+    timeout: 15000
+# Open the "Corpus" survey to show the contribution form
+- tapOn:
+    point: 50%, 25%
+- waitForAnimationToEnd:
+    timeout: 15000
+- runFlow: dismiss-toast.yaml
+- takeScreenshot: 05-aportar

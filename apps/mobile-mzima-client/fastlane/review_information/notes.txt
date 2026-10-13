@@ -1,0 +1,9 @@
+Paisaje Andalûh is a citizen science app: people photograph street signs written in Andalusian and place them on a map. Everything can be tried without an account; registration is open in the app (Profile > "Aççedêh o Rehîttrarçe") if you want to test the signed-in features. The interface is written in Andalusian (EPA spelling), a variety of Spanish.
+
+User-generated content (Guideline 1.2):
+- Every contribution is reviewed manually before it is published (posts stay "under review" until approved).
+- Report: the warning icon at the bottom of any post, or the "..." menu in the feed.
+- Block a user: same menu, when signed in. It hides that user's posts on the device and notifies the moderators.
+- Contact: Profile > "Contâtto y çoporte" (andalugeeks@gmail.com).
+
+Account deletion (Guideline 5.1.1(v)): Profile > "Borrâh mi cuenta", when signed in. The backend (Ushahidi) does not allow users to delete themselves, so the request reaches the moderators, who delete the account within 30 days and confirm by email, as the app tells the user.
