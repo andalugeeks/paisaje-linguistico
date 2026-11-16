@@ -5,7 +5,6 @@
   "scripts": {},
   "private": true,
   "dependencies": {
-    "@capacitor-community/intercom": "^8.0.0",
     "@capacitor/android": "^8.5.2",
     "@capacitor/app": "^8.1.1",
     "@capacitor/camera": "^8.2.4",

@@ -36,5 +36,4 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -keepclasseswithmembers class * { @retrofit2.http.* <methods>; }
--keep class io.intercom.** { *; }
 -dontshrink

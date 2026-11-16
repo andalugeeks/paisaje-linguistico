@@ -36,7 +36,6 @@
     "@angular/router": "~14.2.7",
     "@asymmetrik/ngx-leaflet": "^14.0.1",
     "@asymmetrik/ngx-leaflet-markercluster": "^14.0.1",
-    "@capacitor-community/intercom": "^8.0.0",
     "@capacitor/android": "^8.5.2",
     "@capacitor/app": "^8.1.1",
     "@capacitor/camera": "^8.2.4",
