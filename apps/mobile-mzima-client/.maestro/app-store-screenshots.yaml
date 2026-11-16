@@ -14,6 +14,13 @@ name: App Store screenshots
       camera: allow
 
 # 1. Walkthrough, first slide
+# A blank WebView counts as "settled", so on the slower Intel runner waitForAnimationToEnd alone
+# returned before the walkthrough was drawn and 01-tour came out white. Wait a fixed 20 s first
+# (the text never appears; Maestro has no plain sleep).
+- extendedWaitUntil:
+    visible: "maestro-fixed-delay-never-visible"
+    timeout: 20000
+    optional: true
 - waitForAnimationToEnd:
     timeout: 20000
 - runFlow: dismiss-toast.yaml
