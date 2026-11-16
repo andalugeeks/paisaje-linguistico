@@ -25,7 +25,7 @@
       [pattern]="pattern"
       (ionBlur)="handleBlur()"
       (ionFocus)="handleFocus()"
-      (keyup)="handleInputChange($event)"
+      (ionInput)="handleInputChange($event)"
       [attr.name]="null"
     >
     </ion-input>
@@ -42,7 +42,7 @@
       [disabled]="disabled"
       (ionBlur)="handleBlur()"
       (ionFocus)="handleFocus()"
-      (keyup)="handleInputChange($event)"
+      (ionInput)="handleInputChange($event)"
     >
     </ion-textarea>
     <app-button

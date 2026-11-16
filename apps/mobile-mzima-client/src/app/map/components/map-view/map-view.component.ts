@@ -36,6 +36,7 @@ import { Router } from '@angular/router';
 })
 export class MapViewComponent implements AfterViewInit {
   public map: Map;
+  private resizeObserver?: ResizeObserver;
   public isMapReady = false;
   public leafletOptions: MapOptions;
   public mapLayers: any[] = [];
@@ -139,6 +140,7 @@ export class MapViewComponent implements AfterViewInit {
 
   public onMapReady(map: Map) {
     this.map = map;
+    this.watchMapSize();
 
     // For highlighting Saved layers in DB
     // this.initOfflineTiles(mapHelper.getMapLayer(this.baseLayer, this.isDarkMode).url);
@@ -319,7 +321,18 @@ export class MapViewComponent implements AfterViewInit {
     }
   }
 
+  // Leaflet measures its container once. When the page or the draggable feed panel is still
+  // laying out, it only requests tiles for part of the screen and the rest stays blank.
+  private watchMapSize(): void {
+    const container = this.map.getContainer();
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = new ResizeObserver(() => this.map?.invalidateSize());
+    this.resizeObserver.observe(container);
+    [300, 1000].forEach((delay) => setTimeout(() => this.map?.invalidateSize(), delay));
+  }
+
   public destroy(): void {
+    this.resizeObserver?.disconnect();
     this.$destroy.next(null);
     this.$destroy.complete();
   }
