@@ -5,13 +5,6 @@
 name: iOS App Store listing
 
 on:
-  # TEMP: run on its branch until it is on main; a push only takes screenshots.
-  push:
-    branches: [ios-app-store-listing]
-    paths:
-      - '.github/workflows/ios-app-store.yml'
-      - 'apps/mobile-mzima-client/.maestro/**'
-      - 'apps/mobile-mzima-client/fastlane/**'
   workflow_dispatch:
     inputs:
       upload:
@@ -181,8 +174,7 @@ jobs:
 
   upload:
     needs: screenshots
-    # TEMP: on its branch, a push whose commit message contains [upload] also uploads.
-    if: inputs.upload == true || (github.event_name == 'push' && contains(github.event.head_commit.message, '[upload]'))
+    if: inputs.upload == true
     runs-on: macos-26-intel  # arm64 pool out of capacity (Nov 2026); same Xcode 26.6
     timeout-minutes: 30
     env:
@@ -207,14 +199,12 @@ jobs:
 
       - name: Upload metadata and screenshots
         working-directory: ${{ env.MOBILE_DIR }}
-        env:
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           VERSION=$(grep -m1 -o 'MARKETING_VERSION = [0-9.]*' ios/App/App.xcodeproj/project.pbxproj | awk '{print $3}')
           echo "App Store version: $VERSION"
           # fastlane fails on the very first version while App Review has no contact details yet.
           SKIP_METADATA=false
-          if [ "${{ inputs.screenshots_only }}" = "true" ] || [[ "$COMMIT_MESSAGE" == *"[screenshots-only]"* ]]; then
+          if [ "${{ inputs.screenshots_only }}" = "true" ]; then
             SKIP_METADATA=true
           fi
           fastlane deliver \
