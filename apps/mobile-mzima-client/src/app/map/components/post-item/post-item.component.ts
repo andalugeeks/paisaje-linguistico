@@ -11,6 +11,7 @@ import { ActionSheetButton, ModalController, ActionSheetController } from '@ioni
 import {
   AlertService,
   DeploymentService,
+  ModerationService,
   NetworkService,
   SessionService,
   ShareService,
@@ -33,6 +34,7 @@ export class PostItemComponent implements OnInit {
   @Input() public isProfile?: boolean;
   @Output() public postUpdated = new EventEmitter<{ post: PostResult }>();
   @Output() public postDeleted = new EventEmitter<{ post: PostResult }>();
+  @Output() public userBlocked = new EventEmitter<{ post: PostResult }>();
   @Output() selected = new EventEmitter<boolean>();
   public backendUrl: string;
   public mediaUrl: string;
@@ -54,6 +56,7 @@ export class PostItemComponent implements OnInit {
     private modalController: ModalController,
     private actionSheetController: ActionSheetController,
     private router: Router,
+    private moderationService: ModerationService,
   ) {
     this.backendUrl = this.mediaService.backendUrl;
   }
@@ -75,10 +78,16 @@ export class PostItemComponent implements OnInit {
             PostItemActionTypeUserRole.AUTHOR,
             this.post.status,
           );
-        } else if (role === 'member') {
+        } else if (userId) {
+          // Paisaje-Linguistico: any signed-in user (Ushahidi's default role is "user", not
+          // only "member") gets the user actions, including report and block.
           this.actionSheetButtons = getPostItemActions(
             PostItemActionTypeUserRole.USER,
             this.post.status,
+          ).filter(
+            (button) =>
+              button.data?.action !== PostItemActionType.BLOCK_USER ||
+              this.moderationService.canBlock(this.post, userId),
           );
         } else {
           this.actionSheetButtons = [];
@@ -130,6 +139,12 @@ export class PostItemComponent implements OnInit {
       [PostItemActionType.PUT_UNDER_REVIEW]: () => this.setPostStatus(PostStatus.Draft),
       [PostItemActionType.ARCHIVE]: () => this.setPostStatus(PostStatus.Archived),
       [PostItemActionType.DELETE]: () => this.deletePost(),
+      [PostItemActionType.REPORT]: () => this.moderationService.reportPost(this.post),
+      [PostItemActionType.BLOCK_USER]: async () => {
+        if (await this.moderationService.blockUser(this.post)) {
+          this.userBlocked.emit({ post: this.post });
+        }
+      },
     };
 
     actions[action]();

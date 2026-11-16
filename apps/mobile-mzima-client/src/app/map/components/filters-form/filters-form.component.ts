@@ -317,7 +317,10 @@ export class FiltersFormComponent implements OnChanges, OnDestroy {
     this.surveys = null;
     this.surveysService.get().subscribe({
       next: (response) => {
-        this.surveys = response.results;
+        // Paisaje-Linguistico: never offer the private moderation survey as a filter
+        this.surveys = response.results.filter(
+          (survey: any) => Number(survey.id) !== EnvService.ENV?.moderation_survey_id,
+        );
         this.initSurveyFilters(isDeplaymentChanged);
       },
       error: () => {

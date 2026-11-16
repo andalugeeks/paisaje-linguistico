@@ -1,5 +1,6 @@
 import { ActionSheetButton } from '@ionic/angular';
 import { PostStatus } from '@mzima-client/sdk';
+import { moderationTexts } from './moderation';
 
 interface PostItemAction extends ActionSheetButton {
   guard: PostItemActionTypeUserRole[];
@@ -14,6 +15,8 @@ export enum PostItemActionType {
   PUT_UNDER_REVIEW = 'PUT_UNDER_REVIEW',
   ARCHIVE = 'ARCHIVE',
   DELETE = 'DELETE',
+  REPORT = 'REPORT',
+  BLOCK_USER = 'BLOCK_USER',
 }
 
 export enum PostItemActionTypeUserRole {
@@ -108,6 +111,29 @@ export const postItemActions: PostItemAction[] = [
       action: PostItemActionType.DELETE,
     },
     guard: [PostItemActionTypeUserRole.ADMIN, PostItemActionTypeUserRole.AUTHOR],
+  },
+  // Paisaje-Linguistico: App Store Review Guideline 1.2 (report content, block users)
+  {
+    cssClass: 'separator',
+    guard: [PostItemActionTypeUserRole.USER],
+  },
+  {
+    role: 'action',
+    text: moderationTexts.reportAction,
+    icon: '/assets/icon/warning.svg',
+    data: {
+      action: PostItemActionType.REPORT,
+    },
+    guard: [PostItemActionTypeUserRole.USER],
+  },
+  {
+    role: 'destructive',
+    text: moderationTexts.blockAction,
+    icon: '/assets/icon/info-shield.svg',
+    data: {
+      action: PostItemActionType.BLOCK_USER,
+    },
+    guard: [PostItemActionTypeUserRole.USER],
   },
   {
     text: 'Cançelâh',

@@ -12,4 +12,6 @@ export interface EnvConfigInterface {
   sentry_dsn: string;
   sentry_environment?: string;
   sentry_debug_mode: boolean;
+  // Paisaje-Linguistico: private survey that receives content reports and account deletion requests
+  moderation_survey_id?: number | null;
 }

@@ -15,3 +15,4 @@ export * from './share.service';
 export * from './listener.service';
 export * from './translate-http-loader';
 export * from './language.service';
+export * from './moderation.service';

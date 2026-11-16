@@ -21,6 +21,14 @@
         <app-icon slot="icon-only" name="add-to-collection"></app-icon>
       </app-button>
       <app-button
+        color="dark"
+        fill="clear"
+        *ngIf="!permissions.includes('edit') && posts.length === 1"
+        (buttonClick)="openModerationOptions()"
+      >
+        <app-icon slot="icon-only" name="warning"></app-icon>
+      </app-button>
+      <app-button
         color="danger"
         fill="clear"
         *ngIf="permissions.includes('edit')"

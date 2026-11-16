@@ -12,7 +12,7 @@ import {
   CollectionsService,
 } from '@mzima-client/sdk';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { DatabaseService, EnvService, SessionService } from '@services';
+import { DatabaseService, EnvService, ModerationService, SessionService } from '@services';
 import { lastValueFrom, Subject } from 'rxjs';
 import { MainViewComponent } from '../main-view.component';
 
@@ -75,6 +75,7 @@ export class FeedViewComponent extends MainViewComponent {
     private mediaService: MediaService,
     private envService: EnvService,
     private collectionService: CollectionsService,
+    private moderationService: ModerationService,
   ) {
     super(router, route, postsService, savedSearchesService, sessionService);
     this.envService.deployment$.subscribe({
@@ -176,7 +177,9 @@ export class FeedViewComponent extends MainViewComponent {
   }
 
   postDisplayProcessing(response: PostApiResponse, add: boolean) {
-    this.posts = add ? [...this.posts, ...response.results] : response.results;
+    // Paisaje-Linguistico: hide posts from users blocked on this device
+    const results = response.results.filter((post) => !this.moderationService.isBlocked(post));
+    this.posts = add ? [...this.posts, ...results] : results;
     this.isPostsLoading = false;
     this.totalPosts = response.meta.total;
   }
@@ -187,6 +190,12 @@ export class FeedViewComponent extends MainViewComponent {
       await this.getPosts(this.params, true);
       (ev as InfiniteScrollCustomEvent).target.complete();
     }
+  }
+
+  public handleUserBlocked(data: any): void {
+    const before = this.posts.length;
+    this.posts = this.posts.filter((post) => String(post.user_id) !== String(data.post.user_id));
+    this.totalPosts -= before - this.posts.length;
   }
 
   public handlePostDeleted(data: any): void {

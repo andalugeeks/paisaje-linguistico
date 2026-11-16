@@ -28,6 +28,7 @@ import {
   NetworkService,
   SessionService,
   ToastService,
+  EnvService,
 } from '@services';
 import { FormValidator, preparingVideoUrl } from '@validators';
 import {
@@ -215,6 +216,8 @@ export class PostEditPage {
           .toPromise();
 
         const filteredSurveys = response.results.filter((survey: any) => {
+          // Paisaje-Linguistico: the moderation survey is only fed by the report/delete flows
+          if (Number(survey.id) === EnvService.ENV?.moderation_survey_id) return false;
           return (
             survey.everyone_can_create ||
             survey.can_create.includes(
