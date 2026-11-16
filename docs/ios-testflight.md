@@ -2,7 +2,7 @@
 
 La app móvil (`apps/mobile-mzima-client`, Capacitor 8) se compila para iOS sin Mac
 propio: el workflow [`ios-testflight.yml`](../.github/workflows/ios-testflight.yml)
-corre en un runner `macos-26` de GitHub Actions (Xcode 26.6), firma con la **firma
+corre en un runner `macos-26-intel` de GitHub Actions (Xcode 26.6), firma con la **firma
 gestionada en la nube** de Xcode usando una API Key de App Store Connect y sube la
 build a TestFlight.
 
@@ -16,12 +16,14 @@ build a TestFlight.
 
 1. Build web con Node 18 (Nx 16 / Angular 14): `nx build mobile-mzima-client --configuration=production`.
 2. `npx cap sync ios` con Node 22 (Capacitor 8), que ejecuta `pod install`.
-3. `xcodebuild archive` + `-exportArchive` (`method` = `app-store-connect`) con
-   `-allowProvisioningUpdates` y la API Key: Xcode crea o reutiliza el certificado de
-   distribución gestionado en la nube y el perfil de aprovisionamiento. No hay
-   certificados ni perfiles en el repo.
-4. `xcrun altool --upload-app` con la misma API Key.
-5. Se guardan como artifacts los logs de xcodebuild y el `Podfile.lock` resuelto. El `.ipa`
+3. `xcodebuild archive` **sin firmar** (`CODE_SIGNING_ALLOWED=NO`, con
+   `DEVELOPMENT_TEAM` y `CURRENT_PROJECT_VERSION`).
+4. `xcodebuild -exportArchive` (`method` = `app-store-connect`, `signingStyle` =
+   `automatic`) con `-allowProvisioningUpdates` y la API Key: aquí es donde se firma,
+   con el certificado de distribución gestionado en la nube y el perfil de
+   aprovisionamiento que Xcode crea o reutiliza. No hay certificados ni perfiles en el repo.
+5. `xcrun altool --upload-app` con la misma API Key.
+6. Se guardan como artifacts los logs de xcodebuild y el `Podfile.lock` resuelto. El `.ipa`
    no se guarda: en un repo público cualquier usuario con sesión podría descargarlo, y
    lleva dentro el token de Mapbox.
 
@@ -65,3 +67,14 @@ en el runner y lo borra al terminar, pase lo que pase.
   "Missing Compliance" en cada build: la app solo usa HTTPS.
 - El proyecto iOS sigue con CocoaPods (Capacitor 8 crea proyectos SPM por defecto, pero
   respeta los existentes). El iOS mínimo es 15.0.
+- **Límite de certificados.** El archive no firma a propósito. Si firmara con
+  `-allowProvisioningUpdates`, Xcode crearía un certificado de desarrollo nuevo
+  ("Created via API") en cada runner limpio. Así se llegó al límite del equipo y los
+  archives empezaron a fallar con "Choose a certificate to revoke". Los 10 acumulados
+  se revocaron el 2026-11-16. Si vuelve a pasar, revisa en developer.apple.com →
+  Certificates que ningún paso, salvo el export, firme con la API Key.
+- **Runner Intel.** En noviembre de 2026 el pool macOS arm64 de GitHub no tenía
+  capacidad y los jobs se cancelaban a los 15 min sin runner ("The job was not acquired
+  by Runner of type hosted even after multiple attempts"). Por eso se usa
+  `macos-26-intel`, que trae el mismo Xcode 26.6 (`/Applications/Xcode_26.6.app`). Se
+  puede volver a `macos-26` cuando el pool arm64 se recupere.
